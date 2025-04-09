@@ -59,6 +59,7 @@ class Player {
     left = false;         // Reset the left movement flag
     right = false;        // Reset the right movement flag
     apple.x = 50;         // Reset the enemy (apple) to its initial position
+    ySpeed = 0;
   }
 
   // Check if the player is standing on the platform (to avoid falling through)
