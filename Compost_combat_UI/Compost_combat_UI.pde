@@ -5,18 +5,21 @@
  VOLUME CONTROL (Sound slider) 
  MAP
  */
-import java.awt.Rectangle;
 
 //Scene Variables 
 String screen = "game";
 int screenWidth=2000, screenHeight=2000, radius = 30;
-
+float x=screenWidth-245,y=82;
+PImage cog;
 //Instantiate Settings Class
 Settings settings= new Settings (screenWidth, screenHeight, 100);
 
 void setup() {
   size(2000, 2000);
   fullScreen();
+  
+  //import cog sprite image 
+  cog = loadImage("cog.png");
 }
 
 void draw() {
