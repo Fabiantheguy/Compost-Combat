@@ -1,5 +1,6 @@
 class Settings {
   PVector pos;
+  //PImage cog;
   float size, rectX, rectY, rectX2, rectY2;
   color bgColor = (#AAF796), gray= (#7D867B), circleCol= (#FF0A2B),
   black = (#000000), white= (#FFFFFF), red = (#FF0324);
@@ -11,11 +12,15 @@ class Settings {
     rectX2 = 100;
     rectY = 80;
     rectY2 = 20;
+    //cog = loadImage("cog.png") ;
   }
   void update() {
     if (screen =="game"){
       //Settings Button
+      image (cog,screenWidth-220, 90);
+      fill(circleCol);
       circle(screenWidth-220, 90, radius);
+      fill(red);
       textSize(30);
       text("Settings", screenWidth-200, 100);
     }
@@ -23,6 +28,7 @@ class Settings {
     fill (circleCol);
     noStroke();
     circle(mouseX, mouseY, 20);
+   // boolean onSettings = mouseX>rectX && mouseX<rectX+rectX2 && mouseY>rectY && mouseY< rectY+rectY2;
     //If Button is Clicked, Open Settings
     if (collidesWith() && mousePressed) {
       circleCol = #0208F5;
@@ -33,6 +39,7 @@ class Settings {
          boolean onX = mouseX>screenWidth-266 &&
                        mouseX < ((screenWidth-266)+30)
                        && mouseY > 135 && mouseY < 165;
+         
       //Settings Screen
       if (screen=="settings") {
         fill(black);
