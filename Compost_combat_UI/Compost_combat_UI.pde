@@ -9,7 +9,7 @@
 //Scene Variables 
 String screen = "game";
 int screenWidth=2000, screenHeight=2000, radius = 30;
-float x=screenWidth-245,y=82;
+float x=800;
 PImage cog;
 //Instantiate Settings Class
 Settings settings= new Settings (screenWidth, screenHeight, 100);
@@ -32,7 +32,11 @@ void draw() {
   case "settings":
 //IMPORTIMG SETTINGS TAB
      settings.openTab();
+     break;
+  case "save":
+    settings.saveScreen();
     break;
   }
      settings.update();
+     
 }
