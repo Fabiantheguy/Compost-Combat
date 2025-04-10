@@ -11,7 +11,7 @@ import processing.sound.*;
 
 //Scene Variables 
 Sound s;
-float amp = map(mouseY,0,height,0.0,0.0);
+float amp = map(mouseY,0,height,0.0,1.0);
 String screen = "game";
 int screenWidth=2000, screenHeight=2000, radius = 30;
 float x=800;

@@ -2,7 +2,7 @@ class Settings {
   PVector pos;
   float size, move,
     rectX, rectY, rectX2, rectY2;
-  color bgColor = (#EDE6E6), gray= (#7D867B), circleCol= (#FF0A2B), white= (#FFFCFC),
+  color bgColor = (#F5F2F2), gray= (#7D867B), circleCol= (#FF0A2B), white= (#FFFCFC),
     black = (#000000), darkGray= (#767373), red = (#FF0324);
 
   Settings (float x, float y, float s) {
@@ -14,6 +14,7 @@ class Settings {
     rectY2 = 20;
     move=0.00;
   }
+  
   void update() {
     boolean onSettings = mouseX>rectX-10 && mouseX<rectX+rectX2 &&
       mouseY>rectY-10 && mouseY< rectY+rectY2;
@@ -31,7 +32,6 @@ class Settings {
     fill (circleCol);
     noStroke();
     circle(mouseX, mouseY, 20);
-
     //If Button is Clicked, Open Settings
     if (onSettings) {
       //ADD COG ANIMATION HERE
@@ -42,6 +42,7 @@ class Settings {
       }
     }
   }
+  
   void openTab() {
     boolean onX = mouseX>screenWidth-266 && mouseX < ((screenWidth-266)+30)
       && mouseY > 135 && mouseY < 165;
@@ -93,6 +94,7 @@ class Settings {
       boolean saveClicked = mouseX> 445 && mouseX<1440 && mouseY>300 && mouseY < 400;
       boolean exitClicked =  mouseX> 445 && mouseX<1440 && mouseY>900 && mouseY < 1000;
       boolean mapClicked= mouseX> 445 && mouseX<1440 && mouseY>500 && mouseY < 600;
+      
       if (saveClicked && mousePressed) {
         screen = "save";
       }
@@ -100,11 +102,20 @@ class Settings {
         screen= "map";
       }
       if (exitClicked && mousePressed) {
+        fill(gray,85);
+        stroke(gray);
+        strokeCap(ROUND);
+        strokeWeight(10);
+        rect(screenWidth/2.75,screenHeight/5.45,400,100);
+        fill (white); 
+        text("exiting ...", screenWidth/2.5,screenHeight/4.55);
+        noStroke();
         exit();
       }
       if (onX && mousePressed) {
         screen = "game";
       }
+    
     //DEBUG MOUSE COORDS
     textSize(30);
     fill(red);
