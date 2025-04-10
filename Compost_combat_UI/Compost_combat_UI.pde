@@ -1,3 +1,6 @@
+  //IMPORTING SOUND LIBRARY
+import processing.sound.*;
+
 /* settings for GD 205 Game Compost Combat
  --ELEMENTS NEEDED:
  SAVE GAME
@@ -7,6 +10,8 @@
  */
 
 //Scene Variables 
+Sound s;
+float amp = map(mouseY,0,height,0.0,0.0);
 String screen = "game";
 int screenWidth=2000, screenHeight=2000, radius = 30;
 float x=800;
@@ -18,8 +23,9 @@ void setup() {
   size(2000, 2000);
   fullScreen();
   
-  //import cog sprite image 
+  //import Settings Variables
   cog = loadImage("cog.png");
+  s= new Sound (this);
 }
 
 void draw() {
@@ -30,9 +36,12 @@ void draw() {
     settings.exampleGameScreen();
     break;
   case "settings":
-//IMPORTIMG SETTINGS TAB
+//IMPORTING SETTINGS TAB
+     s.volume(amp);
      settings.openTab();
      break;
+  case "map":
+    settings.mapScreen();
   case "save":
     settings.saveScreen();
     break;

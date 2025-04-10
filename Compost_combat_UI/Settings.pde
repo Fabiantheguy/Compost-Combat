@@ -76,12 +76,14 @@ class Settings {
 
       fill(black);
       rect(x, 725, 10, 60);
+      
 
       boolean onVolumeBar = mouseX > 790 && mouseX < 1300;
 
       if (onVolumeBar) {
         if (mousePressed) {
           x=mouseX;
+          amp = mouseX/16;
           if (mouseX>1300) {
             mouseX=1300;
           }
@@ -90,9 +92,12 @@ class Settings {
       //SWITCHING SCREENS BASED ON MOUSE CLICKS
       boolean saveClicked = mouseX> 445 && mouseX<1440 && mouseY>300 && mouseY < 400;
       boolean exitClicked =  mouseX> 445 && mouseX<1440 && mouseY>900 && mouseY < 1000;
-
+      boolean mapClicked= mouseX> 445 && mouseX<1440 && mouseY>500 && mouseY < 600;
       if (saveClicked && mousePressed) {
         screen = "save";
+      }
+      if (mapClicked && mousePressed){
+        screen= "map";
       }
       if (exitClicked && mousePressed) {
         exit();
@@ -100,18 +105,20 @@ class Settings {
       if (onX && mousePressed) {
         screen = "game";
       }
-    }
     //DEBUG MOUSE COORDS
     textSize(30);
     fill(red);
-    text ("COORDS:\t"+mouseX+",\t"+mouseY, mouseX-50, mouseY-50);
+    text ("COORDS:\t"+mouseX +"\t," + mouseY, mouseX-50, mouseY-50);
+        }
+      if (onX && mousePressed && screen =="map"){
+        screen = "settings";
+        mousePressed = false;
+      }
   }
 
   void saveScreen() {
-    boolean onX = mouseX>screenWidth-266 && mouseX < ((screenWidth-266)+30)
-      && mouseY > 135 && mouseY < 165;
-
     if (screen == "save") {
+      boolean onX = mouseX>screenWidth-266 && mouseX < ((screenWidth-266)+30);
       //Background Rect
       fill(black);
       rect(100, 100, screenWidth-300, screenHeight-300);
@@ -119,9 +126,6 @@ class Settings {
       textSize(72);
       fill(bgColor);
       text("SAVES", screenWidth/2.5, screenHeight/11);
-      //exit button
-      fill(red);
-      circle(screenWidth-250, 150, radius);
       //Save Boxes
       for (int i=0; i<4; i++) {
         stroke(gray);
@@ -131,19 +135,44 @@ class Settings {
         fill (bgColor);
         text ("Saved Slot ...", screenWidth/8, 300+(i*210));
       }
-      if (onX && screen == "save" && mousePressed) {
+      //exit button
+      fill(red);
+      noStroke();
+      circle(screenWidth-250, 150, radius);
+      if (onX && mousePressed) {
         screen = "settings";
         mousePressed= false;
       }
     }
   }
+  
+  void mapScreen(){
+    boolean onX = mouseX>screenWidth-266 && mouseX < ((screenWidth-266)+30);
+    if (screen=="map"){   
+    //Background Rect
+      fill(gray);
+      rect(100, 100, screenWidth-300, screenHeight-300);
+      fill(black);
+      textSize(72);
+      text("MAP SHOWN HERE",
+      screenWidth/3, screenHeight/3);
+      //exit button
+      fill(red);
+      circle(screenWidth-250, 150, radius);
+      if (onX && mousePressed) {
+        screen = "settings";
+        mousePressed= false;
+      }  
+    }
+  }
+  
   //SAMPLE GAME SCREEN (CAN ERASE)
   void exampleGameScreen() {
     textSize(72);
     text("THIS IS A PLACEHOLDER FOR \n THE GAME SCREEN",
       screenWidth/4, screenHeight/4);
     fill(gray);
-  }
+  } 
 }
 
 /*
