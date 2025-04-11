@@ -1,3 +1,5 @@
+import java.awt.Rectangle;
+
 void settings(){
   fullScreen();
 }
