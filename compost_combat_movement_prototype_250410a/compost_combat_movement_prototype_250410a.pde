@@ -12,6 +12,5 @@ void setup(){
 
 void draw(){
   background(120, 190, 255);
-  
   worm.update();
 }

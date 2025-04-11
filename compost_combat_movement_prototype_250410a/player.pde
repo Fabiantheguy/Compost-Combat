@@ -1,5 +1,10 @@
-// player class containing the FSMs
-class Player{
+// === Global key states ===
+boolean leftHeld = false;
+boolean rightHeld = false;
+boolean upPressed = false;
+
+// === Player class containing the FSMs ===
+class Player {
   // instantiate variables
   StringList movStates = new StringList();
   String movCurrent = "walk";
@@ -9,7 +14,7 @@ class Player{
   float speed, jumpVel, initJump;
   
   // constructor
-  Player(float x, float y, float s){
+  Player(float x, float y, float s) {
     // position
     pos = new PVector(x, y);
     
@@ -29,14 +34,14 @@ class Player{
   }
   
   // state hub
-  void update(){
+  void update() {
     noFill();
     stroke(150, 40, 0);
     
     // firing update
-    if (this.gunCurrent == "aim"){
+    if (this.gunCurrent == "aim") {
       this.updateAim();
-    } else if (this.gunCurrent == "fire"){
+    } else if (this.gunCurrent == "fire") {
       // this.updateFire();
     }
     
@@ -45,67 +50,74 @@ class Player{
     rectMode(CENTER);
     
     // movement update
-    if (this.movCurrent == "walk"){
+    if (this.movCurrent == "walk") {
       this.updateWalk();
-    } else if (this.movCurrent == "jump"){
+    } else if (this.movCurrent == "jump") {
       this.updateJump();
-    } else if (this.movCurrent == "g_dash"){
+    } else if (this.movCurrent == "g_dash") {
       // this.updateGDash();
-    } else if (this.movCurrent == "a_dash"){
+    } else if (this.movCurrent == "a_dash") {
       // this.updateADash();
     }
   }
   
   // walk update code
-  void updateWalk(){
-    if(keyPressed){
-      if(key == 'a'){
-        this.pos.x -= this.speed;
-      } 
-      if(key == 'd'){
-        this.pos.x += this.speed;
-      }
-      if(key == 'w'){
-        this.jumpVel = this.initJump;
-        this.movCurrent = "jump";
-      }
+  void updateWalk() {
+    if (leftHeld) {
+      this.pos.x -= this.speed;
+    } 
+    if (rightHeld) {
+      this.pos.x += this.speed;
+    }
+    if (upPressed) {
+      this.jumpVel = this.initJump;
+      this.movCurrent = "jump";
+      upPressed = false; // prevent double jump
     }
     
-    // draw character
     rect(this.pos.x, this.pos.y, 40, 40);
   }
   
   // jump update code
-  void updateJump(){
+  void updateJump() {
     this.pos.y -= this.jumpVel;
     this.jumpVel -= 0.5;
-    if(keyPressed){
-      if(key == 'a'){
-        this.pos.x -= (this.speed*0.6);
-      } 
-      if(key == 'd'){
-        this.pos.x += (this.speed*0.6);
-      }
+    
+    if (leftHeld) {
+      this.pos.x -= (this.speed * 0.6);
+    } 
+    if (rightHeld) {
+      this.pos.x += (this.speed * 0.6);
     }
-    // update this conditional to make a ground collision check
-    if(this.pos.y >= 600){
+
+    if (this.pos.y >= 600) {
       this.pos.y = 600;
       this.jumpVel = 0;
       this.movCurrent = "walk";
     }
     
-    // draw character
     rect(this.pos.x, this.pos.y, 35, 45);
   }
-  
-  // grounded dash update code
-  
-  // air dash update code
-  
+
   // aim update code
-  void updateAim(){
+  void updateAim() {
     line(this.pos.x, this.pos.y, mouseX, mouseY);
   }
-  
-  // fire update code
+}
+
+// === Main sketch ===
+
+Player player;
+
+// === Key input tracking ===
+void keyPressed() {
+  if (key == 'a') leftHeld = true;
+  if (key == 'd') rightHeld = true;
+  if (key == 'w') upPressed = true;
+}
+
+void keyReleased() {
+  if (key == 'a') leftHeld = false;
+  if (key == 'd') rightHeld = false;
+  if (key == 'w') upPressed = false;
 }
