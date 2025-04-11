@@ -2,26 +2,7 @@
 Apple apple;
 ApplePlatform applePlatform;
 
-// Handle key press events to control the player movement
-void appleKeyPressed() {
-  // If 'A' or 'a' is pressed, move the player left
-  if (key == 'a' || key == 'A') player.left = true;
-  
-  // If 'D' or 'd' is pressed, move the player right
-  if (key == 'd' || key == 'D') player.right = true;
-  
-  // If spacebar is pressed and the player is on the platform, make the player jump
-  if (key == ' ' && player.onGround(applePlatform)) player.jump();
-}
 
-// Handle key release events to stop the player movement
-void appleKeyReleased() {
-  // If 'A' or 'a' is released, stop the left movement
-  if (key == 'a' || key == 'A') player.left = false;
-  
-  // If 'D' or 'd' is released, stop the right movement
-  if (key == 'd' || key == 'D') player.right = false;
-}
 
 // Initialize the Apple and platform objects
 void AppleSetup() {

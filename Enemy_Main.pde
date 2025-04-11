@@ -20,9 +20,9 @@ void draw() {
 }
 
 void keyPressed() {
-  appleKeyPressed();  // Handle key presses for apple-specific behavior (likely for enemy control)
+  playerKeyPressed();  // Handle key presses for apple-specific behavior (likely for enemy control)
 }
 
 void keyReleased() {
-  appleKeyReleased();  // Handle key releases for apple-specific behavior (likely for enemy control)
+  playerKeyReleased();  // Handle key releases for apple-specific behavior (likely for enemy control)
 }
