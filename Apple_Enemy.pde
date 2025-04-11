@@ -1,14 +1,14 @@
 // Secluded variables for the enemy (Apple), and platform
 Apple apple;
 ApplePlatform applePlatform;
-
+PImage appleImage;
 
 
 // Initialize the Apple and platform objects
 void AppleSetup() {
   // Create the apple object at a specific location
   apple = new Apple(width/4, height - 150);
-  
+  appleImage = loadImage("Apple.png");
   // Create the platform at the bottom of the screen
   applePlatform = new ApplePlatform(0, height - 100, width, 20);
 }
@@ -68,7 +68,7 @@ class Apple {
   // Display the apple (red color)
   void display() {
     fill(255, 0, 0);  // Red color
-    rect(x, y, w, h); // Draw the apple as a rectangle
+    image(appleImage, x - 13, y - 25, 75, 75);
   }
 
   // Check if the apple is on the platform
