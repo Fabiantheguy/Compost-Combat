@@ -3,6 +3,10 @@ boolean leftHeld = false;
 boolean rightHeld = false;
 boolean upPressed = false;
 boolean downHeld = false;
+boolean upAimed = false;
+boolean downAimed = false;
+boolean leftAimed = false;
+boolean rightAimed = false;
 
 // === Player class containing the FSMs ===
 class Player {
@@ -10,7 +14,7 @@ class Player {
   StringList movStates = new StringList();
   String movCurrent = "walk";
   StringList gunStates  = new StringList();
-  String gunCurrent = "aim";
+  String gunCurrent = "ready";
   PVector pos;
   float speed, jumpVel, initJump;
   
@@ -40,10 +44,10 @@ class Player {
     stroke(150, 40, 0);
     
     // firing update
-    if (this.gunCurrent == "aim") {
-      this.updateAim();
+    if (this.gunCurrent == "ready") {
+      this.updateReady();
     } else if (this.gunCurrent == "fire") {
-      // this.updateFire();
+      this.updateFire();
     }
     
     noStroke();
@@ -118,23 +122,68 @@ class Player {
     rect(this.pos.x, this.pos.y, 45, 35);
   }
 
-  // aim update code
-  void updateAim() {
-    line(this.pos.x, this.pos.y, mouseX, mouseY);
+  // non-firing update code
+  void updateReady(){
+    if(upAimed || leftAimed || rightAimed || downAimed){
+      this.gunCurrent = "fire";
+    }
+  }
+  
+  // firing update code
+  void updateFire() {
+    // original mouse aiming code, in case the rest of the team sees the light
+    // line(this.pos.x, this.pos.y, mouseX, mouseY);
+    
+    // new 8-directional aiming code
+    pushMatrix();
+    translate(this.pos.x, this.pos.y);
+    if(upAimed){
+      if(leftAimed){
+        rotate(PI/-4);
+      } else if(rightAimed){
+        rotate(PI/4);
+      }
+    } else if(leftAimed){
+      rotate(PI/-2);
+      if(downAimed){
+        rotate(PI/-4);
+      }
+    } else if(rightAimed){
+      rotate(PI/2);
+      if(downAimed){
+        rotate(PI/4);
+      }
+    } else if(downAimed){
+      rotate(PI);
+    }
+    line(0, 0, 0, -70);
+    popMatrix();
+    
+    if((upAimed || leftAimed || rightAimed || downAimed) == false){
+      this.gunCurrent = "ready";
+    }
   }
 }
 
 // === Key input tracking ===
 void keyPressed() {
-  if (key == 'a') leftHeld = true;
-  if (key == 'd') rightHeld = true;
-  if (key == 'w') upPressed = true;
-  if (key == 's') downHeld = true;
+  if (key == 'a' || key == 'A') leftHeld = true;
+  if (key == 'd' || key == 'D') rightHeld = true;
+  if (key == 'w' || key == 'W') upPressed = true;
+  if (key == 's' || key == 'S') downHeld = true;
+  if (keyCode == UP) upAimed = true;
+  if (keyCode == DOWN) downAimed = true;
+  if (keyCode == LEFT) leftAimed = true;
+  if (keyCode == RIGHT) rightAimed = true;
 }
 
 void keyReleased() {
-  if (key == 'a') leftHeld = false;
-  if (key == 'd') rightHeld = false;
-  if (key == 'w') upPressed = false;
-  if (key == 's') downHeld = false;
+  if (key == 'a' || key == 'A') leftHeld = false;
+  if (key == 'd' || key == 'D') rightHeld = false;
+  if (key == 'w' || key == 'W') upPressed = false;
+  if (key == 's' || key == 'S') downHeld = false;
+  if (keyCode == UP) upAimed = false;
+  if (keyCode == DOWN) downAimed = false;
+  if (keyCode == LEFT) leftAimed = false;
+  if (keyCode == RIGHT) rightAimed = false;
 }
