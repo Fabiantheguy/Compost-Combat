@@ -72,7 +72,6 @@ class Player {
     if (upPressed) {
       this.jumpVel = this.initJump;
       this.movCurrent = "jump";
-      upPressed = false; // prevent double jump
     }
     
     rect(this.pos.x, this.pos.y, 40, 40);
