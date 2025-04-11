@@ -2,6 +2,7 @@
 boolean leftHeld = false;
 boolean rightHeld = false;
 boolean upPressed = false;
+boolean downHeld = false;
 
 // === Player class containing the FSMs ===
 class Player {
@@ -54,6 +55,8 @@ class Player {
       this.updateWalk();
     } else if (this.movCurrent == "jump") {
       this.updateJump();
+    } else if (this.movCurrent == "duck") {
+      this.updateDuck();
     } else if (this.movCurrent == "g_dash") {
       // this.updateGDash();
     } else if (this.movCurrent == "a_dash") {
@@ -72,6 +75,8 @@ class Player {
     if (upPressed) {
       this.jumpVel = this.initJump;
       this.movCurrent = "jump";
+    } else if (downHeld) {
+      this.movCurrent = "duck";
     }
     
     rect(this.pos.x, this.pos.y, 40, 40);
@@ -97,6 +102,21 @@ class Player {
     
     rect(this.pos.x, this.pos.y, 35, 45);
   }
+  
+  // duck update code
+  void updateDuck() {
+    if (leftHeld) {
+      this.pos.x -= (this.speed*0.5);
+    } 
+    if (rightHeld) {
+      this.pos.x += (this.speed*0.5);
+    }
+    if (downHeld == false) {
+      this.movCurrent = "walk";
+    }
+    
+    rect(this.pos.x, this.pos.y, 45, 35);
+  }
 
   // aim update code
   void updateAim() {
@@ -104,19 +124,17 @@ class Player {
   }
 }
 
-// === Main sketch ===
-
-Player player;
-
 // === Key input tracking ===
 void keyPressed() {
   if (key == 'a') leftHeld = true;
   if (key == 'd') rightHeld = true;
   if (key == 'w') upPressed = true;
+  if (key == 's') downHeld = true;
 }
 
 void keyReleased() {
   if (key == 'a') leftHeld = false;
   if (key == 'd') rightHeld = false;
   if (key == 'w') upPressed = false;
+  if (key == 's') downHeld = false;
 }
