@@ -37,12 +37,11 @@ void draw() {
   background (bgColor);
   switch (screen) {
   case "start":
-    tempGameScreen();
     startScreen();
     break;
   case "game":
     //THIS CAN BE SWAPPED OUT WITH GAME SCREEN
-    
+    tempGameScreen();
     settingsButton();
     break;
   case "settings":
