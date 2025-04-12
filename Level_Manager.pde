@@ -21,7 +21,7 @@ color bgColor = (#F5F2F2), gray= (#7D867B),
 //Instantiate Settings Class
 Settings settings= new Settings (1700, 300, 100);
 // Instantiate Orange Enemy Class
-Orange orange= new Orange (width-200, height, 100);
+//Orange orange= new Orange (width-200, height, 100);
 
 void setup() {
   size(2000, 2000);
@@ -37,17 +37,17 @@ void draw() {
   background (bgColor);
   switch (screen) {
   case "start":
+    tempGameScreen();
     startScreen();
     break;
   case "game":
     //THIS CAN BE SWAPPED OUT WITH GAME SCREEN
-    orange.display();
-    orange.update();
+    
     settingsButton();
     break;
   case "settings":
     //IMPORTING SETTINGS TAB
-    s.volume(amp);
+    //s.volume(amp);
     settings.openTab();
     break;
   case "map":
@@ -143,7 +143,9 @@ void saveScreen() {
     }
   }
 }
-
+void tempGameScreen (){
+  
+}
 void credits () {
   fill(black);
   rect(0, 0, width, height);
