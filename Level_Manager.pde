@@ -15,6 +15,10 @@ String screen = "start";
 int radius = 30;
 float x=800;
 PImage cog;
+String[] saveSlotNames = {"Empty Slot", "Empty Slot", "Empty Slot", "Empty Slot"};
+boolean[] slotNamed = {false, false, false, false};
+int activeSlot = -1; // No slot selected
+boolean typingName = false;
 color bgColor = (#F5F2F2), gray= (#7D867B),
   circleCol= (#FF0A2B), white= (#FFFCFC), black = (#000000), darkGray= (#767373),
   red = (#FF0324), orangeCol = (#FC9903);
@@ -27,7 +31,7 @@ void setup() {
   size(2000, 2000);
   fullScreen();
   background (bgColor);
-
+  loadSaveData();
   //import Settings Variables
   cog = loadImage("cog.png");
   s= new Sound (this);
@@ -111,37 +115,79 @@ void startScreen() {
   }
 }
 void saveScreen() {
-  if (screen == "save") {
-    fill(black);
-    settingsWindow();
-    //Save Text
-    textSize(72);
+  fill(black);
+  settingsWindow();
+
+  textSize(72);
+  fill(bgColor);
+  text("SAVES", width/3, height/11);
+
+  for (int i = 0; i < 4; i++) {
+    stroke(gray);
+    strokeWeight(4);
+    fill(darkGray);
+    rect(300, 200 + (i * 210), width / 1.5, 180);
     fill(bgColor);
-    text("SAVES", width/3, height/11);
-    //Save Boxes
-    for (int i=0; i<4; i++) {
-      stroke(gray);
-      strokeWeight(4);
-      fill(darkGray);
-      rect(300, 200+(i*210), width/1.5, 180);
-      fill (bgColor);
-      text ("Saved Slot ...", 300, 300+(i*210));
+    
+    // If typing into this slot, show cursor
+String displayName = saveSlotNames[i];
+if (i == activeSlot && typingName) {
+  if ((millis() / 500) % 2 == 0) {
+    displayName += "|";
+  }
+}
+    text(displayName, 320, 300 + (i * 210));
+  }
+
+  // Detect clicks on individual save slots
+  if (mousePressed) {
+    for (int i = 0; i < 4; i++) {
+      int yTop = 200 + (i * 210);
+      int yBottom = yTop + 180;
+      if (mouseX > 300 && mouseX < 1500 && mouseY > yTop && mouseY < yBottom) {
+        activeSlot = i;
+        if (slotNamed[i] == false) {
+        typingName = true;
+        }
+        if (slotNamed[i]) {
+        screen = "game";
+        }
+        if (saveSlotNames[i].equals("Empty Slot")) {
+          saveSlotNames[i] = "";
+        }
+        break;
+      }
     }
-    noStroke();
-    boolean saveClicked= (mouseX > 300 && mouseX < 1500&& 
-                          mouseY > 200 && mouseY < 380 ||
-                          mouseY > 400 && mouseY < 580 || 
-                          mouseY > 600 && mouseY < 780); 
-    if (saveClicked && mousePressed){
-      screen="game";
-    }
-    exitButton();
-    if (onX() && mousePressed) {
-      screen = "start";
-      mousePressed= false;
+  }
+
+  // X Button and return
+  exitButton();
+  if (onX() && mousePressed) {
+    screen = "start";
+    activeSlot = -1;
+    typingName = false;
+    mousePressed = false;
+  }
+}
+void saveKeyPressed() {  
+    if (typingName && activeSlot >= 0 && activeSlot < 4) {
+    if (key == BACKSPACE) {
+      if (saveSlotNames[activeSlot].length() > 0) {
+        saveSlotNames[activeSlot] = saveSlotNames[activeSlot].substring(0, saveSlotNames[activeSlot].length() - 1);
+      }
+    } else if (key == ENTER || key == RETURN) {
+      typingName = false;
+      if (saveSlotNames[activeSlot].trim().length() > 0) {
+        slotNamed[activeSlot] = true;
+        screen = "game";
+        saveToFile(); // Save to JSON
+      }
+    } else if (key != CODED) {
+      saveSlotNames[activeSlot] += key;
     }
   }
 }
+
 void tempGameScreen (){
   
 }
@@ -156,6 +202,30 @@ void credits () {
     screen = "start";
   }
 }
-void mousePressed(){
-   mouseReleased();
+
+
+void saveToFile() {
+  JSONObject json = new JSONObject();
+  for (int i = 0; i < 4; i++) {
+    json.setString("slot" + i, saveSlotNames[i]);
+  }
+  saveJSONObject(json, "gameData.json");
+}
+
+void loadSaveData() {
+  JSONObject json = null;
+  try {
+    json = loadJSONObject("gameData.json");
+  } catch (Exception e) {
+    println("No save file found. Using defaults.");
+    return;
+  }
+
+  for (int i = 0; i < 4; i++) {
+    String name = json.getString("slot" + i, "Empty Slot");
+    saveSlotNames[i] = name;
+    if (!name.equals("Empty Slot") && !name.trim().equals("")) {
+      slotNamed[i] = true;
+    }
+  }
 }
