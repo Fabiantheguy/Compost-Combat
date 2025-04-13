@@ -2,6 +2,7 @@
 // Instantiated Orange Enemy - TH
 Orange orange;
 ParticleSystem ps;
+Platform platform;
 Object object;
 color orangeCol=#FF9E00, black= #000000;
 float ran = 0;
@@ -9,9 +10,12 @@ float ran = 0;
 void orangeSetup() {
   orange= new Orange (width-150, height - 150, 75);
   ps = new ParticleSystem (new PVector (width/2, 50));
+  //TEMP PLATFORM 
+  platform = new Platform (0, height - 100, width, 20);
   object = new Object (100, height-200, 100);
 }
 void orangeDraw() {
+  platform.display();
   orange.display();
   orange.update();
   object.display();
@@ -71,6 +75,21 @@ boolean hitsObject(){
   boolean hittingObject = dist (object.x,object.y,orange.pos.x+orange.size/2,
   orange.pos.y+ orange.size/2)<100;
   return (hittingObject);
+}
+//  TEMPORARY GROUND   
+class Platform {
+  int x,y,w,h;
+  
+  Platform (int x, int y,int w, int h){
+    this.x=x;
+    this.y=y;
+    this.w=w;
+    this.h=h;
+  }
+  void display (){
+    fill(black);
+    rect (x,y,w,h);
+  }
 }
 
 class Object {

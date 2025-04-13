@@ -8,14 +8,14 @@ void settings() {
   }
 
   void enemySetup() {
-     // player = new Player(width/2, height - 150);  // Initialize the player at the center horizontally and above the platform vertically
+      player = new Player(width/2, height - 150);  // Initialize the player at the center horizontally and above the platform vertically
      AppleSetup();  // Initialize the Apple (enemy) and platform setup
     
      orangeSetup(); // initialize orange setup
   }
 
   void enemyDraw() {
-    //  // Draw the game each frame:
+     // Draw the game each frame:
    // AppleDraw();  // Draw the apple (enemy) and handle its movement and behavior
     
     orangeDraw(); //Drawing enemy (orange) 
