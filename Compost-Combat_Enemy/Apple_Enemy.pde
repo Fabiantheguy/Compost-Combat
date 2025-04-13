@@ -20,8 +20,7 @@ void AppleDraw() {
   
   // Display the platform 
   applePlatform.display();
-  
-  // Make the apple follow the player and update its position
+  //// Make the apple follow the player and update its position
   apple.follow(player);
   apple.update();
   apple.display();
