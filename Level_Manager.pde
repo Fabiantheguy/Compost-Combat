@@ -209,16 +209,24 @@ void saveToFile() {
   for (int i = 0; i < 4; i++) {
     json.setString("slot" + i, saveSlotNames[i]);
   }
-  saveJSONObject(json, "gameData.json");
+  saveJSONObject(json, sketchPath("gameData.json")); // Use full path
 }
 
+
 void loadSaveData() {
-  JSONObject json = null;
-  try {
-    json = loadJSONObject("gameData.json");
-  } catch (Exception e) {
-    println("No save file found. Using defaults.");
-    return;
+  JSONObject json;
+  String savePath = sketchPath("gameData.json");
+
+  File f = new File(savePath);
+  if (!f.exists()) {
+    println("No save file found. Creating new one...");
+    json = new JSONObject();
+    for (int i = 0; i < 4; i++) {
+      json.setString("slot" + i, "Empty Slot");
+    }
+    saveJSONObject(json, savePath); // Save new default file
+  } else {
+    json = loadJSONObject(savePath); // Load it if it exists
   }
 
   for (int i = 0; i < 4; i++) {
