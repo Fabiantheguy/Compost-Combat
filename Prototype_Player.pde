@@ -55,7 +55,7 @@ class Player {
 
     // Check if the player is on the platform (to prevent falling through)
     if (onGround(applePlatform)) {
-    //Stop falling and place the player on top of the platform
+      // Stop falling and place the player on top of the platform
       y = applePlatform.y - h;
       ySpeed = 0;  // Stop vertical movement (no gravity effect while on the ground)
     }
@@ -78,13 +78,13 @@ class Player {
     y = height - 150;     // Place the player just above the platform vertically
     left = false;         // Reset the left movement flag
     right = false;        // Reset the right movement flag
-    //apple.x = 50;         // Reset the enemy (apple) to its initial position
+    apple.x = 50;         // Reset the enemy (apple) to its initial position
     ySpeed = 0;
   }
 
   // Check if the player is standing on the platform (to avoid falling through)
   boolean onGround(ApplePlatform p) {
-     //Returns true if the player's bottom is just above the platform
+    // Returns true if the player's bottom is just above the platform
     return (y + h >= p.y && y + h <= p.y + 10 && x + w > p.x && x < p.x + p.w);
   }
   
