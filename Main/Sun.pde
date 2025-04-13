@@ -7,7 +7,7 @@ class Sun {
   Sun(float x, float y) {
     c = #F5EC3E;
     pos = new PVector(x, y);
-    sunShift = 1.25;
+    sunShift = 0.25;
   }
   
   void update() {
