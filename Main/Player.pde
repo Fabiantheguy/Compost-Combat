@@ -4,6 +4,9 @@
 */
 Player player;
 
+// Camera Variables
+PVector camPos;
+PVector camTarget;
 // Handle key press events to control the player movement
 void playerKeyPressed() {
   // If 'A' or 'a' is pressed, move the player left
@@ -23,6 +26,19 @@ void playerKeyReleased() {
   
   // If 'D' or 'd' is released, stop the right movement
   if (key == 'd' || key == 'D') player.right = false;
+}
+
+void cameraDraw() {
+    // Target the center of the player on screen
+  // Target the center of the player on screen
+  camTarget.set(player.x - width/2 + player.w/2, player.y - height/2 + player.h/2 - 400);
+
+  // Smooth interpolation toward the target camera position
+  camPos.lerp(camTarget, 0.05); // Adjust 0.05 to tweak smoothing
+
+  // Translate the scene to follow the player
+  translate(-camPos.x, -camPos.y);
+  pushMatrix();
 }
 class Player {
   float x, y;            // Position of the player (x, y)
