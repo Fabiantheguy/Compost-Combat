@@ -4,6 +4,8 @@
 // Input to switch states
 // Separate FSMs for movement and shooting
 
+import java.awt.Rectangle;
+
 Player worm = new Player(400, 600, 5);
 
 void setup(){

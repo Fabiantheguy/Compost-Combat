@@ -16,7 +16,9 @@ class Player {
   StringList gunStates  = new StringList();
   String gunCurrent = "ready";
   PVector pos;
-  float speed, jumpVel, initJump;
+  float speed, jumpVel, initJump, aimRad, bulletSpeed;
+  ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+  int bulletCd, fireRate;
   
   // constructor
   Player(float x, float y, float s) {
@@ -27,6 +29,14 @@ class Player {
     speed = s;
     jumpVel = 0;
     initJump = 10;
+    
+    // shooting variables
+    aimRad = 0;
+    bulletSpeed = 10;
+    
+    // fire rate variables (in milliseconds)
+    bulletCd = 0;
+    fireRate = 150;
     
     // append states to lists
     movStates.append("walk");
@@ -48,6 +58,17 @@ class Player {
       this.updateReady();
     } else if (this.gunCurrent == "fire") {
       this.updateFire();
+    }
+    
+    // bullet update
+    for(int i=0; i<bullets.size(); i++){
+      // check if the bullet needs to be updated or deleted
+      Bullet bullet = bullets.get(i);
+      if(millis() - bullet.startTime >= bullet.lifetime){
+        bullets.remove(i);
+      } else {
+        bullet.update();
+      }
     }
     
     noStroke();
@@ -140,24 +161,39 @@ class Player {
     if(upAimed){
       if(leftAimed){
         rotate(PI/-4);
+        this.aimRad = PI*1.75;
       } else if(rightAimed){
         rotate(PI/4);
+        this.aimRad = PI/4;
+      } else {
+        this.aimRad = 0;
       }
     } else if(leftAimed){
       rotate(PI/-2);
+      this.aimRad = PI*1.5;
       if(downAimed){
         rotate(PI/-4);
+        this.aimRad = PI*1.25;
       }
     } else if(rightAimed){
       rotate(PI/2);
+      this.aimRad = PI/2;
       if(downAimed){
         rotate(PI/4);
+        this.aimRad = PI*0.75;
       }
     } else if(downAimed){
       rotate(PI);
+      this.aimRad = PI;
     }
     line(0, 0, 0, -70);
     popMatrix();
+    
+    // check if bullet cooldown has elapsed
+    if(millis() - this.bulletCd >= this.fireRate){
+      bullets.add(new Bullet(this.aimRad, this.bulletSpeed, this.pos));
+      this.bulletCd = millis();
+    }
     
     if((upAimed || leftAimed || rightAimed || downAimed) == false){
       this.gunCurrent = "ready";
