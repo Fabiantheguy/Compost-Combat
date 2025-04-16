@@ -1,4 +1,4 @@
-// Platforms for players to land on 
+// Main place where gameplay will happen
 class Tree {
   float x, y, w, h, treeShift; // postiton and area of tree
   

@@ -1,7 +1,7 @@
-/* 
-  This tab features a simple player that is to be used for testing enemies.
-  The player can move left, right, and jump, and is affected by gravity.
-*/
+/*
+ This tab features a simple player that is to be used for testing enemies.
+ The player can move left, right, and jump, and is affected by gravity.
+ */
 Player player;
 
 // Camera Variables
@@ -11,10 +11,10 @@ PVector camTarget;
 void playerKeyPressed() {
   // If 'A' or 'a' is pressed, move the player left
   if (key == 'a' || key == 'A') player.left = true;
-  
+
   // If 'D' or 'd' is pressed, move the player right
   if (key == 'd' || key == 'D') player.right = true;
-  
+
   // If spacebar is pressed and the player is on the platform, make the player jump
   if (key == ' ' && player.onGround(grass)) player.jump();
 }
@@ -23,15 +23,23 @@ void playerKeyPressed() {
 void playerKeyReleased() {
   // If 'A' or 'a' is released, stop the left movement
   if (key == 'a' || key == 'A') player.left = false;
-  
+
   // If 'D' or 'd' is released, stop the right movement
   if (key == 'd' || key == 'D') player.right = false;
 }
 
 void cameraDraw() {
-    // Target the center of the player on screen
-  // Target the center of the player on screen
-  camTarget.set(player.x - width/2 + player.w/2, player.y - height/2 + player.h/2 - 400);
+  // When player is near left edge camera stays into center of frame
+  if (player.x <= 50.0) {
+    camTarget.set(grass.pos.x, player.y - height/2 + player.h/2 - 400);
+  } else
+  
+  // When player is near left edge
+  if (player.x >= 3000) {
+    camTarget.set(grass.area.y, player.y - height/2 + player.h/2 - 400);
+  } else {
+    camTarget.set(player.x - width/2 + player.w/2, player.y - height/2 + player.h/2 - 400);
+  }
 
   // Smooth interpolation toward the target camera position
   camPos.lerp(camTarget, 0.05); // Adjust 0.05 to tweak smoothing
@@ -59,13 +67,13 @@ class Player {
   void update() {
     // Move the player left if the 'left' flag is true
     if (left) x -= xSpeed;
-    
+
     // Move the player right if the 'right' flag is true
     if (right) x += xSpeed;
 
     // Apply gravity to the player's vertical speed
     ySpeed += gravity;
-    
+
     // Update the player's vertical position
     y += ySpeed;
 
@@ -103,7 +111,7 @@ class Player {
     // Returns true if the player's bottom is just above the platform
     return (y + h >= g.pos.y && y + h <= g.pos.y + 10 && x + w > g.pos.x && x < g.pos.x + g.area.x);
   }
-  
+
   // Return the bounding box of the player (used for collision detection)
   Rectangle getBounds() {
     return new Rectangle((int)x, (int)y, (int)w, (int)h);
