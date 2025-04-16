@@ -1,6 +1,8 @@
 // all state classes
-// grounded superstate
+// parent state
 
-// airborne superstate
+// walk state
 
-// 
+// jump state
+
+// etc

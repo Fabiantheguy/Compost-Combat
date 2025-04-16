@@ -15,7 +15,7 @@ class Player {
   String movCurrent = "walk";
   StringList gunStates  = new StringList();
   String gunCurrent = "ready";
-  PVector pos;
+  PVector pos, size;
   float speed, jumpVel, initJump, aimRad, bulletSpeed;
   ArrayList<Bullet> bullets = new ArrayList<Bullet>();
   int bulletCd, fireRate;
@@ -24,6 +24,7 @@ class Player {
   Player(float x, float y, float s) {
     // position
     pos = new PVector(x, y);
+    size = new PVector(40, 40);
     
     // movement variables
     speed = s;
@@ -104,7 +105,7 @@ class Player {
       this.movCurrent = "duck";
     }
     
-    rect(this.pos.x, this.pos.y, 40, 40);
+    rect(this.pos.x, this.pos.y, this.size.x, this.size.y);
   }
   
   // jump update code
@@ -125,7 +126,7 @@ class Player {
       this.movCurrent = "walk";
     }
     
-    rect(this.pos.x, this.pos.y, 35, 45);
+    rect(this.pos.x, this.pos.y, this.size.x*0.875, this.size.y*1.125);
   }
   
   // duck update code
@@ -140,7 +141,7 @@ class Player {
       this.movCurrent = "walk";
     }
     
-    rect(this.pos.x, this.pos.y, 45, 35);
+    rect(this.pos.x, this.pos.y, this.size.x*1.125, this.size.y*0.875);
   }
 
   // non-firing update code
@@ -198,6 +199,12 @@ class Player {
     if((upAimed || leftAimed || rightAimed || downAimed) == false){
       this.gunCurrent = "ready";
     }
+  }
+  
+  // Return the bounding box of the player (used for collision detection)
+  Rectangle getBounds() {
+    return new Rectangle((int)this.pos.x, (int)this.pos.y, 
+                         (int)this.size.x, (int)this.size.y);
   }
 }
 
