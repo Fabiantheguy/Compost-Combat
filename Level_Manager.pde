@@ -86,8 +86,8 @@ void startScreen() {
     fill(black);
     rect(0, 0, width, height);
     fill (white);
-    textSize(120);
-    text("COMPOST COMBAT", width/3.05, height/8);
+    textSize(125);
+    text("COMPOST COMBAT", width/5, height/8);
     textSize(72);
     //Settings Buttons
     stroke(gray);
