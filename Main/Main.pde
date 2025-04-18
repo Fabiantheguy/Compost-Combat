@@ -18,7 +18,6 @@ void setup() {
 
 
 void draw() {
-  println(mouseY);
   cameraDraw();
   grassDraw();
   sunDraw();

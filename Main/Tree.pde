@@ -29,7 +29,24 @@ class Tree {
   
 }
 
-
+// Class for Vine for player to climb up and down tree
+class Vine{
+  PVector pos;
+  PVector area;
+  boolean isOnVine; // detect if player is on Vine
+  
+  Vine(float x, float y, float w, float h){
+    pos = new PVector(x, y);
+    area = new PVector(w, h);
+    isOnVine = false;
+  }
+  
+  void display(){
+    fill(#00ff00);
+    rect(pos.x, pos.y, area.x, area.y);
+  }
+  
+}
 
 
 void treeDraw() {
