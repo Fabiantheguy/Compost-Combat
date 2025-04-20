@@ -7,7 +7,7 @@ class Sun {
   Sun(float x, float y) {
     c = #F5EC3E;
     pos = new PVector(x, y);
-    sunShift = 0.25;
+    sunShift = 0.25; // moves the sune by this amount
   }
   
   void update() {
@@ -21,13 +21,14 @@ class Sun {
     }
   }
   
+  // draws the sun itself
   void display() {
     fill(c);
     circle(pos.x, pos.y, 50);
   }
 }
 
-// draws both the
+// draws both the sun moving and the sun itself
 void sunDraw() {
   sun.update();
   sun.display();
