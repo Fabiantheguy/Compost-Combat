@@ -46,10 +46,10 @@ class Vine{
     area = new PVector(w, h);
     isOnVine = false;
     vineShift = 1.25;
-    top = pos.y - area.y/2;
-    bot = pos.y + area.y/2;
-    right = pos.x + area.x/2;
-    left = pos.x - area.x/2;
+    top = pos.y - area.y;
+    bot = pos.y + area.y;
+    right = pos.x + area.x;
+    left = pos.x - area.x;
     c = #00ff00;
   }
   
@@ -60,7 +60,7 @@ class Vine{
   }
   
   void update(){
-   
+       
     // moves the vine to the right when player is moving to the left
     if (player.left) {
       pos.x += vineShift;
@@ -70,16 +70,15 @@ class Vine{
     if (player.right) {
       pos.x -= vineShift;
     }
-    
-    if (isOnVine == true){
-      c = #ff0000;
-    }
   }
+
   
   // detects if player is on vine
   boolean isOnVine(Player p) {
-    return (p.x + p.w/2 <= left &&
-            p.x - p.w/2 >= right);
+    return (p.x + p.w >= left &&
+            p.x - p.w <= right &&
+            p.y - p.h <= bot &&
+            p.y + p.h >= top);
   }
   
   // gets perimiter of the vine
