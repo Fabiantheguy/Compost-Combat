@@ -70,17 +70,13 @@ class Vine{
     if (player.right) {
       pos.x -= vineShift;
     }
+    
+    // detects if the player and vine is touching makes boolean 
+    if (player.getBounds().intersects(vine1.getBounds())){
+      isOnVine = true;
+    }
   }
 
-  
-  // detects if player is on vine
-  boolean isOnVine(Player p) {
-    return (p.x + p.w >= left &&
-            p.x - p.w <= right &&
-            p.y - p.h <= bot &&
-            p.y + p.h >= top);
-  }
-  
   // gets perimiter of the vine
   Rectangle getBounds() {
     return new Rectangle((int) pos.x, (int) pos.y, (int) area.x, (int) area.y);

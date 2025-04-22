@@ -17,6 +17,9 @@ void playerKeyPressed() {
 
   // If spacebar is pressed and the player is on the platform, make the player jump
   if (key == ' ' && player.onGround(grass)) player.jump();
+  
+  // If W is pressed the and the player is on the vine, make player climb
+  if (keyCode == 'w' && vine1.isOnVine) player.climb();
 }
 
 // Handle key release events to stop the player movement
@@ -95,7 +98,10 @@ class Player {
   void jump() {
     ySpeed = jumpStrength;  // Apply the jump strength to move the player upwards
   }
-
+  
+  void climb() {
+    y += 2;
+  }
   // Reset the player's position and state when they respawn
   void respawn() {
     x = width / 2;        // Place the player in the center of the screen horizontally

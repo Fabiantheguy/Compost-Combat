@@ -24,8 +24,8 @@ void draw() {
   grassDraw();
   sunDraw();
   treeDraw();  
-  vine1.display();
   vine1.update();
+  vine1.display();
   player.update();
   player.display();
   popMatrix();
