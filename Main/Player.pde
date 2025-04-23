@@ -16,7 +16,7 @@ void playerKeyPressed() {
   if (key == 'd' || key == 'D') player.right = true;
 
   // If spacebar is pressed and the player is on the platform, make the player jump
-  if (key == ' ' && player.onGround(grass)) player.jump();
+  if (key == ' ' ) player.jump();
   
   // If W is pressed the and the player is on the vine, make player climb
   if (keyCode == 'w' && vine1.isOnVine) player.climb();
@@ -35,11 +35,13 @@ void cameraDraw() {
   // When player is near left edge camera stays into center of frame
   if (player.x <= 50.0) {
     camTarget.set(grass.pos.x, player.y - height/2 + player.h/2 - 400);
-  } else
+  } else {
+    camTarget.set(player.x - width/2 + player.w/2, player.y - height/2 + player.h/2 - 400);
+  }
   
-  // When player is near left edge
+  // When player is near right edge camera stays into center of frame
   if (player.x >= 3000) {
-    camTarget.set(grass.area.y, player.y - height/2 + player.h/2 - 400);
+    camTarget.set(grass.area.y - 1050, player.y - height/2 + player.h/2 - 400);
   } else {
     camTarget.set(player.x - width/2 + player.w/2, player.y - height/2 + player.h/2 - 400);
   }

@@ -87,5 +87,6 @@ class Vine{
 void treeDraw() {
   tree.update();
   tree.display();
-
+  vine1.update();
+  vine1.display();
 }
