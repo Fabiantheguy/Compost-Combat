@@ -19,9 +19,13 @@ class Platform {
   }
 
   void update () {
-    isColliding =player.x >= x && player.y > y-50 ;
+    isColliding =player.x >= x &&
+    player.y > y-40 && 
+    player.x < x + platformSize
+    && player.y < y+ platformSize;
+    
     if (isColliding) {
-      player.y = y-50;
+      player.y = y-40;
       player.ySpeed = 0;
     }
   }
