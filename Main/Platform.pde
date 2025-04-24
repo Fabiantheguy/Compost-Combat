@@ -1,32 +1,35 @@
-color gray = #404040;
-boolean isColliding;
 class Platform {
+  color gray = #404040;
+  boolean isOnTop;
   int x, y, w, h;
+  float platformShift;
+  
   Platform (int x, int y, int w, int h) {
-    this.x= x;
+    this.x = x;
     this.y = y;
-    this.w= w;
+    this.w = w;
     this.h =  h;
+    platformShift = 1.25;
   }
   void run () {
-    display();
     update();
+    display();
   }
+  
+  void update () {
+    
+    // moves the platform to the right when player is moving to the left
+    if(player.right){
+      x -= platformShift;
+    }
+    
+    if(player.left){
+      x += 2.0;
+    }
+  }   
 
   void display () {
     fill (gray);
     rect(x, y, w, h);
-  }
-
-  void update () {
-    isColliding =player.x >= x &&
-    player.y > y-40 && 
-    player.x < x + platformSize
-    && player.y < y+ platformSize;
-    
-    if (isColliding) {
-      player.y = y-40;
-      player.ySpeed = 0;
-    }
-  }
+  } 
 }

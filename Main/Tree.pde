@@ -38,7 +38,6 @@ class Vine{
   PVector area;
   boolean isOnVine; // detect if player is on Vine
   float vineShift; // moves the vine by this amount
-  float top, bot, right, left; // hitboxes for vine
   color c;
   
   Vine(float x, float y, float w, float h){
@@ -46,10 +45,6 @@ class Vine{
     area = new PVector(w, h);
     isOnVine = false;
     vineShift = 1.25;
-    top = pos.y - area.y;
-    bot = pos.y + area.y;
-    right = pos.x + area.x;
-    left = pos.x - area.x;
     c = #00ff00;
   }
   
