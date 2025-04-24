@@ -7,6 +7,7 @@ boolean upAimed = false;
 boolean downAimed = false;
 boolean leftAimed = false;
 boolean rightAimed = false;
+String[] lastAim = new String[2];
 
 // === Player class containing the FSMs ===
 class Player {
@@ -87,6 +88,8 @@ class Player {
       // this.updateGDash();
     } else if (this.movCurrent == "a_dash") {
       // this.updateADash();
+    } else if (this.movCurrent == "climb") {
+      this.updateClimb();
     }
   }
   
@@ -143,6 +146,23 @@ class Player {
     
     rect(this.pos.x, this.pos.y, this.size.x*1.125, this.size.y*0.875);
   }
+  
+  // climbing update code
+  void updateClimb(){
+    if (leftHeld || rightHeld) {
+      if (upPressed) {
+        this.jumpVel = this.initJump;
+      }
+      this.movCurrent = "jump";
+    } else {
+      if (upPressed) {
+        this.pos.y -= (this.speed * 0.6);
+      } 
+      if (downHeld) {
+        this.pos.y += (this.speed * 0.6);
+      }
+    }
+  }
 
   // non-firing update code
   void updateReady(){
@@ -159,33 +179,46 @@ class Player {
     // new 8-directional aiming code
     pushMatrix();
     translate(this.pos.x, this.pos.y);
-    if(upAimed){
-      if(leftAimed){
+    if(lastAim[0] == "up"){
+      if(leftAimed && lastAim[1] == "left"){
         rotate(PI/-4);
         this.aimRad = PI*1.75;
-      } else if(rightAimed){
+      } else if(rightAimed && lastAim[1] == "right"){
         rotate(PI/4);
         this.aimRad = PI/4;
       } else {
         this.aimRad = 0;
       }
-    } else if(leftAimed){
+    } else if(lastAim[0] == "left"){
       rotate(PI/-2);
       this.aimRad = PI*1.5;
-      if(downAimed){
+      if(downAimed && lastAim[1] == "down"){
         rotate(PI/-4);
         this.aimRad = PI*1.25;
+      } else if (upAimed && lastAim[1] == "up"){
+        rotate(PI/4);
+        this.aimRad = PI*1.75;
       }
-    } else if(rightAimed){
+    } else if(lastAim[0] == "right"){
       rotate(PI/2);
       this.aimRad = PI/2;
-      if(downAimed){
+      if(downAimed && lastAim[1] == "down"){
         rotate(PI/4);
         this.aimRad = PI*0.75;
+      } else if(upAimed && lastAim[1] == "up"){
+        rotate(PI/-4);
+        this.aimRad = PI/4;
       }
-    } else if(downAimed){
+    } else if(lastAim[0] == "down"){
       rotate(PI);
       this.aimRad = PI;
+      if(leftAimed && lastAim[1] == "left"){
+        rotate(PI/4);
+        this.aimRad = PI*1.25;
+      } else if(rightAimed && lastAim[1] == "right"){
+        rotate(PI/-4);
+        this.aimRad = PI*0.75;
+      }
     }
     line(0, 0, 0, -70);
     popMatrix();
@@ -214,10 +247,35 @@ void keyPressed() {
   if (key == 'd' || key == 'D') rightHeld = true;
   if (key == 'w' || key == 'W') upPressed = true;
   if (key == 's' || key == 'S') downHeld = true;
-  if (keyCode == UP) upAimed = true;
-  if (keyCode == DOWN) downAimed = true;
-  if (keyCode == LEFT) leftAimed = true;
-  if (keyCode == RIGHT) rightAimed = true;
+  if (keyCode == UP) {
+    if (!upAimed) {
+      upAimed = true; 
+      lastAim[1] = lastAim[0];
+      lastAim[0] = "up";
+    }
+  }
+  if (keyCode == DOWN) {
+    if (!downAimed) {
+      downAimed = true;
+      lastAim[1] = lastAim[0];
+      lastAim[0] = "down";
+    }
+  }
+  if (keyCode == LEFT) {
+    if (!leftAimed) {
+      leftAimed = true;
+      lastAim[1] = lastAim[0];
+      lastAim[0] = "left";
+    }
+  }
+  if (keyCode == RIGHT) {
+    if (!rightAimed) {
+      rightAimed = true;
+      lastAim[1] = lastAim[0];
+      lastAim[0] = "right";
+    }
+  }
+  // print(lastAim[0] + ", " + lastAim[1]);
 }
 
 void keyReleased() {
@@ -225,8 +283,28 @@ void keyReleased() {
   if (key == 'd' || key == 'D') rightHeld = false;
   if (key == 'w' || key == 'W') upPressed = false;
   if (key == 's' || key == 'S') downHeld = false;
-  if (keyCode == UP) upAimed = false;
-  if (keyCode == DOWN) downAimed = false;
-  if (keyCode == LEFT) leftAimed = false;
-  if (keyCode == RIGHT) rightAimed = false;
+  if (keyCode == UP) {
+    upAimed = false;
+    for(int i=0; i<lastAim.length; i++){
+      if(lastAim[i] == "up") lastAim[i] = lastAim[abs(i-1)];
+    }
+  }
+  if (keyCode == DOWN) {
+    downAimed = false;
+    for(int i=0; i<lastAim.length; i++){
+      if(lastAim[i] == "down") lastAim[i] = lastAim[abs(i-1)];
+    }
+  }
+  if (keyCode == LEFT) {
+    leftAimed = false;
+    for(int i=0; i<lastAim.length; i++){
+      if(lastAim[i] == "left") lastAim[i] = lastAim[abs(i-1)];
+    }
+  }
+  if (keyCode == RIGHT) {
+    rightAimed = false;
+    for(int i=0; i<lastAim.length; i++){
+      if(lastAim[i] == "right") lastAim[i] = lastAim[abs(i-1)];
+    }
+  }
 }
