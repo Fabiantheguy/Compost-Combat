@@ -12,6 +12,8 @@ void setup(){
   size(800, 800);
   lastAim[0] = "none";
   lastAim[1] = "none";
+  lastAim[2] = "none";
+  lastAim[3] = "none";
 }
 
 void draw(){

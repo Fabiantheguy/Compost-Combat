@@ -7,7 +7,7 @@ boolean upAimed = false;
 boolean downAimed = false;
 boolean leftAimed = false;
 boolean rightAimed = false;
-String[] lastAim = new String[2];
+String[] lastAim = new String[4];
 
 // === Player class containing the FSMs ===
 class Player {
@@ -239,15 +239,19 @@ void keyPressed() {
   if (key == 'd' || key == 'D') rightHeld = true;
   if (key == 'w' || key == 'W') upPressed = true;
   if (key == 's' || key == 'S') downHeld = true;
-  if (keyCode == UP || keyCode == DOWN) {
+  if (keyCode == UP || keyCode == DOWN && int(lastAim[0]) != keyCode) {
+    // add previous key code at index 2 (prev up/down index)
+    lastAim[2] = lastAim[0];
     // add newest key code at index 0 (designated up/down index)
     lastAim[0] = str(keyCode);
   }
-  if (keyCode == LEFT || keyCode == RIGHT) {
+  if (keyCode == LEFT || keyCode == RIGHT && int(lastAim[1]) != keyCode) {
+    // add previous key code at index 2 (prev up/down index)
+    lastAim[3] = lastAim[1];
     // add newest key code at index 1 (designated left/right index)
     lastAim[1] = str(keyCode);
   }
-  // print("(" + lastAim[0] + ", " + lastAim[1] + ")");
+  print("(" + lastAim[0] + ", " + lastAim[1] + ")");
 }
 
 void keyReleased() {
@@ -255,10 +259,19 @@ void keyReleased() {
   if (key == 'd' || key == 'D') rightHeld = false;
   if (key == 'w' || key == 'W') upPressed = false;
   if (key == 's' || key == 'S') downHeld = false;
-  if (keyCode == UP || keyCode == DOWN) {
-    lastAim[0] = "none";
-  }
-  if (keyCode == LEFT || keyCode == RIGHT) {
-    lastAim[1] = "none";
+  if (keyCode == UP || keyCode == DOWN || keyCode == LEFT || keyCode == RIGHT) {
+    // find key code for the key released and remove it
+    for(int i=0; i<lastAim.length; i++) {
+      if(int(lastAim[i]) == keyCode) lastAim[i] = "none";
+    }
+    // fill missing indexes with their previous values
+    if(lastAim[0] == "none"){
+      lastAim[0] = lastAim[2];
+      lastAim[2] = "none";
+    }
+    if(lastAim[1] == "none"){
+      lastAim[1] = lastAim[3];
+      lastAim[3] = "none";
+    }
   }
 }
