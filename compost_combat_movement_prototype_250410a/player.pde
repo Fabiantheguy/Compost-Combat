@@ -162,6 +162,8 @@ class Player {
         this.pos.y += (this.speed * 0.6);
       }
     }
+    
+    rect(this.pos.x, this.pos.y, this.size.x, this.size.y);
   }
 
   // non-firing update code
