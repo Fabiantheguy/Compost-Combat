@@ -168,7 +168,7 @@ class Player {
 
   // non-firing update code
   void updateReady(){
-    if(lastAim[0] != "none"){
+    if(lastAim[0] != "none" || lastAim[1] != "none"){
       this.gunCurrent = "fire";
     }
   }
@@ -193,36 +193,23 @@ class Player {
       } else {
         this.aimRad = 0;
       }
-    } else if(int(lastAim[0]) == 37){
+    } else if(int(lastAim[1]) == 37){
       rotate(PI/-2);
       this.aimRad = PI*1.5;
-      if(int(lastAim[1]) == 40){
+      if(int(lastAim[0]) == 40){
         rotate(PI/-4);
         this.aimRad = PI*1.25;
-      } else if (int(lastAim[1]) == 38){
-        rotate(PI/4);
-        this.aimRad = PI*1.75;
       }
-    } else if(int(lastAim[0]) == 39){
+    } else if(int(lastAim[1]) == 39){
       rotate(PI/2);
       this.aimRad = PI/2;
-      if(int(lastAim[1]) == 40){
+      if(int(lastAim[0]) == 40){
         rotate(PI/4);
         this.aimRad = PI*0.75;
-      } else if(int(lastAim[1]) == 38){
-        rotate(PI/-4);
-        this.aimRad = PI/4;
       }
     } else if(int(lastAim[0]) == 40){
       rotate(PI);
       this.aimRad = PI;
-      if(int(lastAim[1]) == 37){
-        rotate(PI/4);
-        this.aimRad = PI*1.25;
-      } else if(int(lastAim[1]) == 39){
-        rotate(PI/-4);
-        this.aimRad = PI*0.75;
-      }
     }
     line(0, 0, 0, -70);
     popMatrix();
@@ -252,11 +239,13 @@ void keyPressed() {
   if (key == 'd' || key == 'D') rightHeld = true;
   if (key == 'w' || key == 'W') upPressed = true;
   if (key == 's' || key == 'S') downHeld = true;
-  if (keyCode == UP || keyCode == DOWN || keyCode == LEFT || keyCode == RIGHT) {
-    // forcibly push oldest key code out, and 2nd oldest to position of oldest
-    if (int(lastAim[0]) != keyCode) lastAim[1] = lastAim[0];
-    // add newest key code at index 0
+  if (keyCode == UP || keyCode == DOWN) {
+    // add newest key code at index 0 (designated up/down index)
     lastAim[0] = str(keyCode);
+  }
+  if (keyCode == LEFT || keyCode == RIGHT) {
+    // add newest key code at index 1 (designated left/right index)
+    lastAim[1] = str(keyCode);
   }
   // print("(" + lastAim[0] + ", " + lastAim[1] + ")");
 }
@@ -266,13 +255,10 @@ void keyReleased() {
   if (key == 'd' || key == 'D') rightHeld = false;
   if (key == 'w' || key == 'W') upPressed = false;
   if (key == 's' || key == 'S') downHeld = false;
-  if (keyCode == UP || keyCode == DOWN || keyCode == LEFT || keyCode == RIGHT) {
-    if (int(lastAim[0]) == keyCode) {
-      lastAim[0] = lastAim[1];
-      lastAim[1] = "none";
-      // print("h");
-    } else if (int(lastAim[1]) == keyCode) {
-      lastAim[1] = "none";
-    }
+  if (keyCode == UP || keyCode == DOWN) {
+    lastAim[0] = "none";
+  }
+  if (keyCode == LEFT || keyCode == RIGHT) {
+    lastAim[1] = "none";
   }
 }
