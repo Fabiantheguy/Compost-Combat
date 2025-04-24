@@ -10,6 +10,8 @@ Player worm = new Player(400, 600, 5);
 
 void setup(){
   size(800, 800);
+  lastAim[0] = "none";
+  lastAim[1] = "none";
 }
 
 void draw(){

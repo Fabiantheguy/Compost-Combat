@@ -168,7 +168,7 @@ class Player {
 
   // non-firing update code
   void updateReady(){
-    if(upAimed || leftAimed || rightAimed || downAimed){
+    if(lastAim[0] != "none"){
       this.gunCurrent = "fire";
     }
   }
@@ -179,45 +179,47 @@ class Player {
     // line(this.pos.x, this.pos.y, mouseX, mouseY);
     
     // new 8-directional aiming code
+    // had to change this to use key codes
+    // 37-40 are in ascending order: left, up, right, down
     pushMatrix();
     translate(this.pos.x, this.pos.y);
-    if(lastAim[0] == "up"){
-      if(leftAimed && lastAim[1] == "left"){
+    if(int(lastAim[0]) == 38){
+      if(int(lastAim[1]) == 37){
         rotate(PI/-4);
         this.aimRad = PI*1.75;
-      } else if(rightAimed && lastAim[1] == "right"){
+      } else if(int(lastAim[1]) == 39){
         rotate(PI/4);
         this.aimRad = PI/4;
       } else {
         this.aimRad = 0;
       }
-    } else if(lastAim[0] == "left"){
+    } else if(int(lastAim[0]) == 37){
       rotate(PI/-2);
       this.aimRad = PI*1.5;
-      if(downAimed && lastAim[1] == "down"){
+      if(int(lastAim[1]) == 40){
         rotate(PI/-4);
         this.aimRad = PI*1.25;
-      } else if (upAimed && lastAim[1] == "up"){
+      } else if (int(lastAim[1]) == 38){
         rotate(PI/4);
         this.aimRad = PI*1.75;
       }
-    } else if(lastAim[0] == "right"){
+    } else if(int(lastAim[0]) == 39){
       rotate(PI/2);
       this.aimRad = PI/2;
-      if(downAimed && lastAim[1] == "down"){
+      if(int(lastAim[1]) == 40){
         rotate(PI/4);
         this.aimRad = PI*0.75;
-      } else if(upAimed && lastAim[1] == "up"){
+      } else if(int(lastAim[1]) == 38){
         rotate(PI/-4);
         this.aimRad = PI/4;
       }
-    } else if(lastAim[0] == "down"){
+    } else if(int(lastAim[0]) == 40){
       rotate(PI);
       this.aimRad = PI;
-      if(leftAimed && lastAim[1] == "left"){
+      if(int(lastAim[1]) == 37){
         rotate(PI/4);
         this.aimRad = PI*1.25;
-      } else if(rightAimed && lastAim[1] == "right"){
+      } else if(int(lastAim[1]) == 39){
         rotate(PI/-4);
         this.aimRad = PI*0.75;
       }
@@ -231,7 +233,8 @@ class Player {
       this.bulletCd = millis();
     }
     
-    if((upAimed || leftAimed || rightAimed || downAimed) == false){
+    // if no keys are pressed, exit this state
+    if(lastAim[0] == "none" && lastAim[1] == "none"){
       this.gunCurrent = "ready";
     }
   }
@@ -249,35 +252,13 @@ void keyPressed() {
   if (key == 'd' || key == 'D') rightHeld = true;
   if (key == 'w' || key == 'W') upPressed = true;
   if (key == 's' || key == 'S') downHeld = true;
-  if (keyCode == UP) {
-    if (!upAimed) {
-      upAimed = true; 
-      lastAim[1] = lastAim[0];
-      lastAim[0] = "up";
-    }
+  if (keyCode == UP || keyCode == DOWN || keyCode == LEFT || keyCode == RIGHT) {
+    // forcibly push oldest key code out, and 2nd oldest to position of oldest
+    if (int(lastAim[0]) != keyCode) lastAim[1] = lastAim[0];
+    // add newest key code at index 0
+    lastAim[0] = str(keyCode);
   }
-  if (keyCode == DOWN) {
-    if (!downAimed) {
-      downAimed = true;
-      lastAim[1] = lastAim[0];
-      lastAim[0] = "down";
-    }
-  }
-  if (keyCode == LEFT) {
-    if (!leftAimed) {
-      leftAimed = true;
-      lastAim[1] = lastAim[0];
-      lastAim[0] = "left";
-    }
-  }
-  if (keyCode == RIGHT) {
-    if (!rightAimed) {
-      rightAimed = true;
-      lastAim[1] = lastAim[0];
-      lastAim[0] = "right";
-    }
-  }
-  // print(lastAim[0] + ", " + lastAim[1]);
+  // print("(" + lastAim[0] + ", " + lastAim[1] + ")");
 }
 
 void keyReleased() {
@@ -285,28 +266,13 @@ void keyReleased() {
   if (key == 'd' || key == 'D') rightHeld = false;
   if (key == 'w' || key == 'W') upPressed = false;
   if (key == 's' || key == 'S') downHeld = false;
-  if (keyCode == UP) {
-    upAimed = false;
-    for(int i=0; i<lastAim.length; i++){
-      if(lastAim[i] == "up") lastAim[i] = lastAim[abs(i-1)];
-    }
-  }
-  if (keyCode == DOWN) {
-    downAimed = false;
-    for(int i=0; i<lastAim.length; i++){
-      if(lastAim[i] == "down") lastAim[i] = lastAim[abs(i-1)];
-    }
-  }
-  if (keyCode == LEFT) {
-    leftAimed = false;
-    for(int i=0; i<lastAim.length; i++){
-      if(lastAim[i] == "left") lastAim[i] = lastAim[abs(i-1)];
-    }
-  }
-  if (keyCode == RIGHT) {
-    rightAimed = false;
-    for(int i=0; i<lastAim.length; i++){
-      if(lastAim[i] == "right") lastAim[i] = lastAim[abs(i-1)];
+  if (keyCode == UP || keyCode == DOWN || keyCode == LEFT || keyCode == RIGHT) {
+    if (int(lastAim[0]) == keyCode) {
+      lastAim[0] = lastAim[1];
+      lastAim[1] = "none";
+      // print("h");
+    } else if (int(lastAim[1]) == keyCode) {
+      lastAim[1] = "none";
     }
   }
 }
