@@ -1,12 +1,15 @@
-color gray = #404040;
 boolean isColliding;
+float cameraMovement;
 class Platform {
-  int x, y, w, h;
-  Platform (int x, int y, int w, int h) {
+  float x, y, w, h, platformTop;
+
+  Platform (float x, float y, float w, float h) {
     this.x= x;
     this.y = y;
     this.w= w;
     this.h =  h;
+    cameraMovement= 1.25;
+    platformTop = 40;
   }
   void run () {
     display();
@@ -14,19 +17,28 @@ class Platform {
   }
 
   void display () {
-    fill (gray);
+    fill (yellow);
     rect(x, y, w, h);
   }
 
   void update () {
-    isColliding =player.x >= x &&
-    player.y > y-40 && 
-    player.x < x + platformSize
-    && player.y < y+ platformSize;
-    
+    isColliding =player.x >= x - platformTop/1.5 &&
+      player.y > y-platformTop &&
+      player.x < x + platformSize
+      && player.y < y+ platformSize;
+
     if (isColliding) {
-      player.y = y-40;
+      player.y = y-platformTop;
       player.ySpeed = 0;
     }
+    cameraMovement();
   }
+  
+  void cameraMovement() {
+  if (player.left) {
+    x+= cameraMovement;
+  } else if (player.right) {
+    x-= cameraMovement;
+  }
+}
 }
