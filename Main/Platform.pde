@@ -21,13 +21,17 @@ class Platform {
   }
 
   void update () {
-    isColliding = player.x >= x - player.h/1.5 && player.y > y - player.h && player.x < x + w && player.y < y + w;
+    
 
     if (isColliding) {
       player.y = y - player.h;
       player.ySpeed = 0;
     }
     cameraMovement();
+  }
+  
+  boolean isColliding(Player p) {
+    return ( p.y + p.h >= y && p.y + p.h <= y + 10 && p.x + p.w > x && p.x < x + w);
   }
   
   void cameraMovement() {
