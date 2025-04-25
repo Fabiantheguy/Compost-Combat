@@ -1,15 +1,14 @@
 boolean isColliding;
 float cameraMovement;
 class Platform {
-  float x, y, w, h, platformTop;
+  float x, y, w, h;
 
   Platform (float x, float y, float w, float h) {
-    this.x= x;
+    this.x = x;
     this.y = y;
-    this.w= w;
+    this.w = w;
     this.h =  h;
     cameraMovement= 1.25;
-    platformTop = 40;
   }
   void run () {
     display();
@@ -22,13 +21,10 @@ class Platform {
   }
 
   void update () {
-    isColliding =player.x >= x - platformTop/1.5 &&
-      player.y > y-platformTop &&
-      player.x < x + platformSize
-      && player.y < y+ platformSize;
+    isColliding = player.x >= x - player.h/1.5 && player.y > y - player.h && player.x < x + w && player.y < y + w;
 
     if (isColliding) {
-      player.y = y-platformTop;
+      player.y = y - player.h;
       player.ySpeed = 0;
     }
     cameraMovement();

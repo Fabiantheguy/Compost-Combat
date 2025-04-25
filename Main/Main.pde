@@ -2,7 +2,7 @@ import java.awt.Rectangle;
 Ground grass;
 Sun sun;
 Tree tree;
-Vine vine1;
+Vine[] v;
 // sETTING lEVEL;
 //boolean Level2= true;
 
@@ -26,15 +26,22 @@ void setup() {
   grass = new Ground(-1000, height - 100, width + 3000, 3000);
   sun = new Sun(width - 255, 50);
   tree = new Tree(width, -2100, 200, 3080);
-  vine1 = new Vine(width - 300, 480, 75, 500);
   camPos = new PVector(0, 0);
   camTarget = new PVector(0, 0);
-
+  
+  v = new Vine [5];
+  for (int i = 0; i < v.length; i++){
+    v[0] = new Vine(width - 300, 480, 75, 500);
+    v[1] = new Vine(width - 500, -80, 75, 471);
+    v[2] = new Vine(width - 500, 980, 75, 500);
+    v[3] = new Vine(width - 500, 980, 75, 500);
+    v[4] = new Vine(width - 500, 980, 75, 500);
+  }
   // SETTING UP LEVEL 2 PLATFORMS & VINES
   //if (Level2) {
     p = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
     for (int i =0; i<p.length; i ++ ) {
-      p[0] = new Platform (platformPOS.x, platformPOS.y, platformSize, platformSize/3);
+      p[0] = new Platform (1480, 430, 440, platformSize/3);
       p[1] = new Platform (platformPOS.x + (i * platformDist.x), platformPOS.y, platformSize, platformSize/3);
       p[2] =new Platform (platformPOS.x + (i * platformDist.x *2), platformPOS.y + (i * platformDist.y), platformSize, platformSize/3);
       p[3] = new Platform (platformPOS.x + (i * platformDist.x*3), platformPOS.y + (i * platformDist.y * 2), platformSize, platformSize/3);
@@ -68,6 +75,8 @@ void draw() {
   player.update();
   player.display();
   popMatrix();
+  println();
+  println(v[1].isOnVine);
 }
 
 void keyPressed() {

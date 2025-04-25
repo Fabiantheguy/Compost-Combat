@@ -66,9 +66,11 @@ class Vine{
       pos.x -= vineShift;
     }
     
+    for (int i = 0; i < v.length; i++){
     // detects if the player and vine is touching makes boolean 
-    if (player.getBounds().intersects(vine1.getBounds())){
+      if (player.getBounds().intersects(v[i].getBounds())){
       isOnVine = true;
+      }
     }
   }
 
@@ -82,6 +84,9 @@ class Vine{
 void treeDraw() {
   tree.update();
   tree.display();
-  vine1.update();
-  vine1.display();
+  for (int i = 0; i < v.length; i++){
+    v[i].update();
+    v[i].display();
+  }
+
 }

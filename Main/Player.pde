@@ -18,8 +18,10 @@ void playerKeyPressed() {
   // If spacebar is pressed and the player is on the platform, make the player jump
   if (key == ' ' ) player.jump();
   
+  for (int i = 0; i < v.length; i++){
   // If W is pressed the and the player is on the vine, make player climb
-  if (keyCode == 'w' && vine1.isOnVine) player.climb();
+    if (keyCode == 'w' && v[i].isOnVine) player.climb();
+  }
 }
 
 // Handle key release events to stop the player movement
