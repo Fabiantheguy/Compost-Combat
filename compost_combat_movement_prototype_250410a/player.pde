@@ -239,19 +239,19 @@ void keyPressed() {
   if (key == 'd' || key == 'D') rightHeld = true;
   if (key == 'w' || key == 'W') upPressed = true;
   if (key == 's' || key == 'S') downHeld = true;
-  if (keyCode == UP || keyCode == DOWN && int(lastAim[0]) != keyCode) {
+  if ((keyCode == UP || keyCode == DOWN) && int(lastAim[0]) != keyCode) {
     // add previous key code at index 2 (prev up/down index)
     lastAim[2] = lastAim[0];
     // add newest key code at index 0 (designated up/down index)
     lastAim[0] = str(keyCode);
   }
-  if (keyCode == LEFT || keyCode == RIGHT && int(lastAim[1]) != keyCode) {
+  if ((keyCode == LEFT || keyCode == RIGHT) && int(lastAim[1]) != keyCode) {
     // add previous key code at index 2 (prev up/down index)
     lastAim[3] = lastAim[1];
     // add newest key code at index 1 (designated left/right index)
     lastAim[1] = str(keyCode);
   }
-  print("(" + lastAim[0] + ", " + lastAim[1] + ")");
+  // print("(" + lastAim[0] + ", " + lastAim[2] + ")");
 }
 
 void keyReleased() {
