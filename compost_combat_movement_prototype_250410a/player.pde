@@ -168,6 +168,7 @@ class Player {
 
   // non-firing update code
   void updateReady(){
+    // if aiming matrix is activated, enter firing state
     if(lastAim[0] != "none" || lastAim[1] != "none"){
       this.gunCurrent = "fire";
     }
@@ -185,8 +186,8 @@ class Player {
     translate(this.pos.x, this.pos.y);
     if(int(lastAim[0]) == 38){
       if(int(lastAim[1]) == 37){
-        rotate(PI/-4);
-        this.aimRad = PI*1.75;
+        rotate(PI/-4); // rotate matrix (for aiming visuals)
+        this.aimRad = PI*1.75; // set value of aim direction (for bullets)
       } else if(int(lastAim[1]) == 39){
         rotate(PI/4);
         this.aimRad = PI/4;
@@ -211,7 +212,7 @@ class Player {
       rotate(PI);
       this.aimRad = PI;
     }
-    line(0, 0, 0, -70);
+    line(0, 0, 0, -70); // visual aiming line - this is the only reason i push matrix
     popMatrix();
     
     // check if bullet cooldown has elapsed
@@ -235,10 +236,13 @@ class Player {
 
 // === Key input tracking ===
 void keyPressed() {
+  // booleans for movement keys
   if (key == 'a' || key == 'A') leftHeld = true;
   if (key == 'd' || key == 'D') rightHeld = true;
   if (key == 'w' || key == 'W') upPressed = true;
   if (key == 's' || key == 'S') downHeld = true;
+  
+  // activate aiming key array
   if ((keyCode == UP || keyCode == DOWN) && int(lastAim[0]) != keyCode) {
     // add previous key code at index 2 (prev up/down index)
     lastAim[2] = lastAim[0];
@@ -255,10 +259,13 @@ void keyPressed() {
 }
 
 void keyReleased() {
+  // booleans for movement keys
   if (key == 'a' || key == 'A') leftHeld = false;
   if (key == 'd' || key == 'D') rightHeld = false;
   if (key == 'w' || key == 'W') upPressed = false;
   if (key == 's' || key == 'S') downHeld = false;
+  
+  // deactivate spaces in aiming key array
   if (keyCode == UP || keyCode == DOWN || keyCode == LEFT || keyCode == RIGHT) {
     // find key code for the key released and remove it
     for(int i=0; i<lastAim.length; i++) {
