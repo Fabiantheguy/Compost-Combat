@@ -234,8 +234,8 @@ class Player {
   }
 }
 
-// === Key input tracking ===
-void keyPressed() {
+// player-specific keyPressed actions
+void playerKeyPressed() {
   // booleans for movement keys
   if (key == 'a' || key == 'A') leftHeld = true;
   if (key == 'd' || key == 'D') rightHeld = true;
@@ -258,7 +258,8 @@ void keyPressed() {
   // print("(" + lastAim[0] + ", " + lastAim[2] + ")");
 }
 
-void keyReleased() {
+// player-specific keyReleased actions
+void playerKeyReleased() {
   // booleans for movement keys
   if (key == 'a' || key == 'A') leftHeld = false;
   if (key == 'd' || key == 'D') rightHeld = false;

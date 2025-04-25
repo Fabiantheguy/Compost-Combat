@@ -20,3 +20,12 @@ void draw(){
   background(120, 190, 255);
   worm.update();
 }
+
+// == placeholder key tracking functions ==
+void keyPressed(){
+  playerKeyPressed(); // when merging, add this function call to the main keyPressed
+}
+
+void keyReleased(){
+  playerKeyReleased(); // when merging, add this function call to the main keyReleased
+}
