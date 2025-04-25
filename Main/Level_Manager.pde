@@ -27,18 +27,17 @@ Settings settings= new Settings (1700, 300, 100);
 // Instantiate Orange Enemy Class
 //Orange orange= new Orange (width-200, height, 100);
 
-void setup() {
-  size(2000, 2000);
-  fullScreen();
+void startScreenSetup() {
+
+
   background (bgColor);
-  loadSaveData();
+  
   //import Settings Variables
   cog = loadImage("cog.png");
-  s= new Sound (this);
+  s = new Sound (this);
 }
 
-void draw() {
-  background (bgColor);
+void menuDraw() {
   switch (screen) {
   case "start":
     startScreen();
@@ -119,7 +118,7 @@ void saveScreen() {
   settingsWindow();
 
   textSize(72);
-  fill(bgColor);
+
   text("SAVES", width/3, height/11);
 
   for (int i = 0; i < 4; i++) {

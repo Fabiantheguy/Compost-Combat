@@ -10,7 +10,7 @@ PVector camTarget;
 
 void playerSetup() {
   player = new Player(width/15, height - 150);
-  grass = new Ground(-1000, 1165, 10000, 1100);
+  grass = new Ground(-1000, 625, 10000, 150);
   sun = new Sun(width - 255, 50);
   tree = new Tree(width, -1880, 200, 5000);
   camPos = new PVector(0, 0);
@@ -106,7 +106,6 @@ void cameraDraw() {
 
   // Translate the scene to follow the player
   translate(-camPos.x, -camPos.y);
-  pushMatrix();
 }
 class Player {
   float x, y;            // Position of the player (x, y)

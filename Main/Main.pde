@@ -1,3 +1,4 @@
+import processing.sound.*;
 import java.awt.Rectangle;
 Ground grass;
 Sun sun;
@@ -17,41 +18,55 @@ PVector platformPOS = new PVector (1500,300);//WHERE THE PLATFORMS ARE
 Vines[] vines;
 PVector vinesPOS = new PVector (1900, -400);//CHANGE THESE VARIABLES TO KEEP COLLISIONS 
 float length = 150; 
+
 void settings() {
   fullScreen();
 }
 
 void setup() {
+startScreenSetup();
 playerSetup();
 playSetup();
+loadSaveData();
 }
 
 
 void draw() {
   background(50,255,50);
+  println(screen);
+
+  
+  if (screen == "game") {
+  pushMatrix();
   cameraDraw();
   grassDraw();
+
   sunDraw();
   treeDraw();
   playDraw();
+  popMatrix();
+  }
+  menuDraw();
   //if (Level2) {
-    for (int i =0; i<p.length; i ++ ) {
-      p[i].run();
-    }
+
     //for (int i =0; i<vines.length; i ++ ) {
     //  vines[i].run();
     //}
   //}
-  popMatrix();
+
 }
 
 void keyPressed() {
   aimKeyPressed();
   movementKeyPressed();
+  saveKeyPressed();
 }
 
 void keyReleased() {
   aimKeyReleased();
   movementKeyReleased();
+}
 
+void mousePressed(){
+   mouseReleased();
 }

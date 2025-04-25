@@ -4,7 +4,7 @@
 // Input to switch states
 // Separate FSMs for movement and shooting
 
-import java.awt.Rectangle;
+
 
 Play worm = new Play(1000, 600, 5);
 
@@ -73,6 +73,7 @@ class Play {
   
   // state hub
   void update() {
+    rectMode(CENTER);
     noFill();
     stroke(150, 40, 0);
     
@@ -90,14 +91,16 @@ class Play {
       if(millis() - bullet.startTime >= bullet.lifetime){
         bullets.remove(i);
       } else {
+         
         bullet.update();
+            
       }
     }
     
     noStroke();
     fill(255, 200, 150);
-    rectMode(CENTER);
-    
+
+
     // movement update
     if (this.movCurrent == "walk") {
       this.updateWalk();
@@ -112,6 +115,7 @@ class Play {
     } else if (this.movCurrent == "climb") {
       this.updateClimb();
     }
+    rectMode(CORNER);
   }
   
   // walk update code
