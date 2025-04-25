@@ -12,27 +12,13 @@ class Platform {
   }
   void run () {
     display();
-    update();
   }
 
   void display () {
-    fill (yellow);
-    rect(x, y, w, h);
-  }
-
-  void update () {
-    
-
-    if (isColliding) {
-      player.y = y - player.h;
-      player.ySpeed = 0;
-    }
     cameraMovement();
   }
+
   
-  boolean isColliding(Player p) {
-    return ( p.y + p.h >= y && p.y + p.h <= y + 10 && p.x + p.w > x && p.x < x + w);
-  }
   
   void cameraMovement() {
   if (player.left) {
@@ -40,5 +26,6 @@ class Platform {
   } else if (player.right) {
     x-= cameraMovement;
   }
+  println(x);
 }
 }

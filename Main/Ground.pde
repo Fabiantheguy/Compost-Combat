@@ -1,6 +1,7 @@
+ArrayList<Ground> allGrounds = new ArrayList<Ground>();
+
 class Ground {
-  PVector pos;
-  PVector area;
+  PVector pos, area;
   color c;
   
   Ground(float x, float y, float w, float h) {
@@ -9,12 +10,16 @@ class Ground {
     c = #00ff00;
   }
   
-  void display(){
+  void display() {
     fill(c);
     rect(pos.x, pos.y, area.x, area.y);
   }
   
+  Rectangle getBounds() {
+    return new Rectangle((int)pos.x, (int)pos.y, (int)area.x, (int)area.y);
+  }
 }
+
 
 void grassDraw(){
   background(#3DCFF2);

@@ -1,3 +1,24 @@
+// Nathan Ellis 4/10/2025
+// THE PLAN IS SIMPLE:
+// Finite State Machine with all player states
+// Input to switch states
+// Separate FSMs for movement and shooting
+
+import java.awt.Rectangle;
+
+Play worm = new Play(1000, 600, 5);
+
+void playSetup() {
+  lastAim[0] = "none";
+  lastAim[1] = "none";
+  lastAim[2] = "none";
+  lastAim[3] = "none";
+}
+
+void playDraw(){
+  worm.update();
+}
+
 // === Global key states ===
 boolean leftHeld = false;
 boolean rightHeld = false;
@@ -10,7 +31,7 @@ boolean rightAimed = false;
 String[] lastAim = new String[4];
 
 // === Player class containing the FSMs ===
-class Player {
+class Play {
   // instantiate variables
   StringList movStates = new StringList();
   String movCurrent = "walk";
@@ -22,7 +43,7 @@ class Player {
   int bulletCd, fireRate;
   
   // constructor
-  Player(float x, float y, float s) {
+  Play(float x, float y, float s) {
     // position
     pos = new PVector(x, y);
     size = new PVector(40, 40);
@@ -235,13 +256,7 @@ class Player {
 }
 
 // player-specific keyPressed actions
-void playerKeyPressed() {
-  // booleans for movement keys
-  if (key == 'a' || key == 'A') leftHeld = true;
-  if (key == 'd' || key == 'D') rightHeld = true;
-  if (key == 'w' || key == 'W') upPressed = true;
-  if (key == 's' || key == 'S') downHeld = true;
-  
+void aimKeyPressed() {
   // activate aiming key array
   if ((keyCode == UP || keyCode == DOWN) && int(lastAim[0]) != keyCode) {
     // add previous key code at index 2 (prev up/down index)
@@ -259,13 +274,7 @@ void playerKeyPressed() {
 }
 
 // player-specific keyReleased actions
-void playerKeyReleased() {
-  // booleans for movement keys
-  if (key == 'a' || key == 'A') leftHeld = false;
-  if (key == 'd' || key == 'D') rightHeld = false;
-  if (key == 'w' || key == 'W') upPressed = false;
-  if (key == 's' || key == 'S') downHeld = false;
-  
+void aimKeyReleased() {
   // deactivate spaces in aiming key array
   if (keyCode == UP || keyCode == DOWN || keyCode == LEFT || keyCode == RIGHT) {
     // find key code for the key released and remove it

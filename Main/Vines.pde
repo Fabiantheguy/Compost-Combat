@@ -24,7 +24,6 @@ class Vines{
     noStroke();
   }
   void update () {
-    println(isSwinging);
     isSwinging =player.x >= upperx - 30 && 
     player.x <=lowerx + 25 &&
     player.y > uppery - 50 && 

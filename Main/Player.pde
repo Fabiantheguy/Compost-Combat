@@ -7,30 +7,82 @@ Player player;
 // Camera Variables
 PVector camPos;
 PVector camTarget;
+
+void playerSetup() {
+  player = new Player(width/15, height - 150);
+  grass = new Ground(-1000, 1165, 10000, 1100);
+  sun = new Sun(width - 255, 50);
+  tree = new Tree(width, -1880, 200, 5000);
+  camPos = new PVector(0, 0);
+  camTarget = new PVector(0, 0);
+  allGrounds.add(grass);
+  v = new Vine [5];
+  for (int i = 0; i < v.length; i++) {
+    v[0] = new Vine(width - 300, 480, 75, 500);
+    v[1] = new Vine(width - 500, -80, 75, 471);
+    v[2] = new Vine(width - 500, 980, 75, 500);
+    v[3] = new Vine(width - 500, 980, 75, 500);
+    v[4] = new Vine(width - 500, 980, 75, 500);
+  }
+  // SETTING UP LEVEL 2 PLATFORMS & VINES
+  //if (Level2) {
+  p = new Platform [0]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
+  for (int i =0; i<p.length; i ++ ) {
+    p[0] = new Platform (1480, 430, 440, platformSize/3);
+    p[1] = new Platform (platformPOS.x + (i * platformDist.x), platformPOS.y, platformSize, platformSize/3);
+    p[2] =new Platform (platformPOS.x + (i * platformDist.x *2), platformPOS.y + (i * platformDist.y), platformSize, platformSize/3);
+    p[3] = new Platform (platformPOS.x + (i * platformDist.x*3), platformPOS.y + (i * platformDist.y * 2), platformSize, platformSize/3);
+    p[4] =new Platform (platformPOS.x + (i * platformDist.x*4), platformPOS.y + (i * platformDist.y/2), platformSize, platformSize/3);
+  }
+  //IN PROGRESS
+  vines = new Vines [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
+  for (int i =0; i<vines.length; i ++ ) {
+    vines[0] = new Vines (vinesPOS.x, vinesPOS.y, vinesPOS.x, length);
+    vines[1] = new Vines (vinesPOS.x + (i * 400), vinesPOS.y, vinesPOS.x + (i * 400), length);
+    vines[2] =new Vines (vinesPOS.x + (i * 800), vinesPOS.y, vinesPOS.x +(i * 800), length);
+  }
+  //}
+}
 // Handle key press events to control the player movement
-void playerKeyPressed() {
+void movementKeyPressed() {
   // If 'A' or 'a' is pressed, move the player left
-  if (key == 'a' || key == 'A') player.left = true;
-
+  if (key == 'a' || key == 'A') {
+    player.left = true;
+    leftHeld = true;
+  }
   // If 'D' or 'd' is pressed, move the player right
-  if (key == 'd' || key == 'D') player.right = true;
-
+  if (key == 'd' || key == 'D') {
+    player.right = true;
+    rightHeld = true;
+  }
+  if (key == 's' || key == 'S') {
+    downHeld = true;
+  }
   // If spacebar is pressed and the player is on the platform, make the player jump
-  if (key == ' ' ) player.jump();
-  
-  for (int i = 0; i < v.length; i++){
-  // If W is pressed the and the player is on the vine, make player climb
-    if (keyCode == 'w' && v[i].isOnVine) player.climb();
+  if (key == 'w' || key == 'W') {
+    player.jump();
+    upPressed = true;
   }
 }
 
 // Handle key release events to stop the player movement
-void playerKeyReleased() {
+void movementKeyReleased() {
   // If 'A' or 'a' is released, stop the left movement
-  if (key == 'a' || key == 'A') player.left = false;
-
+  if (key == 'a' || key == 'A') {
+    player.left = false;
+    leftHeld = false;
+  }
   // If 'D' or 'd' is released, stop the right movement
-  if (key == 'd' || key == 'D') player.right = false;
+  if (key == 'd' || key == 'D') {
+    player.right = false;
+    rightHeld = false;
+  }
+  if (key == 's' || key == 'S') {
+    downHeld = false;
+  }
+  if (key == 'w' || key == 'W') {
+    upPressed = false;
+  }
 }
 
 void cameraDraw() {
@@ -40,12 +92,13 @@ void cameraDraw() {
   } else {
     camTarget.set(player.x - width/2 + player.w/2, player.y - height/2 + player.h/2 - 400);
   }
-  
+
   // When player is near right edge camera stays into center of frame
   if (player.x >= 3000) {
-    camTarget.set(grass.area.y - 1050, player.y - height/2 + player.h/2 - 400);
+    camTarget.set(grass.area.y - 1050, worm.pos.y - height/2 - 400);
   } else {
-    camTarget.set(player.x - width/2 + player.w/2, player.y - height/2 + player.h/2 - 400);
+    camTarget.set(worm.pos.x - width/2, worm.pos.y - height/2 - 400);
+    println(player.h/2);  
   }
 
   // Smooth interpolation toward the target camera position
@@ -73,10 +126,10 @@ class Player {
   // Update the player's movement based on the current speed and gravity
   void update() {
     // Move the player left if the 'left' flag is true
-    if (left) x -= xSpeed;
+    //if (left) x -= xSpeed;
 
-    // Move the player right if the 'right' flag is true
-    if (right) x += xSpeed;
+    //// Move the player right if the 'right' flag is true
+    //if (right) x += xSpeed;
 
     // Apply gravity to the player's vertical speed
     ySpeed += gravity;
@@ -102,7 +155,7 @@ class Player {
   void jump() {
     ySpeed = jumpStrength;  // Apply the jump strength to move the player upwards
   }
-  
+
   void climb() {
     y += 2;
   }
