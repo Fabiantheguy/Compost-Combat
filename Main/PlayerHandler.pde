@@ -9,7 +9,7 @@ boolean invincible = false;
 int invincibleStartTime = 0;
 int invincibleDuration = 1000; // milliseconds of invincibility
 
-Play worm = new Play(1000, 600, 5);
+Play worm = new Play(1000, 610, 5); // spawn location
 
 // === Global key states ===
 boolean leftHeld = false;
