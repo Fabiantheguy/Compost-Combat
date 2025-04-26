@@ -68,9 +68,9 @@ class Vine{
     
     for (int i = 0; i < v.length; i++){
     // detects if the player and vine is touching makes boolean 
-      if (player.getBounds().intersects(v[i].getBounds())){
-      isOnVine = true;
-      }
+      //if (player.getBounds().intersects(v[i].getBounds())){
+      //isOnVine = true;
+      //}
     }
   }
 

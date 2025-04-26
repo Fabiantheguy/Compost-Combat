@@ -137,11 +137,7 @@ class Player {
     y += ySpeed;
 
     // Check if the player is on the platform (to prevent falling through)
-    if (onGround(grass)) {
-      // Stop falling and place the player on top of the platform
-      y = grass.pos.y - h;
-      ySpeed = 0;  // Stop vertical movement (no gravity effect while on the ground)
-    }
+
   }
 
   // Display the player as a black rectangle
@@ -168,14 +164,7 @@ class Player {
     ySpeed = 0;
   }
 
-  // Check if the player is standing on the platform (to avoid falling through)
-  boolean onGround(Ground g) {
-    // Returns true if the player's bottom is just above the platform
-    return (y + h >= g.pos.y && y + h <= g.pos.y + 10 && x + w > g.pos.x && x < g.pos.x + g.area.x);
-  }
 
-  // Return the bounding box of the player (used for collision detection)
-  Rectangle getBounds() {
-    return new Rectangle((int)x, (int)y, (int)w, (int)h);
-  }
+
+
 }
