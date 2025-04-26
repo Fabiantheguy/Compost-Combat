@@ -1,29 +1,39 @@
-// Secluded variables for the enemy (Apple), and platform
+// Secluded variables for the enemy (Apple), and platform //<>//
 Apple apple;
 
 PImage appleImage;
 
+int respawnTime = 3000; // 3 seconds to respawn the apple
+int lastDestroyedTime = -1; // -1 means no apple has died yet
 
 // Initialize the Apple and platform objects
 void appleSetup() {
-  // Create the apple object at a specific location
-  apple = new Apple(width/4, worm.pos.y - 100);
   appleImage = loadImage("Apple.png");
-  // Create the platform at the bottom of the screen
+  apple = new Apple(width / 4, worm.pos.y - 100);
 }
 
-// Main drawing function to update and display all elements of this enemy
 void appleDraw() {
-
-  
-  // Make the apple follow the player and update its position
-  apple.follow(worm);
-  apple.update();
-  apple.display();
-  
-
+  if (apple == null) {
+    // Apple is dead
+    if (lastDestroyedTime < 0) {
+      // Timer hasn't started yet — start it now
+      lastDestroyedTime = millis();
+    }
+    // Check if enough time has passed to respawn
+    if (millis() - lastDestroyedTime > respawnTime) {
+      apple = new Apple(width / 4, worm.pos.y - 100);
+      lastDestroyedTime = -1; // Reset timer
+    }
+  } else {
+    // Apple is alive
+    apple.follow(worm);
+    apple.update();
+    apple.display();
+  }
 }
 
+
+// Apple class
 class Apple {
   float x, y;               // Position
   float w = 40, h = 40;     // Size
@@ -53,58 +63,55 @@ class Apple {
     else if (player.pos.x > x + 1) x += speed;
   }
 
-void update() {
-  // Gravity
-  ySpeed += gravity;
-  y += ySpeed;
+  void update() {
+    // Gravity
+    ySpeed += gravity;
+    y += ySpeed;
 
-  Rectangle appleRect = getBounds();
+    Rectangle appleRect = getBounds();
 
-  for (Ground g : allGrounds) {
-    Rectangle groundRect = new Rectangle(
-      (int)g.pos.x,
-      (int)g.pos.y,
-      (int)g.area.x,
-      (int)g.area.y
-    );
+    for (Ground g : allGrounds) {
+      Rectangle groundRect = new Rectangle(
+        (int) g.pos.x,
+        (int) g.pos.y,
+        (int) g.area.x,
+        (int) g.area.y
+      );
 
-    if (appleRect.intersects(groundRect)) {
-      y = g.pos.y - h + 1; // Snap apple to ground
-      ySpeed = 0;
-      break;
+      if (appleRect.intersects(groundRect)) {
+        y = g.pos.y - h + 1; // Snap apple to ground
+        ySpeed = 0;
+        break;
+      }
+    }
+
+    // Animation
+    frameTimer++;
+    if (frameTimer >= frameInterval) {
+      frameTimer = 0;
+      currentFrame = (currentFrame + 1) % frames.length;
     }
   }
-
-  // Animation
-  frameTimer++;
-  if (frameTimer >= frameInterval) {
-    frameTimer = 0;
-    currentFrame = (currentFrame + 1) % frames.length;
-  }
-}
-
 
   void display() {
     image(frames[currentFrame], x - 20, y - 30, 80, 80);
   }
 
-boolean onAnyGround() {
-  Rectangle appleRect = getBounds();
-  for (Ground g : allGrounds) {
-    Rectangle groundRect = new Rectangle(
-      (int)g.pos.x,
-      (int)g.pos.y,
-      (int)g.area.x,
-      (int)g.area.y
-    );
-    if (appleRect.intersects(groundRect)) return true;
+  boolean onAnyGround() {
+    Rectangle appleRect = getBounds();
+    for (Ground g : allGrounds) {
+      Rectangle groundRect = new Rectangle(
+        (int) g.pos.x,
+        (int) g.pos.y,
+        (int) g.area.x,
+        (int) g.area.y
+      );
+      if (appleRect.intersects(groundRect)) return true;
+    }
+    return false;
   }
-  return false;
-}
-
 
   Rectangle getBounds() {
-    return new Rectangle((int)x, (int)y, (int)w, (int)h);
+    return new Rectangle((int) x, (int) y, (int) w, (int) h);
   }
-
 }
