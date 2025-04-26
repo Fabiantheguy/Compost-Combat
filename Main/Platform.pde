@@ -41,11 +41,10 @@ class Platform {
     return new Rectangle((int)x, (int)y, (int)w, (int)h);
   }
   // Check for intersection between platform and player (worm)
-boolean intersects() {
-  return player.x < p.x + p.w && 
-         player.x + player.w > p.x && 
-         player.y + player.h > p.y && 
-         player.y < p.y + p.h;
-}
-
+  boolean intersects() {
+    Rectangle platformBounds = new Rectangle((int)x, (int)y, (int)w, (int)h);
+    Rectangle playerBounds = worm.getBounds(); // Assuming worm is the player object
+    
+    return platformBounds.intersects(playerBounds); // Check if the platform and player intersect
+  }
 }

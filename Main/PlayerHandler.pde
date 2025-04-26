@@ -248,29 +248,19 @@ void playSetup() {
 
 // Handling collision and player physics
 void playerDraw() {
-   boolean foundCollision = false;
+  for (Platform p : platforms) {
+    p.run();
 
-for (Platform p : platforms) {
-  p.run();
 
-  if (p.intersects()) {
-    float playerBottom = player.y + player.h;
-    float platformTop = p.y;
+    // Check for collision with platform
+    if (p.intersects()) {
+      isColliding = true;
+      print(player.canJump);
 
-    // Ensure the player is falling and close to the platform's top
-    if (player.ySpeed > 0 && playerBottom <= platformTop && playerBottom + player.ySpeed > platformTop) {
-      // Land on the platform
-      player.y = platformTop - player.h;
-      player.canJump = true;
       worm.movCurrent = "walk";
-      foundCollision = true;
+      player.canJump = true;
+      player.y = p.y - player.h; // Place player on top of platform
     }
-  }
-}
-
-
-  if (!foundCollision) {
-    player.canJump = false;
   }
 
   if (!isColliding) {
@@ -321,7 +311,7 @@ class Play {
     // movement variables
     speed = s;
     jumpVel = 0;
-    initJump = 15;
+    initJump = 10;
 
     // shooting variables
     aimRad = 0;
