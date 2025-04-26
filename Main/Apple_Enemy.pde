@@ -17,7 +17,7 @@ void appleDraw() {
 
   
   // Make the apple follow the player and update its position
-  apple.follow(player);
+  apple.follow(worm);
   apple.update();
   apple.display();
   
@@ -27,7 +27,7 @@ void appleDraw() {
 class Apple {
   float x, y;               // Position
   float w = 40, h = 40;     // Size
-  float speed = 3;
+  float speed = 1;
   float ySpeed = 0;
   float gravity = 0.8;
 
@@ -48,9 +48,9 @@ class Apple {
     frames[3] = loadImage("apple/Blue.png");
   }
 
-  void follow(Player player) {
-    if (player.x < x - 1) x -= speed;
-    else if (player.x > x + 1) x += speed;
+  void follow(Play player) {
+    if (player.pos.x < x - 1) x -= speed;
+    else if (player.pos.x > x + 1) x += speed;
   }
 
 void update() {
