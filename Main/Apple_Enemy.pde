@@ -1,37 +1,27 @@
 // Secluded variables for the enemy (Apple), and platform
 Apple apple;
-ApplePlatform applePlatform;
+
 PImage appleImage;
-float test;
 
 
 // Initialize the Apple and platform objects
-void AppleSetup() {
+void appleSetup() {
   // Create the apple object at a specific location
-  apple = new Apple(width/4, height - 150);
+  apple = new Apple(width/4, worm.pos.y - 100);
   appleImage = loadImage("Apple.png");
   // Create the platform at the bottom of the screen
-  applePlatform = new ApplePlatform(0, height - 100, width, 20);
 }
 
 // Main drawing function to update and display all elements of this enemy
-void AppleDraw() {
-  // Set the background color to blue
-  background(0,0,255);
-  
-  // Display the platform 
-  applePlatform.display();
+void appleDraw() {
+
   
   // Make the apple follow the player and update its position
   apple.follow(player);
   apple.update();
   apple.display();
   
-  // Check if the apple collides with the player; if so, respawn the player
-  if (apple.collidesWith(player)) {
-    println("You were caught! Respawning...");
-    player.respawn(); // Call the respawn method when the player is caught
-  }
+
 }
 
 class Apple {
@@ -63,59 +53,58 @@ class Apple {
     else if (player.x > x + 1) x += speed;
   }
 
-  void update() {
-    // Gravity & movement
-    ySpeed += gravity;
-    y += ySpeed;
+void update() {
+  // Gravity
+  ySpeed += gravity;
+  y += ySpeed;
 
-    if (onGround(applePlatform)) {
-      y = applePlatform.y - h;
+  Rectangle appleRect = getBounds();
+
+  for (Ground g : allGrounds) {
+    Rectangle groundRect = new Rectangle(
+      (int)g.pos.x,
+      (int)g.pos.y,
+      (int)g.area.x,
+      (int)g.area.y
+    );
+
+    if (appleRect.intersects(groundRect)) {
+      y = g.pos.y - h + 1; // Snap apple to ground
       ySpeed = 0;
-    }
-
-    // Animation timer
-    frameTimer++;
-    if (frameTimer >= frameInterval) {
-      frameTimer = 0;
-      currentFrame = (currentFrame + 1) % frames.length;
+      break;
     }
   }
+
+  // Animation
+  frameTimer++;
+  if (frameTimer >= frameInterval) {
+    frameTimer = 0;
+    currentFrame = (currentFrame + 1) % frames.length;
+  }
+}
+
 
   void display() {
     image(frames[currentFrame], x - 20, y - 30, 80, 80);
   }
 
-  boolean onGround(ApplePlatform p) {
-    return (y + h >= p.y && y + h <= p.y + 10 && x + w > p.x && x < p.x + p.w);
+boolean onAnyGround() {
+  Rectangle appleRect = getBounds();
+  for (Ground g : allGrounds) {
+    Rectangle groundRect = new Rectangle(
+      (int)g.pos.x,
+      (int)g.pos.y,
+      (int)g.area.x,
+      (int)g.area.y
+    );
+    if (appleRect.intersects(groundRect)) return true;
   }
+  return false;
+}
+
 
   Rectangle getBounds() {
     return new Rectangle((int)x, (int)y, (int)w, (int)h);
   }
 
-  boolean collidesWith(Player p) {
-    return getBounds().intersects(p.getBounds());
-  }
-}
-
-
-
-
-// Class for the Platform (where the player can stand)
-class ApplePlatform {
-  float x, y, w, h;  // Position and size of the platform
-
-  // Constructor to initialize the platform
-  ApplePlatform(float x, float y, float w, float h) {
-    this.x = x;
-    this.y = y;
-    this.w = w;
-    this.h = h;
-  }
-
-  // Display the platform (green color)
-  void display() {
-    fill(0, 255, 0);  // Green color
-    rect(x, y, w, h); // Draw the platform as a rectangle
-  }
 }

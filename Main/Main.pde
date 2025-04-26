@@ -24,7 +24,8 @@ void settings() {
 }
 
 void setup() {
-startScreenSetup();
+startScreenSetup();  
+appleSetup();  // Initialize the Apple (enemy) and platform setup
 playerSetup();
 playSetup();
 loadSaveData();
@@ -44,6 +45,7 @@ void draw() {
   sunDraw();
   treeDraw();
   playDraw();
+  appleDraw();
   popMatrix();
   }
   menuDraw();
