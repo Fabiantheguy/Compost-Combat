@@ -10,7 +10,6 @@ int invincibleStartTime = 0;
 int invincibleDuration = 1000; // milliseconds of invincibility
 
 Play worm = new Play(1000, 610, 5); // spawn location
-
 // === Global key states ===
 boolean leftHeld = false;
 boolean rightHeld = false;
@@ -40,7 +39,7 @@ void playerSetup() {
   camTarget = new PVector(0, 0);
   allGrounds.add(grass);
   v = new Vine [5];
-  
+
   for (int i = 0; i < v.length; i++) {
     v[0] = new Vine(width - 300, 480, 75, 500);
     v[1] = new Vine(width - 500, -80, 75, 471);
@@ -50,13 +49,13 @@ void playerSetup() {
   }
   // SETTING UP LEVEL 2 PLATFORMS & VINES
   //if (Level2) {
-  p = new Platform [0]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
-  for (int i =0; i<p.length; i ++ ) {
-    p[0] = new Platform (1480, 430, 440, platformSize/3);
-    p[1] = new Platform (platformPOS.x + (i * platformDist.x), platformPOS.y, platformSize, platformSize/3);
-    p[2] =new Platform (platformPOS.x + (i * platformDist.x *2), platformPOS.y + (i * platformDist.y), platformSize, platformSize/3);
-    p[3] = new Platform (platformPOS.x + (i * platformDist.x*3), platformPOS.y + (i * platformDist.y * 2), platformSize, platformSize/3);
-    p[4] =new Platform (platformPOS.x + (i * platformDist.x*4), platformPOS.y + (i * platformDist.y/2), platformSize, platformSize/3);
+  platforms = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
+  for (int i = 0; i<platforms.length; i ++ ) {
+    platforms[0] = new Platform(worm.pos.x, worm.pos.y- 50, 440, 20);
+    platforms[1] = new Platform(600, 400, 100, 20);
+    platforms[2] = new Platform(800, 350, 100, 20);
+    platforms[3] = new Platform(1000, 300, 100, 20);
+    platforms[4] = new Platform(1200, 250, 100, 20);
   }
   //IN PROGRESS
   vines = new Vines [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
@@ -122,7 +121,6 @@ void cameraDraw() {
     camTarget.set(grass.area.y - 1050, worm.pos.y - height/2 - 400);
   } else {
     camTarget.set(worm.pos.x - width/2, worm.pos.y - height/2 - 400);
-    println(player.h/2);  
   }
 
   // Smooth interpolation toward the target camera position
@@ -131,49 +129,101 @@ void cameraDraw() {
   // Translate the scene to follow the player
   translate(-camPos.x, -camPos.y);
 }
-class Player {
-  float x, y;            // Position of the player (x, y)
-  float w = 40, h = 40;  // Size of the player (width, height)
-  float xSpeed = 5;      // Speed at which the player moves left/right
-  float ySpeed = 0;      // Vertical speed, which is affected by gravity
-  float gravity = 0.8;   // Gravity force that pulls the player down
-  float jumpStrength = -15; // Strength of the jump (negative for upward motion)
-  boolean left, right;   // Flags to indicate if the player is moving left or right
 
-  // Constructor to initialize the player's position
+class Player {
+  float x, y;            // Position of the player
+  float w = 40, h = 40;  // Size
+  float xSpeed = 5;      // Horizontal speed
+  float ySpeed = 0;      // Vertical speed
+  float gravity = 0.8;   // Gravity
+  float jumpStrength = -15; // Jump power
+  boolean left, right;   // Input flags
+  boolean canJump = false;  // Flag if player can jump
+  String movCurrent = "air"; // "walk" when on ground/platform, "air" when falling
+
+  // Constructor
   Player(float x, float y) {
     this.x = x;
     this.y = y;
   }
 
-  // Update the player's movement based on the current speed and gravity
+  // Rectangle for collision
+  Rectangle getBounds() {
+    return new Rectangle((int)x, (int)y, (int)w, (int)h);
+  }
+
   void update() {
-    // Move the player left if the 'left' flag is true
-    //if (left) x -= xSpeed;
+    // Horizontal movement
+    if (left) x -= xSpeed;
+    if (right) x += xSpeed;
 
-    //// Move the player right if the 'right' flag is true
-    //if (right) x += xSpeed;
-
-    // Apply gravity to the player's vertical speed
+    // Gravity
     ySpeed += gravity;
-
-    // Update the player's vertical position
     y += ySpeed;
 
-    // Check if the player is on the platform (to prevent falling through)
+    boolean onSurface = false;  // Whether standing on platform or ground
 
+for (Platform p : platforms) {
+  if (getBounds().intersects(p.getBounds())) {
+    float playerBottom = y + h;
+    float playerTop = y;
+    float platformTop = p.y;
+    float platformBottom = p.y + p.h;
+
+    // LANDING ON PLATFORM
+    if (ySpeed > 0 && playerBottom - ySpeed + 40 <= platformTop && playerBottom >= platformTop) {
+      // Player must be falling (ySpeed > 0)
+      // and must have already crossed above platform top
+      y = platformTop - h;
+      ySpeed = 0;
+      onSurface = true;
+    }
+    // HITTING FROM BELOW
+    else if (ySpeed < 0 && playerTop <= platformBottom && playerTop - ySpeed >= platformBottom) {
+      // Player must be moving upward (ySpeed < 0)
+      // and must have crossed below platform bottom
+      y = platformBottom;
+      ySpeed = 1; // small push downward
+    }
+  }
+}
+
+
+    // GROUND COLLISION
+    for (Ground g : allGrounds) {
+      if (getBounds().intersects(g.getBounds())) {
+        if (ySpeed >= 0 && y + h <= g.pos.y + 10) {
+          y = g.pos.y - h;
+          ySpeed = 0;
+          onSurface = true;
+        }
+      }
+    }
+
+    // Set movement state
+    if (onSurface) {
+      canJump = true;
+      movCurrent = "walk";
+    } else {
+      canJump = false;
+      movCurrent = "air";
+    }
   }
 
-  // Display the player as a black rectangle
   void display() {
-    fill(0);  // Set the color to black
-    rect(x, y, w, h);  // Draw the player as a rectangle
+    fill(0);  // Black
+    rect(x, y, w, h);
   }
 
-  // Make the player jump by setting the vertical speed to a negative value
   void jump() {
-    ySpeed = jumpStrength;  // Apply the jump strength to move the player upwards
+    if (canJump) {
+      ySpeed = jumpStrength;
+      canJump = false;
+      movCurrent = "air";
+    }
   }
+
+
 
   void climb() {
     y += 2;
@@ -195,23 +245,51 @@ void playSetup() {
   lastAim[3] = "none";
 }
 
-void playDraw() {
-  worm.update();
-  
-  // Health display
-  fill(255);
-  textSize(24);
 
+// Handling collision and player physics
+void playerDraw() {
+   boolean foundCollision = false;
 
-if (apple != null) {
-  // Handle collision with apple
-  if (!invincible && worm.getBounds().intersects(apple.getBounds())) {
-    currentHealth--;
-    invincible = true;
-    invincibleStartTime = millis();
+for (Platform p : platforms) {
+  p.run();
+
+  if (p.intersects()) {
+    float playerBottom = player.y + player.h;
+    float platformTop = p.y;
+
+    // Ensure the player is falling and close to the platform's top
+    if (player.ySpeed > 0 && playerBottom <= platformTop && playerBottom + player.ySpeed > platformTop) {
+      // Land on the platform
+      player.y = platformTop - player.h;
+      player.canJump = true;
+      worm.movCurrent = "walk";
+      foundCollision = true;
+    }
   }
 }
 
+
+  if (!foundCollision) {
+    player.canJump = false;
+  }
+
+  if (!isColliding) {
+    player.ySpeed += 0.5;  // Apply gravity when not colliding
+  }
+
+  worm.update();  // Assuming worm is your player object and has an update method
+
+  isColliding = false;  // Reset collision status each frame
+
+  // Handle health and invincibility (if applicable)
+  if (apple != null) {
+    // Handle collision with apple
+    if (!invincible && worm.getBounds().intersects(apple.getBounds())) {
+      currentHealth--;
+      invincible = true;
+      invincibleStartTime = millis();
+    }
+  }
 
   // Handle invincibility timer
   if (invincible) {
@@ -220,6 +298,7 @@ if (apple != null) {
     }
   }
 }
+
 
 // === Player class containing the FSMs ===
 class Play {
@@ -242,7 +321,7 @@ class Play {
     // movement variables
     speed = s;
     jumpVel = 0;
-    initJump = 10;
+    initJump = 15;
 
     // shooting variables
     aimRad = 0;
@@ -347,9 +426,9 @@ class Play {
       this.movCurrent = "walk";
     }
 
-if (!invincible || (millis() / 100) % 2 == 0) {
-  rect(this.pos.x, this.pos.y, this.size.x * 0.875, this.size.y * 1.125);
-}
+    if (!invincible || (millis() / 100) % 2 == 0) {
+      rect(this.pos.x, this.pos.y, this.size.x * 0.875, this.size.y * 1.125);
+    }
   }
 
   // checks if the player is colliding with any ground
@@ -379,9 +458,9 @@ if (!invincible || (millis() / 100) % 2 == 0) {
       this.movCurrent = "walk";
     }
 
-if (!invincible || (millis() / 100) % 2 == 0) {
-  rect(this.pos.x, this.pos.y, this.size.x * 1.125, this.size.y * 0.875);
-}
+    if (!invincible || (millis() / 100) % 2 == 0) {
+      rect(this.pos.x, this.pos.y, this.size.x * 1.125, this.size.y * 0.875);
+    }
   }
 
   // climbing update code
@@ -400,9 +479,9 @@ if (!invincible || (millis() / 100) % 2 == 0) {
       }
     }
 
-if (!invincible || (millis() / 100) % 2 == 0) {
-  rect(this.pos.x, this.pos.y, this.size.x, this.size.y);
-}
+    if (!invincible || (millis() / 100) % 2 == 0) {
+      rect(this.pos.x, this.pos.y, this.size.x, this.size.y);
+    }
   }
 
   // non-firing update code
