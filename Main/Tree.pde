@@ -1,4 +1,4 @@
-// Main place where gameplay will happen
+// Main place where tree related gameplay will happen
 class Tree {
   float x, y, w, h, treeShift; // postiton and area of tree
   
@@ -43,7 +43,6 @@ class Vine{
   Vine(float x, float y, float w, float h){
     pos = new PVector(x, y);
     area = new PVector(w, h);
-    isOnVine = false;
     vineShift = 1.25;
     c = #00ff00;
   }
@@ -66,11 +65,13 @@ class Vine{
       pos.x -= vineShift;
     }
     
+    isOnVine = false;
+    
     for (int i = 0; i < v.length; i++){
     // detects if the player and vine is touching makes boolean 
-      //if (player.getBounds().intersects(v[i].getBounds())){
-      //isOnVine = true;
-      //}
+      if (player.getBounds().intersects(v[i].getBounds())){
+      isOnVine = true;
+      }
     }
   }
 
