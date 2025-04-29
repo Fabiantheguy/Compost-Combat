@@ -121,7 +121,7 @@ void settingsButton() {
   textSize(30);
   text("Settings", settings.rectX+50, settings.rectY-170);
   textSize(100);
-  text("Health: " + currentHealth, 50, 100);
+  text("Health: " + worm.currentHealth, 50, 100);
   image(cog, settings.rectX, settings.rectY-200, 50, 50);
   if (onSettings) {
     //ADD COG ANIMATION HERE

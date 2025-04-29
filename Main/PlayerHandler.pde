@@ -3,11 +3,6 @@
 // Finite State Machine with all player states
 // Input to switch states
 // Separate FSMs for movement and shooting
-int maxHealth = 5;
-int currentHealth = maxHealth;
-boolean invincible = false;
-int invincibleStartTime = 0;
-int invincibleDuration = 1000; // milliseconds of invincibility
 
 Play worm = new Play(1000, 610, 5); // spawn location
 // === Global key states ===
@@ -274,18 +269,14 @@ void playerDraw() {
   // Handle health and invincibility (if applicable)
   if (apple != null) {
     // Handle collision with apple
-    if (!invincible && worm.getBounds().intersects(apple.getBounds())) {
-      currentHealth--;
-      invincible = true;
-      invincibleStartTime = millis();
+    if (!worm.invincible && worm.getBounds().intersects(apple.getBounds())) {
+      worm.takeDmg(1);
     }
   }
 
   // Handle invincibility timer
-  if (invincible) {
-    if (millis() - invincibleStartTime > invincibleDuration) {
-      invincible = false;
-    }
+  if (worm.invincible && millis() - worm.invincibleStartTime > worm.invincibleDuration) {
+      worm.invincible = false;
   }
 }
 
@@ -301,6 +292,13 @@ class Play {
   float speed, jumpVel, initJump, aimRad, bulletSpeed;
   ArrayList<Bullet> bullets = new ArrayList<Bullet>();
   int bulletCd, fireRate;
+  
+  // variables related to health and damage
+  int maxHealth = 5;
+  int currentHealth = maxHealth;
+  boolean invincible = false;
+  int invincibleStartTime = 0;
+  int invincibleDuration = 1000; // milliseconds of invincibility
 
   // constructor
   Play(float x, float y, float s) {
@@ -392,7 +390,7 @@ class Play {
       this.movCurrent = "duck";
     }
 
-    if (!invincible || (millis() / 100) % 2 == 0) {
+    if (!this.invincible || (millis() / 100) % 2 == 0) {
       rect(this.pos.x, this.pos.y, this.size.x, this.size.y);
     }
   }
@@ -416,7 +414,7 @@ class Play {
       this.movCurrent = "walk";
     }
 
-    if (!invincible || (millis() / 100) % 2 == 0) {
+    if (!this.invincible || (millis() / 100) % 2 == 0) {
       rect(this.pos.x, this.pos.y, this.size.x * 0.875, this.size.y * 1.125);
     }
   }
@@ -448,7 +446,7 @@ class Play {
       this.movCurrent = "walk";
     }
 
-    if (!invincible || (millis() / 100) % 2 == 0) {
+    if (!this.invincible || (millis() / 100) % 2 == 0) {
       rect(this.pos.x, this.pos.y, this.size.x * 1.125, this.size.y * 0.875);
     }
   }
@@ -469,7 +467,7 @@ class Play {
       }
     }
 
-    if (!invincible || (millis() / 100) % 2 == 0) {
+    if (!this.invincible || (millis() / 100) % 2 == 0) {
       rect(this.pos.x, this.pos.y, this.size.x, this.size.y);
     }
   }
@@ -529,7 +527,7 @@ class Play {
       this.bulletCd = millis();
     }
 
-    // if no keys are pressed, exit this state
+    // if no aiming-related keys are pressed, exit this state
     if (lastAim[0] == "none" && lastAim[1] == "none") {
       this.gunCurrent = "ready";
     }
@@ -539,6 +537,19 @@ class Play {
   Rectangle getBounds() {
     return new Rectangle((int)this.pos.x, (int)this.pos.y,
       (int)this.size.x, (int)this.size.y);
+  }
+  
+  // player taking damage code
+  void takeDmg(int l){
+    this.currentHealth -= l;
+    // die if health is 0, start invincibility timer otherwise
+    if(this.currentHealth <= 0){
+      // player death code
+      playerDeath();
+    } else {
+      this.invincible = true;
+      this.invincibleStartTime = millis();
+    }
   }
 }
 
@@ -578,4 +589,10 @@ void aimKeyReleased() {
       lastAim[3] = "none";
     }
   }
+}
+
+void playerDeath(){
+  // currently just re-generates the player object
+  // change this later to trigger a "game over" UI
+  worm = new Play(1000, 610, 5);
 }
