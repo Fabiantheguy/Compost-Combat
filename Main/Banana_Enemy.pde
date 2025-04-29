@@ -3,7 +3,7 @@ Banana banana;
 //BananaPlatform bananaPlatform;
 
 void BananaSetup() {
-  banana = new Banana( width/4, height - 150);
+  banana = new Banana(width / 4, worm.pos.y - 100);
   //bananaPlatform = new BananaPlatform (0, height - 100, width, 20);
 }
 
