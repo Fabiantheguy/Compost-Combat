@@ -54,7 +54,7 @@ class Banana {
   int frameTimer = 0;       // Used to time switching frames
   int frameInterval = 10;   // Change frame every 10 draw() calls
   
-  boolean hasShot = false;
+  boolean hasShot = false;  //checking to see if the bullet is active
  
   Banana(float x, float y) {
     this.x = x;
