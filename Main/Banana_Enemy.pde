@@ -34,7 +34,7 @@ void BananaDraw() {
   
   if (bullet != null) {
     bullet.update();
-    bullet.bulletDraw();
+    bullet.display();
 }
 
 }
@@ -81,6 +81,12 @@ class Banana {
 
     Rectangle bananaRect = getBounds();
 
+    if ( !bananaShot ) {
+      bullet = new bananaBullet(width / 4, worm.pos.y - 100);
+      
+      bananaShot = true;
+    }
+
     for (Ground g : allGrounds) {
       Rectangle groundRect = new Rectangle(
         (int) g.pos.x,
@@ -102,13 +108,7 @@ class Banana {
       frameTimer = 0;
       currentFrame = (currentFrame + 1) % frames.length;
     }
-    
-    if ( !bananaShot ) {
-      bullet = new bananaBullet(width / 4, worm.pos.y - 100);
-      
-      bananaShot = true;
-    }
-    
+     
   }
 
   void display() {
@@ -154,7 +154,7 @@ class bananaBullet {
     x += speed;
   }
   
-  void bulletDraw() {
+  void display() {
     //rect for bullet
     rect(x, y, 10, 10);
     
