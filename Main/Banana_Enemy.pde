@@ -1,13 +1,13 @@
-// Secluded variables for the enemy (Apple), and platform
+// Secluded variables for the enemy (), and platform
 Banana banana;
 bananaBullet bullet;
 
 PImage bananaImage;
 
 //int respawnTime = 3000; // 3 seconds to respawn the apple
-//int lastDestroyedTime = -1; // -1 means no apple has died yet
+//int lastDestroyedTime = -1; // -1 means no banans has died yet
 
-// Initialize the Apple and platform objects
+// Initialize the Banana and platform objects
 void BananaSetup() {
   bananaImage = loadImage("Banana.png");
   banana = new Banana(width / 4, worm.pos.y - 100);
@@ -15,7 +15,7 @@ void BananaSetup() {
 
 void BananaDraw() {
   if (banana == null) {
-    // Apple is dead
+    // Banana is dead
     if (lastDestroyedTime < 0) {
       // Timer hasn't started yet — start it now
       lastDestroyedTime = millis();
@@ -26,7 +26,7 @@ void BananaDraw() {
       lastDestroyedTime = -1; // Reset timer
     }
   } else {
-    // Banana is alive
+    //Banana is alive
     //banana.follow(worm);
     banana.update();
     banana.display();
@@ -78,7 +78,7 @@ class Banana {
     ySpeed += gravity;
     y += ySpeed;
 
-    Rectangle appleRect = getBounds();
+    Rectangle bananaRect = getBounds();
 
     for (Ground g : allGrounds) {
       Rectangle groundRect = new Rectangle(
@@ -88,8 +88,8 @@ class Banana {
         (int) g.area.y
       );
 
-      if (appleRect.intersects(groundRect)) {
-        y = g.pos.y - h + 1; // Snap apple to ground
+      if (bananaRect.intersects(groundRect)) {
+        y = g.pos.y - h + 1; // Snap banans to ground
         ySpeed = 0;
         break;
       }
