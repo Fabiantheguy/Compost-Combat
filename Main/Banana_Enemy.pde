@@ -54,7 +54,8 @@ class Banana {
   int frameTimer = 0;       // Used to time switching frames
   int frameInterval = 10;   // Change frame every 10 draw() calls
   
-  boolean hasShot = false;  //checking to see if the bullet is active
+  boolean bananaShot = false;  //checking to see if the bullet is active
+
  
   Banana(float x, float y) {
     this.x = x;
@@ -102,10 +103,10 @@ class Banana {
       currentFrame = (currentFrame + 1) % frames.length;
     }
     
-    if ( !hasShot ) {
+    if ( !bananaShot ) {
       bullet = new bananaBullet(width / 4, worm.pos.y - 100);
       
-      hasShot = true;
+      bananaShot = true;
     }
     
   }
