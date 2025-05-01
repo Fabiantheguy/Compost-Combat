@@ -164,7 +164,7 @@ class Player {
     boolean onSurface = false;  // Whether standing on platform or ground
 
 for (Platform p : platforms) {
-  if (getBounds().intersects(p.getBounds())) {
+ {
     float playerBottom = y + h;
     float playerTop = y;
     float platformTop = p.y;
@@ -250,6 +250,9 @@ void playSetup() {
 void playerDraw() {
   for (Platform p : platforms) {
     p.run();
+    if(isOnTop){
+      println("Player Is On Platform");
+    }
 
 
     // Check for collision with platform

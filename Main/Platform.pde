@@ -9,6 +9,7 @@ Platform[] platforms;
 float platformSize = 150; // Sets how wide
 PVector platformDist = new PVector(100, 50); // How far apart the platforms are
 PVector platformPOS = new PVector(1500, 300); // Where the platforms are
+boolean isOnTop;
 
 class Platform {
   float x, y, w, h;
@@ -22,9 +23,21 @@ class Platform {
 
   void run() {
     cameraMovement();
+    update();
     display();
   }
-
+ 
+  void update() {
+    isOnTop = false;
+    
+    // detects if player is on top of the platforms
+    if(player.y - player.h > y  &&
+       player.y + player.h > y &&
+       player.x < x + w &&
+       player.x + player.w > x) {
+      isOnTop = true;
+    }
+  }
   void display() {
     fill(255, 0, 0);
     rect(x, y, w, h);
