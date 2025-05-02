@@ -33,29 +33,28 @@ PVector camTarget;
 void playerSetup() {
   player = new Player(width/15, height - 150);
   grass = new Ground(-1000, 625, 10000, 150);
-  sun = new Sun(width - 255, 50);
+  sun = new Sun(width - 255, -250);
   tree = new Tree(width, -1880, 200, 5000);
   camPos = new PVector(0, 0);
   camTarget = new PVector(0, 0);
   allGrounds.add(grass);
-  v = new Vine [5];
+  v = new Vine [3];
 
   for (int i = 0; i < v.length; i++) {
-    v[0] = new Vine(width - 300, 480, 75, 500);
-    v[1] = new Vine(width - 500, -80, 75, 471);
-    v[2] = new Vine(width - 500, 980, 75, 500);
-    v[3] = new Vine(width - 500, 980, 75, 500);
-    v[4] = new Vine(width - 500, 980, 75, 500);
+    v[0] = new Vine(width - 150, 100, 75, 500);
+    v[1] = new Vine(0, 0, 75, 470);
+    v[2] = new Vine(0, 0, 75, 500);
+
   }
   // SETTING UP LEVEL 2 PLATFORMS & VINES
   //if (Level2) {
   platforms = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
   for (int i = 0; i<platforms.length; i ++ ) {
-    platforms[0] = new Platform(worm.pos.x, worm.pos.y- 50, 440, 20);
-    platforms[1] = new Platform(600, 400, 100, 20);
-    platforms[2] = new Platform(800, 350, 100, 20);
-    platforms[3] = new Platform(1000, 300, 100, 20);
-    platforms[4] = new Platform(1200, 250, 100, 20);
+    platforms[0] = new Platform(width - 800, 80, 800, 20);
+    platforms[1] = new Platform(0, 0, 100, 20);
+    platforms[2] = new Platform(0, 0, 100, 20);
+    platforms[3] = new Platform(00, 00, 100, 20);
+    platforms[4] = new Platform(00, 0, 100, 20);
   }
   //IN PROGRESS
   vines = new Vines [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)

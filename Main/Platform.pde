@@ -19,23 +19,28 @@ class Platform {
     this.y = y;
     this.w = w;
     this.h = h;
+    cameraMovement = 1.25;
   }
 
   void run() {
-    cameraMovement();
     update();
     display();
   }
- 
+
   void update() {
     isOnTop = false;
-    
+
     // detects if player is on top of the platforms
-    if(player.y - player.h > y  &&
-       player.y + player.h > y &&
-       player.x < x + w &&
-       player.x + player.w > x) {
+    if (player.y - player.h > y  &&
+      player.y + player.h > y &&
+      player.x < x + w &&
+      player.x + player.w > x) {
       isOnTop = true;
+    }
+    if (player.left) {
+      x += cameraMovement;
+    } else if (player.right) {
+      x -= cameraMovement;
     }
   }
   void display() {
@@ -43,13 +48,6 @@ class Platform {
     rect(x, y, w, h);
   }
 
-  void cameraMovement() {
-    if (player.left) {
-      x += cameraMovement;
-    } else if (player.right) {
-      x -= cameraMovement;
-    }
-  }
   Rectangle getBounds() {
     return new Rectangle((int)x, (int)y, (int)w, (int)h);
   }
@@ -57,7 +55,7 @@ class Platform {
   boolean intersects() {
     Rectangle platformBounds = new Rectangle((int)x, (int)y, (int)w, (int)h);
     Rectangle playerBounds = worm.getBounds(); // Assuming worm is the player object
-    
+
     return platformBounds.intersects(playerBounds); // Check if the platform and player intersect
   }
 }
