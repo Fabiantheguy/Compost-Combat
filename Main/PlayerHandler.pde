@@ -8,6 +8,8 @@ int currentHealth = maxHealth;
 boolean invincible = false;
 int invincibleStartTime = 0;
 int invincibleDuration = 1000; // milliseconds of invincibility
+ArrayList<Item> items = new ArrayList<Item>();
+
 
 Play worm = new Play(1000, 610, 5); // spawn location
 // === Global key states ===
@@ -39,6 +41,9 @@ void playerSetup() {
   camTarget = new PVector(0, 0);
   allGrounds.add(grass);
   v = new Vine [5];
+  items.add(new Item(500, 600, ItemType.HEALTH));
+  items.add(new Item(700, 600, ItemType.FIRERATE));
+
 
   for (int i = 0; i < v.length; i++) {
     v[0] = new Vine(width - 300, 480, 75, 500);
@@ -163,30 +168,30 @@ class Player {
 
     boolean onSurface = false;  // Whether standing on platform or ground
 
-for (Platform p : platforms) {
-  if (getBounds().intersects(p.getBounds())) {
-    float playerBottom = y + h;
-    float playerTop = y;
-    float platformTop = p.y;
-    float platformBottom = p.y + p.h;
+    for (Platform p : platforms) {
+      if (getBounds().intersects(p.getBounds())) {
+        float playerBottom = y + h;
+        float playerTop = y;
+        float platformTop = p.y;
+        float platformBottom = p.y + p.h;
 
-    // LANDING ON PLATFORM
-    if (ySpeed > 0 && playerBottom - ySpeed + 40 <= platformTop && playerBottom >= platformTop) {
-      // Player must be falling (ySpeed > 0)
-      // and must have already crossed above platform top
-      y = platformTop - h;
-      ySpeed = 0;
-      onSurface = true;
+        // LANDING ON PLATFORM
+        if (ySpeed > 0 && playerBottom - ySpeed + 40 <= platformTop && playerBottom >= platformTop) {
+          // Player must be falling (ySpeed > 0)
+          // and must have already crossed above platform top
+          y = platformTop - h;
+          ySpeed = 0;
+          onSurface = true;
+        }
+        // HITTING FROM BELOW
+        else if (ySpeed < 0 && playerTop <= platformBottom && playerTop - ySpeed >= platformBottom) {
+          // Player must be moving upward (ySpeed < 0)
+          // and must have crossed below platform bottom
+          y = platformBottom;
+          ySpeed = 1; // small push downward
+        }
+      }
     }
-    // HITTING FROM BELOW
-    else if (ySpeed < 0 && playerTop <= platformBottom && playerTop - ySpeed >= platformBottom) {
-      // Player must be moving upward (ySpeed < 0)
-      // and must have crossed below platform bottom
-      y = platformBottom;
-      ySpeed = 1; // small push downward
-    }
-  }
-}
 
 
     // GROUND COLLISION
@@ -287,8 +292,11 @@ void playerDraw() {
       invincible = false;
     }
   }
+  for (Item i : items) {
+    i.display();
+    i.checkPickup(worm);
+  }
 }
-
 
 // === Player class containing the FSMs ===
 class Play {
@@ -301,6 +309,10 @@ class Play {
   float speed, jumpVel, initJump, aimRad, bulletSpeed;
   ArrayList<Bullet> bullets = new ArrayList<Bullet>();
   int bulletCd, fireRate;
+  int baseFireRate = 150;
+  int boostEndTime = 0;
+  boolean boosted = false;
+
 
   // constructor
   Play(float x, float y, float s) {
@@ -319,7 +331,7 @@ class Play {
 
     // fire rate variables (in milliseconds)
     bulletCd = 0;
-    fireRate = 150;
+    fireRate = baseFireRate;
 
     // append states to lists
     movStates.append("walk");
@@ -343,6 +355,22 @@ class Play {
     } else if (this.gunCurrent == "fire") {
       this.updateFire();
     }
+    if (boosted && millis() > boostEndTime) {
+      fireRate = baseFireRate;
+      boosted = false;
+    }
+
+    if (boosted) {
+      float remaining = boostEndTime - millis();
+      float maxDuration = 5000.0;
+      float pct = constrain(remaining / maxDuration, 0, 1);
+
+      noStroke();
+      fill(0, 0, 255, 180); // Blue bar
+      float barWidth = size.x * pct;
+      rect(pos.x, pos.y - 30, barWidth, 5);
+    }
+
 
     // bullet update
     for (int i=0; i<bullets.size(); i++) {
