@@ -85,6 +85,12 @@ void movementKeyPressed() {
     player.jump();
     upPressed = true;
   }
+  for (int i = 0; i < v.length; i++) {
+    if (key == 'w' && v[i].isOnVine){
+      player.climb();
+      println("demon");
+    }
+  }
 }
 
 // Handle key release events to stop the player movement
@@ -103,6 +109,9 @@ void movementKeyReleased() {
     downHeld = false;
   }
   if (key == 'w' || key == 'W') {
+    upPressed = false;
+  }
+  if (key == 'w' || key == 'W' ){
     upPressed = false;
   }
 }
@@ -250,12 +259,11 @@ void playerDraw() {
   for (Platform p : platforms) {
     p.run();
     if(isOnTop){
-      println("Player Is On Platform");
     }
 
 
     // Check for collision with platform
-    if (p.intersects()) {
+    if (isOnTop) {
       isColliding = true;
       print(player.canJump);
 

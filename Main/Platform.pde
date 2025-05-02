@@ -32,7 +32,6 @@ class Platform {
 
     // detects if player is on top of the platforms
     if (player.y - player.h > y  &&
-      player.y + player.h > y &&
       player.x < x + w &&
       player.x + player.w > x) {
       isOnTop = true;
@@ -46,16 +45,5 @@ class Platform {
   void display() {
     fill(255, 0, 0);
     rect(x, y, w, h);
-  }
-
-  Rectangle getBounds() {
-    return new Rectangle((int)x, (int)y, (int)w, (int)h);
-  }
-  // Check for intersection between platform and player (worm)
-  boolean intersects() {
-    Rectangle platformBounds = new Rectangle((int)x, (int)y, (int)w, (int)h);
-    Rectangle playerBounds = worm.getBounds(); // Assuming worm is the player object
-
-    return platformBounds.intersects(playerBounds); // Check if the platform and player intersect
   }
 }
