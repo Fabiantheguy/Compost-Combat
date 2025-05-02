@@ -19,7 +19,7 @@ class Ground {
 
   void display() {
     // Draw the ground image at this ground's position and size
-    image(ground, pos.x, pos.y, area.x, area.y + 100/*adjust for size*/);
+    image(ground, pos.x, pos.y, area.x, area.y + 200/*adjust for size*/);
     
     // Optionally draw the green rectangle behind or under the image
     // fill(c);
