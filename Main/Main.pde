@@ -66,4 +66,10 @@ void keyReleased() {
 
 void mousePressed(){
    mouseReleased();
+   
+   if (screen.equals("map")) {
+     //Allow Node's to be click on, only on map screen
+    for (LevelNode node : nodes) 
+      node.checkClick();
+  }
 }

@@ -24,6 +24,8 @@ color bgColor = (#F5F2F2), gray= (#7D867B),
   red = (#FF0324), orangeCol = (#FC9903);
 //Instantiate Settings Class
 Settings settings= new Settings (1700, 300, 100);
+//ArrayList to store all Level Nodes for the Level Select
+ArrayList<LevelNode> nodes;
 // Instantiate Orange Enemy Class
 //Orange orange= new Orange (width-200, height, 100);
 
@@ -35,6 +37,7 @@ void startScreenSetup() {
   //import Settings Variables
   cog = loadImage("cog.png");
   s = new Sound (this);
+  initLevelNodes();// Implements level nodes for the map screen
 }
 
 void menuDraw() {
@@ -253,4 +256,21 @@ void loadSaveData() {
       slotNamed[i] = true;
     }
   }
+}
+void initLevelNodes() {
+  nodes = new ArrayList<LevelNode>();
+  //Created a example level structure(Change if need be)
+  LevelNode root = new LevelNode(width / 2, 300, "cleared");
+  LevelNode child1 = new LevelNode(width / 2 - 300, 500, "unlocked");
+  LevelNode child2 = new LevelNode(width / 2 + 300, 500, "locked");
+  LevelNode child3 = new LevelNode(width / 2 - 400, 700, "locked");
+
+  root.addChild(child1);
+  root.addChild(child2);
+  child1.addChild(child3);
+
+  nodes.add(root);
+  nodes.add(child1);
+  nodes.add(child2);
+  nodes.add(child3);
 }

@@ -100,12 +100,21 @@ class Settings {
       settingsWindow();
       fill(black);
       textSize(72);
-      text("MAP SHOWN HERE",
+      text("MAP",
         width/3, height/4);
+        //Draw all Node connections, that are behind nodes
+      for (LevelNode node : nodes) {
+        node.drawConnections();
+      }
+      //Draws each level node
+      for (LevelNode node : nodes) {
+        node.display();
+      }
+
       exitButton();
       if (onX() && mousePressed) {
         screen = "settings";
-        mousePressed= false;
+        mousePressed = false;
       }
     }
   }
