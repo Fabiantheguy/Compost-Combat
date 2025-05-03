@@ -17,7 +17,7 @@ class Vines{
   }
   
   void display(){
-    stroke (green);
+    stroke (#3CDE5B);
     strokeWeight(30);
     strokeCap(PROJECT);
     line (upperx,uppery,lowerx + xSpeed,lowery);

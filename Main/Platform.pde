@@ -1,50 +1,66 @@
-import java.awt.Rectangle;  // Import Rectangle for collision checking
-
-boolean isColliding;
 float cameraMovement;
-
-// Adding Platform Class as an array to add multiple to scene
-color yellow = #F8FF31, green = #0BA048; // Sets colors
-Platform[] platforms;
-float platformSize = 150; // Sets how wide
-PVector platformDist = new PVector(100, 50); // How far apart the platforms are
-PVector platformPOS = new PVector(1500, 300); // Where the platforms are
 
 class Platform {
   float x, y, w, h;
 
-  Platform(float x, float y, float w, float h) {
-    this.x = x;
-    this.y = y;
-    this.w = w;
-    this.h = h;
+  Platform (float x_, float y_, float w_, float h_) {
+    x = x_;
+    y = y_;
+    w = w_;
+    h =  h_;
+    cameraMovement= 1.3;
   }
 
-  void run() {
-    cameraMovement();
-    display();
-  }
-
-  void display() {
-    fill(255, 0, 0);
+  void display () {
+    fill (#D2DE3C);
     rect(x, y, w, h);
   }
 
-  void cameraMovement() {
-    if (player.left) {
-      x += cameraMovement;
-    } else if (player.right) {
-      x -= cameraMovement;
+  void update () {
+    cameraMovement();
+    
+    if (isColliding(worm)) {
+      onSurface=true;
+      player.canJump = true;
+      
+      println ("working");
+      worm.pos.y = y - worm.size.y /2;
+      player.ySpeed = 0;
+      worm.movCurrent = "walk";     
     }
   }
-  Rectangle getBounds() {
+
+  void cameraMovement() {  
+      if (player.left) {
+        x+= cameraMovement;
+      } else if (player.right) {
+        x-= cameraMovement;
+      }
+
+  }
+  //getting platform bounds
+Rectangle getBounds() {
     return new Rectangle((int)x, (int)y, (int)w, (int)h);
   }
-  // Check for intersection between platform and player (worm)
-  boolean intersects() {
-    Rectangle platformBounds = new Rectangle((int)x, (int)y, (int)w, (int)h);
-    Rectangle playerBounds = worm.getBounds(); // Assuming worm is the player object
-    
-    return platformBounds.intersects(playerBounds); // Check if the platform and player intersect
+
+
+   // Check if the player is on the platform
+  boolean onPlatform(Platform plat) {
+    return (plat.y + plat.h >= player.y && 
+            plat.y + plat.h <= player.y + 10 &&
+            plat.x + plat.w > player.x && 
+            plat.x < player.x + player.w);
   }
+
+  // Check if player is on platform
+  boolean isColliding(Play worm) {
+    return getBounds().intersects(worm.getBounds());
+  }
+}
+void platformDraw(){
+ 
+  for (int i = 0; i <platforms.length;i++){
+      platforms[i].display();
+      platforms[i].update();
+    }
 }

@@ -44,7 +44,6 @@ void menuDraw() {
     break;
   case "game":
     //THIS CAN BE SWAPPED OUT WITH GAME SCREEN
-    tempGameScreen();
     settingsButton();
     break;
   case "settings":
@@ -187,9 +186,17 @@ void saveKeyPressed() {
   }
 }
 
-void tempGameScreen (){
+
+  //IN PROGRESS
+  //vines = new Vines [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
+  //for (int i =0; i<vines.length; i ++ ) {
+  //  vines[0] = new Vines (vinesPOS.x, vinesPOS.y, vinesPOS.x, length);
+  //  vines[1] = new Vines (vinesPOS.x + (i * 400), vinesPOS.y, vinesPOS.x + (i * 400), length);
+  //  vines[2] =new Vines (vinesPOS.x + (i * 800), vinesPOS.y, vinesPOS.x +(i * 800), length);
+  //}
+  //}
   
-}
+
 void credits () {
   fill(black);
   rect(0, 0, width, height);

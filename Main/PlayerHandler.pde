@@ -19,12 +19,15 @@ boolean upAimed = false;
 boolean downAimed = false;
 boolean leftAimed = false;
 boolean rightAimed = false;
+boolean onSurface = false;  // Whether standing on platform or ground
 String[] lastAim = new String[4];
 /*
  This tab features a simple player that is to be used for testing enemies.
  The player can move left, right, and jump, and is affected by gravity.
  */
 Player player;
+
+
 
 // Camera Variables
 PVector camPos;
@@ -47,24 +50,6 @@ void playerSetup() {
     v[3] = new Vine(width - 500, 980, 75, 500);
     v[4] = new Vine(width - 500, 980, 75, 500);
   }
-  // SETTING UP LEVEL 2 PLATFORMS & VINES
-  //if (Level2) {
-  platforms = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
-  for (int i = 0; i<platforms.length; i ++ ) {
-    platforms[0] = new Platform(worm.pos.x, worm.pos.y- 50, 440, 20);
-    platforms[1] = new Platform(600, 400, 100, 20);
-    platforms[2] = new Platform(800, 350, 100, 20);
-    platforms[3] = new Platform(1000, 300, 100, 20);
-    platforms[4] = new Platform(1200, 250, 100, 20);
-  }
-  //IN PROGRESS
-  vines = new Vines [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
-  for (int i =0; i<vines.length; i ++ ) {
-    vines[0] = new Vines (vinesPOS.x, vinesPOS.y, vinesPOS.x, length);
-    vines[1] = new Vines (vinesPOS.x + (i * 400), vinesPOS.y, vinesPOS.x + (i * 400), length);
-    vines[2] =new Vines (vinesPOS.x + (i * 800), vinesPOS.y, vinesPOS.x +(i * 800), length);
-  }
-  //}
 }
 // Handle key press events to control the player movement
 void movementKeyPressed() {
@@ -161,32 +146,33 @@ class Player {
     ySpeed += gravity;
     y += ySpeed;
 
-    boolean onSurface = false;  // Whether standing on platform or ground
+    println("I LOVE TATI");
+    
 
-for (Platform p : platforms) {
-  if (getBounds().intersects(p.getBounds())) {
-    float playerBottom = y + h;
-    float playerTop = y;
-    float platformTop = p.y;
-    float platformBottom = p.y + p.h;
+//for (Platform p : platforms) {
+//  if (getBounds().intersects(p.getBounds())) {
+//    float playerBottom = y + h;
+//    float playerTop = y;
+//    float platformTop = p.y;
+//    float platformBottom = p.y + p.h;
 
-    // LANDING ON PLATFORM
-    if (ySpeed > 0 && playerBottom - ySpeed + 40 <= platformTop && playerBottom >= platformTop) {
-      // Player must be falling (ySpeed > 0)
-      // and must have already crossed above platform top
-      y = platformTop - h;
-      ySpeed = 0;
-      onSurface = true;
-    }
-    // HITTING FROM BELOW
-    else if (ySpeed < 0 && playerTop <= platformBottom && playerTop - ySpeed >= platformBottom) {
-      // Player must be moving upward (ySpeed < 0)
-      // and must have crossed below platform bottom
-      y = platformBottom;
-      ySpeed = 1; // small push downward
-    }
-  }
-}
+//    // LANDING ON PLATFORM
+//    if (ySpeed > 0 && playerBottom - ySpeed + 40 <= platformTop && playerBottom >= platformTop) {
+//      // Player must be falling (ySpeed > 0)
+//      // and must have already crossed above platform top
+//      y = platformTop - h;
+//      ySpeed = 0;
+//      onSurface = true;
+//    }
+//    // HITTING FROM BELOW
+//    else if (ySpeed < 0 && playerTop <= platformBottom && playerTop - ySpeed >= platformBottom) {
+//      // Player must be moving upward (ySpeed < 0)
+//      // and must have crossed below platform bottom
+//      y = platformBottom;
+//      ySpeed = 1; // small push downward
+//    }
+//  }
+//}
 
 
     // GROUND COLLISION
@@ -248,28 +234,15 @@ void playSetup() {
 
 // Handling collision and player physics
 void playerDraw() {
-  for (Platform p : platforms) {
-    p.run();
+  
 
-
-    // Check for collision with platform
-    if (p.intersects()) {
-      isColliding = true;
-      print(player.canJump);
-
-      worm.movCurrent = "walk";
-      player.canJump = true;
-      player.y = p.y - player.h; // Place player on top of platform
-    }
-  }
-
-  if (!isColliding) {
+  //if (!isColliding(player)) {
     player.ySpeed += 0.5;  // Apply gravity when not colliding
-  }
+  //}
 
   worm.update();  // Assuming worm is your player object and has an update method
 
-  isColliding = false;  // Reset collision status each frame
+  //isColliding = false;  // Reset collision status each frame
 
   // Handle health and invincibility (if applicable)
   if (apple != null) {
@@ -329,6 +302,9 @@ class Play {
 
     gunStates.append("aim");
     gunStates.append("fire");
+    
+    // Rectangle for collision
+    
   }
 
   // state hub
