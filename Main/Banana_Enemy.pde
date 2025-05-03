@@ -1,6 +1,6 @@
 // Secluded variables for the enemy (), and platform
 Banana banana;
-bananaBullet bullet;
+bananaBullet bananabullet;
 
 PImage bananaImage;
 
@@ -33,8 +33,8 @@ void BananaDraw() {
   }
   
   if (bullet != null) {
-    bullet.update();
-    bullet.display();
+    bananabullet.update();
+    bananabullet.display();
 }
 
 }
@@ -81,7 +81,7 @@ class Banana {
 
     //uses the float from the banana bullet inside of the bullet class.
     if ( !bananaShot ) {
-      bullet = new bananaBullet(width / 4, worm.pos.y - 100); 
+      bananabullet = new bananaBullet(width / 4, worm.pos.y - 100); 
       
       bananaShot = true;
     }

@@ -4,6 +4,7 @@ Ground grass;
 Sun sun;
 Tree tree;
 Vine[] v;
+Platform[] platforms; //adding platform class
 // sETTING lEVEL;
 //boolean Level2= true;
 
