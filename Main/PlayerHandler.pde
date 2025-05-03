@@ -20,6 +20,8 @@ boolean downAimed = false;
 boolean leftAimed = false;
 boolean rightAimed = false;
 String[] lastAim = new String[4];
+boolean onSurface = false;  // Whether standing on platform or ground
+
 /*
  This tab features a simple player that is to be used for testing enemies.
  The player can move left, right, and jump, and is affected by gravity.
@@ -44,7 +46,6 @@ void playerSetup() {
     v[0] = new Vine(width - 150, 100, 75, 500);
     v[1] = new Vine(0, 0, 75, 470);
     v[2] = new Vine(0, 0, 75, 500);
-
   }
   // SETTING UP LEVEL 2 PLATFORMS & VINES
   //if (Level2) {
@@ -86,7 +87,7 @@ void movementKeyPressed() {
     upPressed = true;
   }
   for (int i = 0; i < v.length; i++) {
-    if (key == 'w' && v[i].isOnVine){
+    if (key == 'w' && v[i].isOnVine) {
       player.climb();
       println("demon");
     }
@@ -111,7 +112,7 @@ void movementKeyReleased() {
   if (key == 'w' || key == 'W') {
     upPressed = false;
   }
-  if (key == 'w' || key == 'W' ){
+  if (key == 'w' || key == 'W' ) {
     upPressed = false;
   }
 }
@@ -169,32 +170,31 @@ class Player {
     ySpeed += gravity;
     y += ySpeed;
 
-    boolean onSurface = false;  // Whether standing on platform or ground
 
-for (Platform p : platforms) {
- {
-    float playerBottom = y + h;
-    float playerTop = y;
-    float platformTop = p.y;
-    float platformBottom = p.y + p.h;
+    for (Platform p : platforms) {
+      {
+        float playerBottom = y + h;
+        float playerTop = y;
+        float platformTop = p.y;
+        float platformBottom = p.y + p.h;
 
-    // LANDING ON PLATFORM
-    if (ySpeed > 0 && playerBottom - ySpeed + 40 <= platformTop && playerBottom >= platformTop) {
-      // Player must be falling (ySpeed > 0)
-      // and must have already crossed above platform top
-      y = platformTop - h;
-      ySpeed = 0;
-      onSurface = true;
+        // LANDING ON PLATFORM
+        if (ySpeed > 0 && playerBottom - ySpeed + 40 <= platformTop && playerBottom >= platformTop) {
+          // Player must be falling (ySpeed > 0)
+          // and must have already crossed above platform top
+          y = platformTop - h;
+          ySpeed = 0;
+          onSurface = true;
+        }
+        // HITTING FROM BELOW
+        else if (ySpeed < 0 && playerTop <= platformBottom && playerTop - ySpeed >= platformBottom) {
+          // Player must be moving upward (ySpeed < 0)
+          // and must have crossed below platform bottom
+          y = platformBottom;
+          ySpeed = 1; // small push downward
+        }
+      }
     }
-    // HITTING FROM BELOW
-    else if (ySpeed < 0 && playerTop <= platformBottom && playerTop - ySpeed >= platformBottom) {
-      // Player must be moving upward (ySpeed < 0)
-      // and must have crossed below platform bottom
-      y = platformBottom;
-      ySpeed = 1; // small push downward
-    }
-  }
-}
 
 
     // GROUND COLLISION
@@ -258,7 +258,7 @@ void playSetup() {
 void playerDraw() {
   for (Platform p : platforms) {
     p.run();
-    if(isOnTop){
+    if (isOnTop) {
     }
 
 
