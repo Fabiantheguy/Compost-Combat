@@ -34,9 +34,11 @@ void draw() {
   
   if (screen == "game") {
   pushMatrix();
+  
+  soundSetup();
   cameraDraw();
   grassDraw();
-
+  
   sunDraw();
   treeDraw();
   playerDraw();
