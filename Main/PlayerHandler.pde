@@ -8,6 +8,8 @@ int currentHealth = maxHealth;
 boolean invincible = false;
 int invincibleStartTime = 0;
 int invincibleDuration = 1000; // milliseconds of invincibility
+ArrayList<Item> items = new ArrayList<Item>();
+
 
 Play worm = new Play(1000, 610, 5); // spawn location
 // === Global key states ===
@@ -20,8 +22,6 @@ boolean downAimed = false;
 boolean leftAimed = false;
 boolean rightAimed = false;
 String[] lastAim = new String[4];
-boolean onSurface = false;  // Whether standing on platform or ground
-
 /*
  This tab features a simple player that is to be used for testing enemies.
  The player can move left, right, and jump, and is affected by gravity.
@@ -35,27 +35,32 @@ PVector camTarget;
 void playerSetup() {
   player = new Player(width/15, height - 150);
   grass = new Ground(-1000, 625, 10000, 150);
-  sun = new Sun(width - 255, -250);
+  sun = new Sun(width - 255, 50);
   tree = new Tree(width, -1880, 200, 5000);
   camPos = new PVector(0, 0);
   camTarget = new PVector(0, 0);
   allGrounds.add(grass);
-  v = new Vine [3];
+  v = new Vine [5];
+  items.add(new Item(500, 600, ItemType.HEALTH));
+  items.add(new Item(700, 600, ItemType.FIRERATE));
+
 
   for (int i = 0; i < v.length; i++) {
-    v[0] = new Vine(width - 150, 100, 75, 500);
-    v[1] = new Vine(0, 0, 75, 470);
-    v[2] = new Vine(0, 0, 75, 500);
+    v[0] = new Vine(width - 300, 480, 75, 500);
+    v[1] = new Vine(width - 500, -80, 75, 471);
+    v[2] = new Vine(width - 500, 980, 75, 500);
+    v[3] = new Vine(width - 500, 980, 75, 500);
+    v[4] = new Vine(width - 500, 980, 75, 500);
   }
   // SETTING UP LEVEL 2 PLATFORMS & VINES
   //if (Level2) {
   platforms = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
   for (int i = 0; i<platforms.length; i ++ ) {
-    platforms[0] = new Platform(width - 800, 80, 800, 20);
-    platforms[1] = new Platform(0, 0, 100, 20);
-    platforms[2] = new Platform(0, 0, 100, 20);
-    platforms[3] = new Platform(00, 00, 100, 20);
-    platforms[4] = new Platform(00, 0, 100, 20);
+    platforms[0] = new Platform(worm.pos.x, worm.pos.y- 50, 440, 20);
+    platforms[1] = new Platform(600, 400, 100, 20);
+    platforms[2] = new Platform(800, 350, 100, 20);
+    platforms[3] = new Platform(1000, 300, 100, 20);
+    platforms[4] = new Platform(1200, 250, 100, 20);
   }
   //IN PROGRESS
   vines = new Vines [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
@@ -86,12 +91,6 @@ void movementKeyPressed() {
     player.jump();
     upPressed = true;
   }
-  for (int i = 0; i < v.length; i++) {
-    if (key == 'w' && v[i].isOnVine) {
-      player.climb();
-      println("demon");
-    }
-  }
 }
 
 // Handle key release events to stop the player movement
@@ -110,9 +109,6 @@ void movementKeyReleased() {
     downHeld = false;
   }
   if (key == 'w' || key == 'W') {
-    upPressed = false;
-  }
-  if (key == 'w' || key == 'W' ) {
     upPressed = false;
   }
 }
@@ -170,9 +166,10 @@ class Player {
     ySpeed += gravity;
     y += ySpeed;
 
+    boolean onSurface = false;  // Whether standing on platform or ground
 
     for (Platform p : platforms) {
-      {
+      if (getBounds().intersects(p.getBounds())) {
         float playerBottom = y + h;
         float playerTop = y;
         float platformTop = p.y;
@@ -258,12 +255,10 @@ void playSetup() {
 void playerDraw() {
   for (Platform p : platforms) {
     p.run();
-    if (isOnTop) {
-    }
 
 
     // Check for collision with platform
-    if (isOnTop) {
+    if (p.intersects()) {
       isColliding = true;
       print(player.canJump);
 
@@ -297,8 +292,11 @@ void playerDraw() {
       invincible = false;
     }
   }
+  for (Item i : items) {
+    i.display();
+    i.checkPickup(worm);
+  }
 }
-
 
 // === Player class containing the FSMs ===
 class Play {
@@ -311,6 +309,10 @@ class Play {
   float speed, jumpVel, initJump, aimRad, bulletSpeed;
   ArrayList<Bullet> bullets = new ArrayList<Bullet>();
   int bulletCd, fireRate;
+  int baseFireRate = 150;
+  int boostEndTime = 0;
+  boolean boosted = false;
+
 
   // constructor
   Play(float x, float y, float s) {
@@ -329,7 +331,7 @@ class Play {
 
     // fire rate variables (in milliseconds)
     bulletCd = 0;
-    fireRate = 150;
+    fireRate = baseFireRate;
 
     // append states to lists
     movStates.append("walk");
@@ -353,6 +355,22 @@ class Play {
     } else if (this.gunCurrent == "fire") {
       this.updateFire();
     }
+    if (boosted && millis() > boostEndTime) {
+      fireRate = baseFireRate;
+      boosted = false;
+    }
+
+    if (boosted) {
+      float remaining = boostEndTime - millis();
+      float maxDuration = 5000.0;
+      float pct = constrain(remaining / maxDuration, 0, 1);
+
+      noStroke();
+      fill(0, 0, 255, 180); // Blue bar
+      float barWidth = size.x * pct;
+      rect(pos.x, pos.y - 30, barWidth, 5);
+    }
+
 
     // bullet update
     for (int i=0; i<bullets.size(); i++) {
