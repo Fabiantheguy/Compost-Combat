@@ -31,7 +31,6 @@ loadSaveData();
 void draw() {
   background(50,255,50);
 
-  
   if (screen == "game") {
     
     

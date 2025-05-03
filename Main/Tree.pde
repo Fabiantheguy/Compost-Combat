@@ -1,4 +1,4 @@
-// Main place where tree related gameplay will happen
+// Main place where gameplay will happen
 class Tree {
   float x, y, w, h, treeShift; // postiton and area of tree
   
@@ -34,15 +34,16 @@ class Tree {
 
 // Class for Vine for player to climb up and down tree
 class Vine{
-  PVector pos;
-  PVector area;
+  float x, y, w, h;
   boolean isOnVine; // detect if player is on Vine
   float vineShift; // moves the vine by this amount
   color c;
   
   Vine(float x, float y, float w, float h){
-    pos = new PVector(x, y);
-    area = new PVector(w, h);
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
     vineShift = 1.25;
     c = #00ff00;
   }
@@ -50,34 +51,38 @@ class Vine{
   // draws the vine
   void display(){
     fill(c);
-    rect(pos.x, pos.y, area.x, area.y);
+    rect(x, y, w, h);
   }
   
   void update(){
        
     // moves the vine to the right when player is moving to the left
     if (player.left) {
-      pos.x += vineShift;
+      x += vineShift;
     }
     
     // moves the vine to the left when the player is moving right
     if (player.right) {
-      pos.x -= vineShift;
+      x -= vineShift;
     }
     
+    // resets the boolean to false if player is not touching vine every frame
     isOnVine = false;
     
     for (int i = 0; i < v.length; i++){
-    // detects if the player and vine is touching makes boolean 
-      if (player.getBounds().intersects(v[i].getBounds())){
-      isOnVine = true;
-      }
+    // detects if the player and vine is touching makes boolean true
+      if (v[i].getBounds().intersects(player.getBounds())){
+        isOnVine = true;
+        println("touching");
+      } else {
+        println("not touching");
     }
+  }
   }
 
   // gets perimiter of the vine
   Rectangle getBounds() {
-    return new Rectangle((int) pos.x, (int) pos.y, (int) area.x, (int) area.y);
+    return new Rectangle((int) x, (int) w, (int) w, (int) h);
   }
 }
 
@@ -89,5 +94,4 @@ void treeDraw() {
     v[i].update();
     v[i].display();
   }
-
 }

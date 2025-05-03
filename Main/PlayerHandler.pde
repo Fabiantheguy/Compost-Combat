@@ -19,15 +19,12 @@ boolean upAimed = false;
 boolean downAimed = false;
 boolean leftAimed = false;
 boolean rightAimed = false;
-boolean onSurface = false;  // Whether standing on platform or ground
 String[] lastAim = new String[4];
 /*
  This tab features a simple player that is to be used for testing enemies.
  The player can move left, right, and jump, and is affected by gravity.
  */
 Player player;
-
-
 
 // Camera Variables
 PVector camPos;
@@ -36,20 +33,37 @@ PVector camTarget;
 void playerSetup() {
   player = new Player(width/15, height - 150);
   grass = new Ground(-1000, 625, 10000, 150);
-  sun = new Sun(width - 255, 50);
+  sun = new Sun(width - 255, -250);
   tree = new Tree(width, -1880, 200, 5000);
   camPos = new PVector(0, 0);
   camTarget = new PVector(0, 0);
   allGrounds.add(grass);
-  v = new Vine [5];
+  v = new Vine [3];
 
   for (int i = 0; i < v.length; i++) {
-    v[0] = new Vine(width - 300, 480, 75, 500);
-    v[1] = new Vine(width - 500, -80, 75, 471);
-    v[2] = new Vine(width - 500, 980, 75, 500);
-    v[3] = new Vine(width - 500, 980, 75, 500);
-    v[4] = new Vine(width - 500, 980, 75, 500);
+    v[0] = new Vine(width - 150, 100, 75, 500);
+    v[1] = new Vine(0, 0, 75, 470);
+    v[2] = new Vine(0, 0, 75, 500);
+
   }
+  // SETTING UP LEVEL 2 PLATFORMS & VINES
+  //if (Level2) {
+  platforms = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
+  for (int i = 0; i<platforms.length; i ++ ) {
+    platforms[0] = new Platform(width - 800, 80, 800, 20);
+    platforms[1] = new Platform(0, 0, 100, 20);
+    platforms[2] = new Platform(0, 0, 100, 20);
+    platforms[3] = new Platform(00, 00, 100, 20);
+    platforms[4] = new Platform(00, 0, 100, 20);
+  }
+  //IN PROGRESS
+  vines = new Vines [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
+  for (int i =0; i<vines.length; i ++ ) {
+    vines[0] = new Vines (vinesPOS.x, vinesPOS.y, vinesPOS.x, length);
+    vines[1] = new Vines (vinesPOS.x + (i * 400), vinesPOS.y, vinesPOS.x + (i * 400), length);
+    vines[2] =new Vines (vinesPOS.x + (i * 800), vinesPOS.y, vinesPOS.x +(i * 800), length);
+  }
+  //}
 }
 // Handle key press events to control the player movement
 void movementKeyPressed() {
@@ -71,6 +85,12 @@ void movementKeyPressed() {
     player.jump();
     upPressed = true;
   }
+  for (int i = 0; i < v.length; i++) {
+    if (key == 'w' && v[i].isOnVine){
+      player.climb();
+      println("demon");
+    }
+  }
 }
 
 // Handle key release events to stop the player movement
@@ -89,6 +109,9 @@ void movementKeyReleased() {
     downHeld = false;
   }
   if (key == 'w' || key == 'W') {
+    upPressed = false;
+  }
+  if (key == 'w' || key == 'W' ){
     upPressed = false;
   }
 }
@@ -146,33 +169,32 @@ class Player {
     ySpeed += gravity;
     y += ySpeed;
 
-    println("I LOVE TATI");
-    
+    boolean onSurface = false;  // Whether standing on platform or ground
 
-//for (Platform p : platforms) {
-//  if (getBounds().intersects(p.getBounds())) {
-//    float playerBottom = y + h;
-//    float playerTop = y;
-//    float platformTop = p.y;
-//    float platformBottom = p.y + p.h;
+for (Platform p : platforms) {
+ {
+    float playerBottom = y + h;
+    float playerTop = y;
+    float platformTop = p.y;
+    float platformBottom = p.y + p.h;
 
-//    // LANDING ON PLATFORM
-//    if (ySpeed > 0 && playerBottom - ySpeed + 40 <= platformTop && playerBottom >= platformTop) {
-//      // Player must be falling (ySpeed > 0)
-//      // and must have already crossed above platform top
-//      y = platformTop - h;
-//      ySpeed = 0;
-//      onSurface = true;
-//    }
-//    // HITTING FROM BELOW
-//    else if (ySpeed < 0 && playerTop <= platformBottom && playerTop - ySpeed >= platformBottom) {
-//      // Player must be moving upward (ySpeed < 0)
-//      // and must have crossed below platform bottom
-//      y = platformBottom;
-//      ySpeed = 1; // small push downward
-//    }
-//  }
-//}
+    // LANDING ON PLATFORM
+    if (ySpeed > 0 && playerBottom - ySpeed + 40 <= platformTop && playerBottom >= platformTop) {
+      // Player must be falling (ySpeed > 0)
+      // and must have already crossed above platform top
+      y = platformTop - h;
+      ySpeed = 0;
+      onSurface = true;
+    }
+    // HITTING FROM BELOW
+    else if (ySpeed < 0 && playerTop <= platformBottom && playerTop - ySpeed >= platformBottom) {
+      // Player must be moving upward (ySpeed < 0)
+      // and must have crossed below platform bottom
+      y = platformBottom;
+      ySpeed = 1; // small push downward
+    }
+  }
+}
 
 
     // GROUND COLLISION
@@ -234,15 +256,30 @@ void playSetup() {
 
 // Handling collision and player physics
 void playerDraw() {
-  
+  for (Platform p : platforms) {
+    p.run();
+    if(isOnTop){
+    }
 
-  //if (!isColliding(player)) {
+
+    // Check for collision with platform
+    if (isOnTop) {
+      isColliding = true;
+      print(player.canJump);
+
+      worm.movCurrent = "walk";
+      player.canJump = true;
+      player.y = p.y - player.h; // Place player on top of platform
+    }
+  }
+
+  if (!isColliding) {
     player.ySpeed += 0.5;  // Apply gravity when not colliding
-  //}
+  }
 
   worm.update();  // Assuming worm is your player object and has an update method
 
-  //isColliding = false;  // Reset collision status each frame
+  isColliding = false;  // Reset collision status each frame
 
   // Handle health and invincibility (if applicable)
   if (apple != null) {
@@ -302,9 +339,6 @@ class Play {
 
     gunStates.append("aim");
     gunStates.append("fire");
-    
-    // Rectangle for collision
-    
   }
 
   // state hub
