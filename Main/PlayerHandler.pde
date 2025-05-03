@@ -256,30 +256,32 @@ void playSetup() {
 
 // Handling collision and player physics
 void playerDraw() {
-  for (Platform p : platforms) {
-    p.run();
-    if (isOnTop) {
-    }
-
-
-    // Check for collision with platform
-    if (isOnTop) {
-      isColliding = true;
-      print(player.canJump);
-
-      worm.movCurrent = "walk";
-      player.canJump = true;
-      player.y = p.y - player.h; // Place player on top of platform
-    }
-  }
-
-  if (!isColliding) {
-    player.ySpeed += 0.5;  // Apply gravity when not colliding
-  }
-
   worm.update();  // Assuming worm is your player object and has an update method
 
-  isColliding = false;  // Reset collision status each frame
+  for (Platform p : platforms) {
+    p.update();
+    p.display();
+  //  if (isOnTop) {
+  //  }
+
+
+  //  // Check for collision with platform
+  //  if (isOnTop) {
+  //    isColliding = true;
+  //    print(player.canJump);
+
+  //    worm.movCurrent = "walk";
+  //    player.canJump = true;
+  //    player.y = p.y - player.h; // Place player on top of platform
+  //  }
+  //}
+
+  //if (!isColliding) {
+  //  player.ySpeed += 0.5;  // Apply gravity when not colliding
+  //}
+
+
+  //isColliding = false;  // Reset collision status each frame
 
   // Handle health and invincibility (if applicable)
   if (apple != null) {
@@ -297,7 +299,8 @@ void playerDraw() {
       invincible = false;
     }
   }
-}
+
+}}
 
 
 // === Player class containing the FSMs ===
