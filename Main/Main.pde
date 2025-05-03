@@ -4,10 +4,9 @@ Ground grass;
 Sun sun;
 Tree tree;
 Vine[] v;
-
 // sETTING lEVEL;
 //boolean Level2= true;
-Platform[] platforms; //adding platform class
+
 
 // Adding Vines Class
 Vines[] vines;
@@ -19,9 +18,9 @@ void settings() {
 }
 
 void setup() {
-platformSetup ();
 startScreenSetup();  
 appleSetup();  // Initialize the Apple (enemy) and platform setup
+BananaSetup();
 playerSetup();
 playSetup();
 loadSaveData();
@@ -31,20 +30,19 @@ loadSaveData();
 void draw() {
   background(50,255,50);
 
+  
   if (screen == "game") {
-    
-    
   pushMatrix();
   cameraDraw();
   grassDraw();
+
   sunDraw();
   treeDraw();
   playerDraw();
   appleDraw();
-  platformDraw();
+  BananaDraw();
   popMatrix();
   }
-   
   menuDraw();
   //if (Level2) {
 
@@ -54,7 +52,6 @@ void draw() {
   //}
 
 }
-
 
 void keyPressed() {
   aimKeyPressed();
