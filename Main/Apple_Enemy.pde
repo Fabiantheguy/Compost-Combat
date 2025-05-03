@@ -1,4 +1,4 @@
-// Secluded variables for the enemy (Apple), and platform //<>// //<>// //<>// //<>//
+// Secluded variables for the enemy (Apple), and platform //<>// //<>//
 Apple apple;
 
 PImage appleImage;

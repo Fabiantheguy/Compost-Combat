@@ -292,18 +292,22 @@ void playerDraw() {
     // Handle health and invincibility (if applicable)
     if (apple != null) {
       // Handle collision with apple
-      if (!worm.invincible && worm.getBounds().intersects(apple.getBounds())) {
+      if (!invincible && worm.getBounds().intersects(apple.getBounds())) {
         worm.takeDmg(1);
+        
       }
     }
 
     // Handle invincibility timer
-    if (worm.invincible && millis() - worm.invincibleStartTime > worm.invincibleDuration) {
-      worm.invincible = false;
-    }
+
+       if (invincible) {
+    if (millis() - invincibleStartTime > invincibleDuration) {
+      invincible = false;
+      
+    }}}
   }
-}
-}
+
+
 
 
 // === Player class containing the FSMs ===
@@ -627,4 +631,5 @@ void playerDeath() {
   // currently just re-generates the player object
   // change this later to trigger a "game over" UI
   worm = new Play(1000, 610, 5);
+  currentHealth = 5;
 }
