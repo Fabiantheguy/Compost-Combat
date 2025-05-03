@@ -267,46 +267,43 @@ void playerDraw() {
   for (Platform p : platforms) {
     p.update();
     p.display();
-  //  if (isOnTop) {
-  //  }
+    //  if (isOnTop) {
+    //  }
 
 
-  //  // Check for collision with platform
-  //  if (isOnTop) {
-  //    isColliding = true;
-  //    print(player.canJump);
+    //  // Check for collision with platform
+    //  if (isOnTop) {
+    //    isColliding = true;
+    //    print(player.canJump);
 
-  //    worm.movCurrent = "walk";
-  //    player.canJump = true;
-  //    player.y = p.y - player.h; // Place player on top of platform
-  //  }
-  //}
+    //    worm.movCurrent = "walk";
+    //    player.canJump = true;
+    //    player.y = p.y - player.h; // Place player on top of platform
+    //  }
+    //}
 
-  //if (!isColliding) {
-  //  player.ySpeed += 0.5;  // Apply gravity when not colliding
-  //}
+    //if (!isColliding) {
+    //  player.ySpeed += 0.5;  // Apply gravity when not colliding
+    //}
 
 
-  //isColliding = false;  // Reset collision status each frame
+    //isColliding = false;  // Reset collision status each frame
 
-  // Handle health and invincibility (if applicable)
-  if (apple != null) {
-    // Handle collision with apple
-    if (!invincible && worm.getBounds().intersects(apple.getBounds())) {
-      currentHealth--;
-      invincible = true;
-      invincibleStartTime = millis();
+    // Handle health and invincibility (if applicable)
+    if (apple != null) {
+      // Handle collision with apple
+      if (!worm.invincible && worm.getBounds().intersects(apple.getBounds())) {
+        worm.takeDmg(1);
+      }
+    }
+
+    // Handle invincibility timer
+    if (worm.invincible && millis() - worm.invincibleStartTime > worm.invincibleDuration) {
+      worm.invincible = false;
     }
   }
-
-  // Handle invincibility timer
-  if (invincible) {
-    if (millis() - invincibleStartTime > invincibleDuration) {
-      invincible = false;
-    }
-  }
-
-}}
+}
+}
 
 
 // === Player class containing the FSMs ===
@@ -412,7 +409,17 @@ class Play {
     }
     rectMode(CORNER);
   }
-
+  void takeDmg(int l) {
+    currentHealth -= l;
+    // die if health is 0, start invincibility timer otherwise
+    if (currentHealth <= 0) {
+      // player death code
+      playerDeath();
+    } else {
+      invincible = true;
+      invincibleStartTime = millis();
+    }
+  }
   // walk update code
   void updateWalk() {
     if (leftHeld) {
@@ -611,7 +618,13 @@ void aimKeyReleased() {
     }
     if (lastAim[1] == "none") {
       lastAim[1] = lastAim[3];
-      lastAim[3] = "none";
+      lastAim[3] =
+        "none";
     }
   }
+}
+void playerDeath() {
+  // currently just re-generates the player object
+  // change this later to trigger a "game over" UI
+  worm = new Play(1000, 610, 5);
 }
