@@ -8,6 +8,7 @@ int currentHealth = maxHealth;
 boolean invincible = false;
 int invincibleStartTime = 0;
 int invincibleDuration = 1000; // milliseconds of invincibility
+ArrayList<Item> items = new ArrayList<Item>();
 
 Play worm = new Play(1000, 610, 5); // spawn location
 // === Global key states ===
@@ -41,6 +42,8 @@ void playerSetup() {
   camTarget = new PVector(0, 0);
   allGrounds.add(grass);
   v = new Vine [3];
+  items.add(new Item(500, 600, ItemType.HEALTH));
+  items.add(new Item(700, 600, ItemType.FIRERATE));
 
   for (int i = 0; i < v.length; i++) {
     v[0] = new Vine(width - 150, 100, 75, 500);
@@ -257,7 +260,10 @@ void playSetup() {
 // Handling collision and player physics
 void playerDraw() {
   worm.update();  // Assuming worm is your player object and has an update method
-
+  for (Item i : items) {
+    i.display();
+    i.checkPickup(worm);
+  }
   for (Platform p : platforms) {
     p.update();
     p.display();
@@ -314,7 +320,9 @@ class Play {
   float speed, jumpVel, initJump, aimRad, bulletSpeed;
   ArrayList<Bullet> bullets = new ArrayList<Bullet>();
   int bulletCd, fireRate;
-
+  int baseFireRate = 150;
+  int boostEndTime = 0;
+  boolean boosted = false;
   // constructor
   Play(float x, float y, float s) {
     // position
@@ -332,7 +340,7 @@ class Play {
 
     // fire rate variables (in milliseconds)
     bulletCd = 0;
-    fireRate = 150;
+    fireRate = baseFireRate;
 
     // append states to lists
     movStates.append("walk");
@@ -355,6 +363,21 @@ class Play {
       this.updateReady();
     } else if (this.gunCurrent == "fire") {
       this.updateFire();
+    }
+    if (boosted && millis() > boostEndTime) {
+      fireRate = baseFireRate;
+      boosted = false;
+    }
+
+    if (boosted) {
+      float remaining = boostEndTime - millis();
+      float maxDuration = 5000.0;
+      float pct = constrain(remaining / maxDuration, 0, 1);
+
+      noStroke();
+      fill(0, 0, 255, 180); // Blue bar
+      float barWidth = size.x * pct;
+      rect(pos.x, pos.y - 30, barWidth, 5);
     }
 
     // bullet update
