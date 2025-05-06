@@ -21,10 +21,10 @@ class Bullet {
     circle(this.pos.x, this.pos.y, 10);
     
     // Safeguard: Ensure apple exists before checking collision
-    if (apple != null && getBounds().intersects(apple.getBounds())) {
-      apple = null;  // Destroy the apple
-      // Optionally, handle bullet deletion after collision if needed
-    }
+    //if (apple != null && getBounds().intersects(apple.getBounds())) {
+    //  apple = null;  // Destroy the apple
+    //  // Optionally, handle bullet deletion after collision if needed
+    //}
 
     // Optionally delete the bullet when lifetime is over
     if (millis() - startTime >= lifetime) {

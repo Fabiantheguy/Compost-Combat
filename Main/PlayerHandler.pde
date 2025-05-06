@@ -37,7 +37,7 @@ void playerSetup() {
   player = new Player(width/15, height - 150);
   grass = new Ground(-1000, 625, 10000, 150);
   sun = new Sun(width - 255, -250);
-  tree = new Tree(width, -1880, 200, 5000);
+  tree = new Tree(width, -4360, 200, 5000);
   camPos = new PVector(0, 0);
   camTarget = new PVector(0, 0);
   allGrounds.add(grass);
@@ -46,19 +46,19 @@ void playerSetup() {
   items.add(new Item(700, 600, ItemType.FIRERATE));
 
   for (int i = 0; i < v.length; i++) {
-    v[0] = new Vine(width - 150, 100, 75, 500);
-    v[1] = new Vine(0, 0, 75, 470);
-    v[2] = new Vine(0, 0, 75, 500);
+    v[0] = new Vine(width - 150, 100, 75, 525);
+    v[1] = new Vine(width - 750, -700, 75, 785);
+    v[2] = new Vine(width + 750, -1350, 75, 700);
   }
   // SETTING UP LEVEL 2 PLATFORMS & VINES
   //if (Level2) {
   platforms = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
   for (int i = 0; i<platforms.length; i ++ ) {
-    platforms[0] = new Platform(width - 800, 80, 800, 20);
-    platforms[1] = new Platform(0, 0, 100, 20);
-    platforms[2] = new Platform(0, 0, 100, 20);
-    platforms[3] = new Platform(00, 00, 100, 20);
-    platforms[4] = new Platform(00, 0, 100, 20);
+    platforms[0] = new Platform(width - 900, 80, 900, 20);
+    platforms[1] = new Platform(width - 1200, -700, 1200, 20);
+    platforms[2] = new Platform(width + 200, -650, 1000, 20);
+    platforms[3] = new Platform(width + 200, -1350, 950, 20);
+    platforms[4] = new Platform(width - 1000, -1300, 1000, 20);
   }
   //IN PROGRESS
   vines = new Vines [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
@@ -290,13 +290,13 @@ void playerDraw() {
     //isColliding = false;  // Reset collision status each frame
 
     // Handle health and invincibility (if applicable)
-    if (apple != null) {
-      // Handle collision with apple
-      if (!invincible && worm.getBounds().intersects(apple.getBounds())) {
-        worm.takeDmg(1);
+    //if (apple != null) {
+    //  // Handle collision with apple
+    //  if (!invincible && worm.getBounds().intersects(apple.getBounds())) {
+    //    worm.takeDmg(1);
         
-      }
-    }
+    //  }
+    //}
 
     // Handle invincibility timer
 
@@ -434,17 +434,18 @@ class Play {
     }
     if (upPressed) {
       this.jumpVel = this.initJump;
-      this.movCurrent = "jump";
-    } else if (downHeld) {
-      this.movCurrent = "duck";
+    //  this.movCurrent = "jump";
+    //} else if (downHeld) {
+    //  this.movCurrent = "duck";
     }
-
+    this.pos.y -= this.jumpVel;
+    this.jumpVel -= 0.5;
     if (!invincible || (millis() / 100) % 2 == 0) {
       rect(this.pos.x, this.pos.y, this.size.x, this.size.y);
     }
   }
 
-  // jump update code
+
   // jump update code
   void updateJump() {
     this.pos.y -= this.jumpVel;

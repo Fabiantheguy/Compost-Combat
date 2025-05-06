@@ -8,7 +8,7 @@ class Platform {
     y = y_;
     w = w_;
     h =  h_;
-    cameraMovement= 1.3;
+    cameraMovement= 1.25;
   }
 
   void display () {

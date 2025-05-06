@@ -66,23 +66,21 @@ class Vine{
       x -= vineShift;
     }
     
-    // resets the boolean to false if player is not touching vine every frame
-    isOnVine = false;
-    
+        isOnVine = false;
+        
     for (int i = 0; i < v.length; i++){
     // detects if the player and vine is touching makes boolean true
-      if (v[i].getBounds().intersects(player.getBounds())){
+      if (v[i].getBounds().intersects(worm.getBounds())){
         isOnVine = true;
         println("touching");
-      } else {
-        println("not touching");
+      } 
     }
   }
-  }
+  
 
   // gets perimiter of the vine
   Rectangle getBounds() {
-    return new Rectangle((int) x, (int) w, (int) w, (int) h);
+    return new Rectangle((int) x, (int) y, (int) w, (int) h);
   }
 }
 
