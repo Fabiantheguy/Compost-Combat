@@ -5,8 +5,6 @@ Sun sun;
 Tree tree;
 Vine[] v;
 Platform[] platforms; //adding platform class
-// sETTING lEVEL;
-//boolean Level2= true;
 
 
 // Adding Vines Class
@@ -25,6 +23,7 @@ BananaSetup();
 playerSetup();
 playSetup();
 loadSaveData();
+lvlSetup();
 }
 
 
@@ -38,7 +37,7 @@ void draw() {
   soundSetup();
   cameraDraw();
   grassDraw();
-  
+  lvlChanger();//CHANGES THE LEVELS THROUGHOUT GAMEPLAY
   sunDraw();
   treeDraw();
   playerDraw();

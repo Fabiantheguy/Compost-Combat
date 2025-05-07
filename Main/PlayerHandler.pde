@@ -41,32 +41,9 @@ void playerSetup() {
   camPos = new PVector(0, 0);
   camTarget = new PVector(0, 0);
   allGrounds.add(grass);
-  v = new Vine [3];
   items.add(new Item(500, 600, ItemType.HEALTH));
   items.add(new Item(700, 600, ItemType.FIRERATE));
 
-  for (int i = 0; i < v.length; i++) {
-    v[0] = new Vine(width - 150, 100, 75, 500);
-    v[1] = new Vine(0, 0, 75, 470);
-    v[2] = new Vine(0, 0, 75, 500);
-  }
-  // SETTING UP LEVEL 2 PLATFORMS & VINES
-  //if (Level2) {
-  platforms = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
-  for (int i = 0; i<platforms.length; i ++ ) {
-    platforms[0] = new Platform(width - 800, 80, 800, 20);
-    platforms[1] = new Platform(0, 0, 100, 20);
-    platforms[2] = new Platform(0, 0, 100, 20);
-    platforms[3] = new Platform(00, 00, 100, 20);
-    platforms[4] = new Platform(00, 0, 100, 20);
-  }
-  //IN PROGRESS
-  vines = new Vines [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
-  for (int i =0; i<vines.length; i ++ ) {
-    vines[0] = new Vines (vinesPOS.x, vinesPOS.y, vinesPOS.x, length);
-    vines[1] = new Vines (vinesPOS.x + (i * 400), vinesPOS.y, vinesPOS.x + (i * 400), length);
-    vines[2] =new Vines (vinesPOS.x + (i * 800), vinesPOS.y, vinesPOS.x +(i * 800), length);
-  }
   //}
 }
 // Handle key press events to control the player movement
@@ -264,9 +241,9 @@ void playerDraw() {
     i.display();
     i.checkPickup(worm);
   }
-  for (Platform p : platforms) {
-    p.update();
-    p.display();
+  //for (Platform p : platforms) {
+  //  p.update();
+  //  p.display();
     //  if (isOnTop) {
     //  }
 
@@ -304,7 +281,8 @@ void playerDraw() {
     if (millis() - invincibleStartTime > invincibleDuration) {
       invincible = false;
       
-    }}}
+    }}
+  //}
   }
 
 

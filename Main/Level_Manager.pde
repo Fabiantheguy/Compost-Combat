@@ -7,6 +7,11 @@
  VOLUME CONTROL (Sound slider)
  MAP
  */
+// SETTING lEVEL;
+boolean Level1 = true, Level2, Level3; //Statrt game on LVL 1
+Lvl1 lvl1;
+Lvl2 lvl2;
+Lvl3 lvl3;
 
 //Scene Variables
 Sound s;
@@ -33,7 +38,7 @@ void startScreenSetup() {
 
 
   background (bgColor);
-  
+
   //import Settings Variables
   cog = loadImage("cog.png");
   s = new Sound (this);
@@ -67,7 +72,7 @@ void menuDraw() {
     break;
   }
   //DEBUG MOUSE COORDS
-   //mouse detection
+  //mouse detection
   fill (circleCol);
   noStroke();
   circle(mouseX, mouseY, 20);
@@ -129,14 +134,14 @@ void saveScreen() {
     fill(darkGray);
     rect(300, 200 + (i * 210), width / 1.5, 180);
     fill(bgColor);
-    
+
     // If typing into this slot, show cursor
-String displayName = saveSlotNames[i];
-if (i == activeSlot && typingName) {
-  if ((millis() / 500) % 2 == 0) {
-    displayName += "|";
-  }
-}
+    String displayName = saveSlotNames[i];
+    if (i == activeSlot && typingName) {
+      if ((millis() / 500) % 2 == 0) {
+        displayName += "|";
+      }
+    }
     text(displayName, 320, 300 + (i * 210));
   }
 
@@ -148,10 +153,10 @@ if (i == activeSlot && typingName) {
       if (mouseX > 300 && mouseX < 1500 && mouseY > yTop && mouseY < yBottom) {
         activeSlot = i;
         if (slotNamed[i] == false) {
-        typingName = true;
+          typingName = true;
         }
         if (slotNamed[i]) {
-        screen = "game";
+          screen = "game";
         }
         if (saveSlotNames[i].equals("Empty Slot")) {
           saveSlotNames[i] = "";
@@ -170,8 +175,8 @@ if (i == activeSlot && typingName) {
     mousePressed = false;
   }
 }
-void saveKeyPressed() {  
-    if (typingName && activeSlot >= 0 && activeSlot < 4) {
+void saveKeyPressed() {
+  if (typingName && activeSlot >= 0 && activeSlot < 4) {
     if (key == BACKSPACE) {
       if (saveSlotNames[activeSlot].length() > 0) {
         saveSlotNames[activeSlot] = saveSlotNames[activeSlot].substring(0, saveSlotNames[activeSlot].length() - 1);
@@ -190,27 +195,9 @@ void saveKeyPressed() {
 }
 
 
- 
-  
-void platformSetup (){
-   // SETTING UP LEVEL 2 PLATFORMS & VINES
-  //if (Level2) {
-  platforms = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
-  platforms[0] = new Platform(100, 450, 440, 20);
-  platforms[1] = new Platform(600, 400, 100, 20);
-  platforms[2] = new Platform(800, 350, 100, 20);
-  platforms[3] = new Platform(1000, 300, 100, 20);
-  platforms[4] = new Platform(1200, 250, 100, 20);
-  
-   //IN PROGRESS
-  //vines = new Vines [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
-  //for (int i =0; i<vines.length; i ++ ) {
-  //  vines[0] = new Vines (vinesPOS.x, vinesPOS.y, vinesPOS.x, length);
-  //  vines[1] = new Vines (vinesPOS.x + (i * 400), vinesPOS.y, vinesPOS.x + (i * 400), length);
-  //  vines[2] =new Vines (vinesPOS.x + (i * 800), vinesPOS.y, vinesPOS.x +(i * 800), length);
-  //}
-  //}
-  }
+
+
+
 void credits () {
   fill(black);
   rect(0, 0, width, height);
@@ -273,4 +260,178 @@ void initLevelNodes() {
   nodes.add(child1);
   nodes.add(child2);
   nodes.add(child3);
+}
+
+/*_____________________________________________
+ LEVEL CHANGER
+ _____________________________________________*/
+void lvlSetup() {
+  lvl1 = new Lvl1();
+  lvl2 = new Lvl2();
+  lvl3 = new Lvl3();
+}
+
+void lvlChanger() {
+  if (Level1) {
+    Level2=false;
+    Level3 = false;
+    lvl1.run();
+  }
+  if (Level2) {
+    Level1 = false;
+    Level3 = false;
+    lvl2.run();
+  }
+  if (Level3) {
+    Level1 = false;
+    Level2=false;
+    lvl3.run();
+  }
+}
+
+/*_____________________________________________
+ LEVEL 1 SETUP
+ _____________________________________________*/
+class Lvl1 {
+  Lvl1() {
+    if (Level1) {
+
+      //CHANGE THE PLATFORM & VINE LOCATION VALUES TO  MATCH YOUR LEVEL DESIGN
+
+      v = new Vine [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
+      v[0] = new Vine(width - 150, 100, 75, 500);
+      v[1] = new Vine(0, 0, 75, 470);
+      v[2] = new Vine(0, 0, 75, 500);
+
+
+      platforms = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
+      platforms[0] = new Platform(width - 800, 80, 800, 20);
+      platforms[1] = new Platform(0, 0, 100, 20);
+      platforms[2] = new Platform(0, 0, 100, 20);
+      platforms[3] = new Platform(00, 00, 100, 20);
+      platforms[4] = new Platform(00, 0, 100, 20);
+    }
+  }
+
+  void run() {
+    display();
+    update();
+  }
+  void display() {
+    for (int i = 0; i < v.length; i++) {
+      v[i].display();
+    }
+    for (int i = 0; i <platforms.length; i++) {
+      platforms[i].display();
+    }
+  }
+  void update() {
+    for (int i = 0; i < v.length; i++) {
+      v[i].update();
+    }
+
+
+    for (int i = 0; i <platforms.length; i++) {
+      platforms[i].update();
+    }
+  }
+}
+
+/*_____________________________________________
+ LEVEL 2 SETUP
+ _____________________________________________*/
+class Lvl2 {
+  Lvl2 () {
+    if (Level2) {
+
+      //CHANGE THE PLATFORM & VINE LOCATION VALUES TO  MATCH YOUR LEVEL DESIGN
+
+      platforms = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
+      platforms[0] = new Platform(100, 450, 440, 20);
+      platforms[1] = new Platform(600, 400, 100, 20);
+      platforms[2] = new Platform(800, 350, 100, 20);
+      platforms[3] = new Platform(1000, 300, 100, 20);
+      platforms[4] = new Platform(1200, 250, 100, 20);
+
+      //IN PROGRESS
+
+      //vines = new Vines [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
+      //for (int i =0; i<vines.length; i ++ ) {
+      //  vines[0] = new Vines (vinesPOS.x, vinesPOS.y, vinesPOS.x, length);
+      //  vines[1] = new Vines (vinesPOS.x + (i * 400), vinesPOS.y, vinesPOS.x + (i * 400), length);
+      //  vines[2] =new Vines (vinesPOS.x + (i * 800), vinesPOS.y, vinesPOS.x +(i * 800), length);
+      //}
+    }
+  }
+  void run() {
+    display();
+    update();
+  }
+
+  void display() {
+    for (int i = 0; i < v.length; i++) {
+      v[i].display();
+    }
+    for (int i = 0; i <platforms.length; i++) {
+      platforms[i].display();
+    }
+  }
+  void update() {
+    for (int i = 0; i < v.length; i++) {
+      v[i].update();
+    }
+
+
+    for (int i = 0; i <platforms.length; i++) {
+      platforms[i].update();
+    }
+  }
+}
+
+/*_____________________________________________
+ LEVEL 3 SETUP
+ _____________________________________________*/
+class Lvl3 {
+  Lvl3 () {
+    if (Level3) {
+
+      //CHANGE THE PLATFORM & VINE LOCATION VALUES TO  MATCH YOUR LEVEL DESIGN
+
+      platforms = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
+      platforms[0] = new Platform(100, 450, 440, 20);
+      platforms[1] = new Platform(600, 400, 100, 20);
+      platforms[2] = new Platform(800, 350, 100, 20);
+      platforms[3] = new Platform(1000, 300, 100, 20);
+      platforms[4] = new Platform(1200, 250, 100, 20);
+
+
+      v = new Vine [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
+      v[0] = new Vine(width - 150, 100, 75, 500);
+      v[1] = new Vine(0, 0, 75, 470);
+      v[2] = new Vine(0, 0, 75, 500);
+    }
+  }
+  void run() {
+    display();
+    update();
+  }
+
+  void display() {
+    for (int i = 0; i < v.length; i++) {
+      v[i].display();
+    }
+    for (int i = 0; i <platforms.length; i++) {
+      platforms[i].display();
+    }
+  }
+  void update() {
+    for (int i = 0; i < v.length; i++) {
+      v[i].update();
+    }
+
+
+    for (int i = 0; i <platforms.length; i++) {
+      platforms[i].update();
+    }
+  }
 }

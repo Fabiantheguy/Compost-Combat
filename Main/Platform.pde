@@ -57,10 +57,3 @@ Rectangle getBounds() {
     return getBounds().intersects(worm.getBounds());
   }
 }
-void platformDraw(){
- 
-  for (int i = 0; i <platforms.length;i++){
-      platforms[i].display();
-      platforms[i].update();
-    }
-}
