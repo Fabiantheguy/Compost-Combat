@@ -1,4 +1,4 @@
-boolean isSwinging=false,spacePressed=false;
+boolean isSwinging=false;
 
 class Vines{
   float upperx,uppery,lowerx,lowery;
