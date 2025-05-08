@@ -8,7 +8,7 @@
  MAP
  */
 // SETTING lEVEL;
-boolean Level1=true, Level2, Level3; //Statrt game on LVL 1
+boolean Level1, Level2=true, Level3; //Start game on LVL 1
 Lvl1 lvl1;
 Lvl2 lvl2;
 Lvl3 lvl3;
@@ -266,9 +266,15 @@ void initLevelNodes() {
  LEVEL CHANGER
  _____________________________________________*/
 void lvlSetup() {
+  if (Level1){
   lvl1 = new Lvl1();
+  }
+  if(Level2){
   lvl2 = new Lvl2();
+  }
+  if (Level3){
   lvl3 = new Lvl3();
+  }
 }
 
 void lvlChanger() {
@@ -294,7 +300,7 @@ void lvlChanger() {
  _____________________________________________*/
 class Lvl1 {
   Lvl1() {
-
+   
     //CHANGE THE PLATFORM & VINE LOCATION VALUES TO  MATCH YOUR LEVEL DESIGN
 
     v = new Vine [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
@@ -309,11 +315,12 @@ class Lvl1 {
     platforms[2] = new Platform(0, 0, 100, 20);
     platforms[3] = new Platform(00, 00, 100, 20);
     platforms[4] = new Platform(00, 0, 100, 20);
+    
   }
 
   void run() {
     display();
-    update();
+    update();   
   }
   void display() {
     for (int i = 0; i < v.length; i++) {
@@ -340,7 +347,6 @@ class Lvl1 {
  _____________________________________________*/
 class Lvl2 {
   Lvl2 () {
-
     //CHANGE THE PLATFORM & VINE LOCATION VALUES TO  MATCH YOUR LEVEL DESIGN
 
     platforms = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
@@ -351,17 +357,22 @@ class Lvl2 {
     platforms[4] = new Platform(1200, 250, 100, 20);
 
     //IN PROGRESS
-
+     v = new Vine [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
+    v[0] = new Vine(width - 150, 100, 75, 500);
+    v[1] = new Vine(0, 0, 75, 470);
+    v[2] = new Vine(0, 0, 75, 500);
     //vines = new Vines [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
     //for (int i =0; i<vines.length; i ++ ) {
     //  vines[0] = new Vines (vinesPOS.x, vinesPOS.y, vinesPOS.x, length);
     //  vines[1] = new Vines (vinesPOS.x + (i * 400), vinesPOS.y, vinesPOS.x + (i * 400), length);
     //  vines[2] =new Vines (vinesPOS.x + (i * 800), vinesPOS.y, vinesPOS.x +(i * 800), length);
     //}
+     
   }
   void run() {
-    display();
-    update();
+
+      display();
+      update();
   }
 
   void display() {
@@ -404,10 +415,13 @@ class Lvl3 {
     v[0] = new Vine(width - 150, 100, 75, 500);
     v[1] = new Vine(0, 0, 75, 470);
     v[2] = new Vine(0, 0, 75, 500);
+    
   }
   void run() {
+
     display();
     update();
+
   }
 
   void display() {
