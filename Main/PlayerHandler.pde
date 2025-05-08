@@ -20,6 +20,7 @@ boolean upAimed = false;
 boolean downAimed = false;
 boolean leftAimed = false;
 boolean rightAimed = false;
+boolean facingRight = true; // for dash
 String[] lastAim = new String[4];
 boolean onSurface = false;  // Whether standing on platform or ground
 
@@ -324,6 +325,11 @@ class Play {
   int baseFireRate = 150;
   int boostEndTime = 0;
   boolean boosted = false;
+  int dashTime = 200; // milliseconds
+  
+  // instantiate upgrade dictionary
+  IntDict upgrades;
+  
   // constructor
   Play(float x, float y, float s) {
     // position
@@ -333,7 +339,7 @@ class Play {
     // movement variables
     speed = s;
     jumpVel = 0;
-    initJump = 10;
+    initJump = 12;
 
     // shooting variables
     aimRad = 0;
@@ -351,6 +357,12 @@ class Play {
 
     gunStates.append("aim");
     gunStates.append("fire");
+    
+    // set upgrade levels
+    upgrades = new IntDict();
+    upgrades.set("dash", 0); // this will eventually pull int values from save data
+    upgrades.set("range", 0); // increases range of bullets
+    upgrades.set("agility", 0); // increases speed while jumping and crouching
   }
 
   // state hub
@@ -405,9 +417,9 @@ class Play {
     } else if (this.movCurrent == "duck") {
       this.updateDuck();
     } else if (this.movCurrent == "g_dash") {
-      // this.updateGDash();
+      // this.updateDash();
     } else if (this.movCurrent == "a_dash") {
-      // this.updateADash();
+      // this.updateDash();
     } else if (this.movCurrent == "climb") {
       this.updateClimb();
     }
@@ -426,17 +438,22 @@ class Play {
   }
   // walk update code
   void updateWalk() {
-    if (leftHeld) {
-      this.pos.x -= this.speed;
-    }
-    if (rightHeld) {
-      this.pos.x += this.speed;
-    }
-    if (upPressed) {
-      this.jumpVel = this.initJump;
-      this.movCurrent = "jump";
-    } else if (downHeld) {
-      this.movCurrent = "duck";
+    if (onAnyGround()) {
+      if (leftHeld) {
+        this.pos.x -= this.speed;
+      }
+      if (rightHeld) {
+        this.pos.x += this.speed;
+      }
+      if (upPressed) {
+        this.jumpVel = this.initJump;
+        this.movCurrent = "jump";
+      } else if (downHeld) {
+        this.movCurrent = "duck";
+      }
+    } else {
+      this.jumpVel = 0;
+      this.movCurrent = "jump"; // causes player to fall if they walk off a platform edge
     }
 
     if (!invincible || (millis() / 100) % 2 == 0) {
@@ -518,6 +535,19 @@ class Play {
 
     if (!invincible || (millis() / 100) % 2 == 0) {
       rect(this.pos.x, this.pos.y, this.size.x, this.size.y);
+    }
+  }
+  
+  // dash update code
+  void updateDash(){
+    int dashStart = millis();
+    if (facingRight){
+      this.pos.x += (this.speed*2.5);
+    } else {
+      this.pos.x -= (this.speed*2.5);
+    }
+    if (millis() - dashStart >= this.dashTime){
+      this.movCurrent = "walk";
     }
   }
 

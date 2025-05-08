@@ -7,7 +7,7 @@ class Bullet {
     dirRad = d;
     speed = s;
     pos = new PVector(p.x, p.y);
-    lifetime = 600;
+    lifetime = 700;
     startTime = millis();
   }
   
