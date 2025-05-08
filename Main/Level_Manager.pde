@@ -8,7 +8,7 @@
  MAP
  */
 // SETTING lEVEL;
-boolean Level1 = true, Level2, Level3; //Statrt game on LVL 1
+boolean Level1, Level2 = true, Level3; //Statrt game on LVL 1
 Lvl1 lvl1;
 Lvl2 lvl2;
 Lvl3 lvl3;
@@ -294,23 +294,21 @@ void lvlChanger() {
  _____________________________________________*/
 class Lvl1 {
   Lvl1() {
-    if (Level1) {
 
-      //CHANGE THE PLATFORM & VINE LOCATION VALUES TO  MATCH YOUR LEVEL DESIGN
+    //CHANGE THE PLATFORM & VINE LOCATION VALUES TO  MATCH YOUR LEVEL DESIGN
 
-      v = new Vine [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
-      v[0] = new Vine(width - 150, 100, 75, 500);
-      v[1] = new Vine(0, 0, 75, 470);
-      v[2] = new Vine(0, 0, 75, 500);
+    v = new Vine [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
+    v[0] = new Vine(width - 150, 100, 75, 500);
+    v[1] = new Vine(0, 0, 75, 470);
+    v[2] = new Vine(0, 0, 75, 500);
 
 
-      platforms = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
-      platforms[0] = new Platform(width - 800, 80, 800, 20);
-      platforms[1] = new Platform(0, 0, 100, 20);
-      platforms[2] = new Platform(0, 0, 100, 20);
-      platforms[3] = new Platform(00, 00, 100, 20);
-      platforms[4] = new Platform(00, 0, 100, 20);
-    }
+    platforms = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
+    platforms[0] = new Platform(width - 800, 80, 800, 20);
+    platforms[1] = new Platform(0, 0, 100, 20);
+    platforms[2] = new Platform(0, 0, 100, 20);
+    platforms[3] = new Platform(00, 00, 100, 20);
+    platforms[4] = new Platform(00, 0, 100, 20);
   }
 
   void run() {
@@ -342,26 +340,24 @@ class Lvl1 {
  _____________________________________________*/
 class Lvl2 {
   Lvl2 () {
-    if (Level2) {
 
-      //CHANGE THE PLATFORM & VINE LOCATION VALUES TO  MATCH YOUR LEVEL DESIGN
+    //CHANGE THE PLATFORM & VINE LOCATION VALUES TO  MATCH YOUR LEVEL DESIGN
 
-      platforms = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
-      platforms[0] = new Platform(100, 450, 440, 20);
-      platforms[1] = new Platform(600, 400, 100, 20);
-      platforms[2] = new Platform(800, 350, 100, 20);
-      platforms[3] = new Platform(1000, 300, 100, 20);
-      platforms[4] = new Platform(1200, 250, 100, 20);
+    platforms = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
+    platforms[0] = new Platform(100, 450, 440, 20);
+    platforms[1] = new Platform(600, 400, 100, 20);
+    platforms[2] = new Platform(800, 350, 100, 20);
+    platforms[3] = new Platform(1000, 300, 100, 20);
+    platforms[4] = new Platform(1200, 250, 100, 20);
 
-      //IN PROGRESS
+    //IN PROGRESS
 
-      //vines = new Vines [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
-      //for (int i =0; i<vines.length; i ++ ) {
-      //  vines[0] = new Vines (vinesPOS.x, vinesPOS.y, vinesPOS.x, length);
-      //  vines[1] = new Vines (vinesPOS.x + (i * 400), vinesPOS.y, vinesPOS.x + (i * 400), length);
-      //  vines[2] =new Vines (vinesPOS.x + (i * 800), vinesPOS.y, vinesPOS.x +(i * 800), length);
-      //}
-    }
+    //vines = new Vines [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
+    //for (int i =0; i<vines.length; i ++ ) {
+    //  vines[0] = new Vines (vinesPOS.x, vinesPOS.y, vinesPOS.x, length);
+    //  vines[1] = new Vines (vinesPOS.x + (i * 400), vinesPOS.y, vinesPOS.x + (i * 400), length);
+    //  vines[2] =new Vines (vinesPOS.x + (i * 800), vinesPOS.y, vinesPOS.x +(i * 800), length);
+    //}
   }
   void run() {
     display();
@@ -393,23 +389,21 @@ class Lvl2 {
  _____________________________________________*/
 class Lvl3 {
   Lvl3 () {
-    if (Level3) {
 
-      //CHANGE THE PLATFORM & VINE LOCATION VALUES TO  MATCH YOUR LEVEL DESIGN
+    //CHANGE THE PLATFORM & VINE LOCATION VALUES TO  MATCH YOUR LEVEL DESIGN
 
-      platforms = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
-      platforms[0] = new Platform(100, 450, 440, 20);
-      platforms[1] = new Platform(600, 400, 100, 20);
-      platforms[2] = new Platform(800, 350, 100, 20);
-      platforms[3] = new Platform(1000, 300, 100, 20);
-      platforms[4] = new Platform(1200, 250, 100, 20);
+    platforms = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
+    platforms[0] = new Platform(100, 450, 440, 20);
+    platforms[1] = new Platform(600, 400, 100, 20);
+    platforms[2] = new Platform(800, 350, 100, 20);
+    platforms[3] = new Platform(1000, 300, 100, 20);
+    platforms[4] = new Platform(1200, 250, 100, 20);
 
 
-      v = new Vine [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
-      v[0] = new Vine(width - 150, 100, 75, 500);
-      v[1] = new Vine(0, 0, 75, 470);
-      v[2] = new Vine(0, 0, 75, 500);
-    }
+    v = new Vine [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
+    v[0] = new Vine(width - 150, 100, 75, 500);
+    v[1] = new Vine(0, 0, 75, 470);
+    v[2] = new Vine(0, 0, 75, 500);
   }
   void run() {
     display();
