@@ -102,22 +102,32 @@ void movementKeyPressed() {
       println("demon");
     }
   }
-  // temp cheat code to turn dash upgrade on (1 key)
+  // temp cheat code to upgrade dash (1 key)
   if (keyCode == 49) {
-    if (worm.upgrades.get("dash") == 0){
+    if (worm.upgrades.get("dash") < 2){
       worm.upgrades.add("dash", 1);
     } else {
       worm.upgrades.set("dash", 0);
     }
   }
-  // temp cheat code to turn range upgrade on (2 key)
+  // temp cheat code to upgrade range (2 key)
   if (keyCode == 50) {
-    if (worm.upgrades.get("range") == 0){
+    if (worm.upgrades.get("range") < 2){
       worm.upgrades.add("range", 1);
-      worm.bulletLife += 700;
+      worm.bulletLife += 350;
     } else {
       worm.upgrades.set("range", 0);
       worm.bulletLife = 700;
+    }
+  }
+  // temp cheat code to upgrade agility (3 key)
+  if (keyCode == 51) {
+    if (worm.upgrades.get("agility") < 2){
+      worm.upgrades.add("agility", 1);
+      worm.speed += 1;
+    } else {
+      worm.upgrades.set("agility", 0);
+      worm.speed = 5;
     }
   }
 }
@@ -390,7 +400,7 @@ class Play {
     upgrades = new IntDict();
     upgrades.set("dash", 0); // this will eventually pull int values from save data
     upgrades.set("range", 0); // increases range of bullets
-    upgrades.set("agility", 0); // increases speed while jumping and crouching
+    upgrades.set("agility", 0); // increases speed
   }
 
   // state hub
