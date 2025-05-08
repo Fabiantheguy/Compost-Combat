@@ -395,6 +395,8 @@ class Play {
     currentHealth -= l;
     // die if health is 0, start invincibility timer otherwise
     if (currentHealth <= 0) {
+      //enter death screen
+      endScreen();
       // player death code
       playerDeath();
     } else {

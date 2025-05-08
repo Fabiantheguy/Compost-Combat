@@ -46,13 +46,6 @@ void draw() {
   popMatrix();
   }
   menuDraw();
-  //if (Level2) {
-
-    //for (int i =0; i<vines.length; i ++ ) {
-    //  vines[i].run();
-    //}
-  //}
-
 }
 
 void keyPressed() {

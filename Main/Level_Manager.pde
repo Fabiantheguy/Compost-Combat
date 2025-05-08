@@ -33,10 +33,10 @@ Settings settings= new Settings (1700, 300, 100);
 ArrayList<LevelNode> nodes;
 // Instantiate Orange Enemy Class
 //Orange orange= new Orange (width-200, height, 100);
-
+/*------------------------------------------------
+      START SCREEN SETUP
+-------------------------------------------------*/
 void startScreenSetup() {
-
-
   background (bgColor);
 
   //import Settings Variables
@@ -51,7 +51,11 @@ void menuDraw() {
     startScreen();
     break;
   case "game":
-    //THIS CAN BE SWAPPED OUT WITH GAME SCREEN
+    
+    settingsButton();
+    break;
+  case "death":
+    endScreen(); //Dead screen
     settingsButton();
     break;
   case "settings":
@@ -80,7 +84,9 @@ void menuDraw() {
   fill(red);
   text ("COORDS:\t"+mouseX +"\t," + mouseY, mouseX-50, mouseY-50);
 }
-
+/*------------------------------------------------
+      START SCREEN
+-------------------------------------------------*/
 void startScreen() {
   if (screen=="start") {
     boolean startClicked = (mouseX > 400 && mouseX < 1300 &&
@@ -120,6 +126,9 @@ void startScreen() {
     }
   }
 }
+/*------------------------------------------------
+      SAVE SCREEN
+-------------------------------------------------*/
 void saveScreen() {
   fill(black);
   settingsWindow();
@@ -194,9 +203,9 @@ void saveKeyPressed() {
   }
 }
 
-
-
-
+/*------------------------------------------------
+      CREDITS SCREEN
+-------------------------------------------------*/
 
 void credits () {
   fill(black);
@@ -209,8 +218,22 @@ void credits () {
     screen = "start";
   }
 }
-
-
+/*------------------------------------------------
+      DEATH SCREEN
+-------------------------------------------------*/
+void endScreen(){
+  if (currentHealth==0){// if player is dead, enter death screen 
+    screen="death";
+  }
+  if (screen == "death"){
+    fill(black);
+    rect(0, 0, width, height);
+    fill (white);
+    textSize(125);
+    text("THIS IS A DEATH SCREEN \n\n MEANING YOU ARE DEAD... \n\n R.I.P.", width/8, height/4);
+    textSize(72);
+  }
+}
 void saveToFile() {
   JSONObject json = new JSONObject();
   for (int i = 0; i < 4; i++) {
