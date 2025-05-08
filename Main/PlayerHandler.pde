@@ -102,12 +102,22 @@ void movementKeyPressed() {
       println("demon");
     }
   }
-  // temp cheat code to turn dash upgrade on
+  // temp cheat code to turn dash upgrade on (1 key)
   if (keyCode == 49) {
     if (worm.upgrades.get("dash") == 0){
       worm.upgrades.add("dash", 1);
     } else {
       worm.upgrades.set("dash", 0);
+    }
+  }
+  // temp cheat code to turn range upgrade on (2 key)
+  if (keyCode == 50) {
+    if (worm.upgrades.get("range") == 0){
+      worm.upgrades.add("range", 1);
+      worm.bulletLife += 700;
+    } else {
+      worm.upgrades.set("range", 0);
+      worm.bulletLife = 700;
     }
   }
 }
@@ -338,7 +348,7 @@ class Play {
   PVector pos, size;
   float speed, jumpVel, initJump, aimRad, bulletSpeed;
   ArrayList<Bullet> bullets = new ArrayList<Bullet>();
-  int bulletCd, fireRate;
+  int bulletCd, fireRate, bulletLife;
   int baseFireRate = 150;
   int boostEndTime = 0;
   boolean boosted = false;
@@ -362,6 +372,7 @@ class Play {
     // shooting variables
     aimRad = 0;
     bulletSpeed = 10;
+    bulletLife = 700;
 
     // fire rate variables (in milliseconds)
     bulletCd = 0;
@@ -636,7 +647,7 @@ class Play {
 
     // check if bullet cooldown has elapsed
     if (millis() - this.bulletCd >= this.fireRate) {
-      bullets.add(new Bullet(this.aimRad, this.bulletSpeed, this.pos));
+      bullets.add(new Bullet(this.aimRad, this.bulletSpeed, this.pos, this.bulletLife));
       this.bulletCd = millis();
     }
 
