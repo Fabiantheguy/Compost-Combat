@@ -388,7 +388,7 @@ class Play {
     //rectMode(CENTER);
     noFill();
     stroke(150, 40, 0);
-
+    strokeWeight(10);
     // firing update
     if (this.gunCurrent == "ready") {
       this.updateReady();
@@ -612,7 +612,7 @@ class Play {
     // had to change this to use key codes
     // 37-40 are in ascending order: left, up, right, down
     pushMatrix();
-    translate(this.pos.x, this.pos.y);
+    translate(this.pos.x+20, this.pos.y+10);
     if (int(lastAim[0]) == 38) {
       if (int(lastAim[1]) == 37) {
         rotate(PI/-4); // rotate matrix (for aiming visuals)

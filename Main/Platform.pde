@@ -21,7 +21,7 @@ class Platform {
   void update () {
     cameraMovement();
     if (isColliding(worm)) {
-      println("running");
+      //println("running");
       onPlat=true;
       worm.movCurrent="walk";//If player is colliding w/ plat
       //worm.updateWalk();

@@ -53,7 +53,7 @@ void menuDraw() {
     startScreen();
     break;
   case "game":
-
+    if (worm.pos.y>height + 100){screen="death";}
     settingsButton();
     break;
   case "death":
@@ -224,9 +224,7 @@ void credits () {
  DEATH SCREEN
  -------------------------------------------------*/
 void endScreen() {
-  if (currentHealth==0) {// if player is dead, enter death screen
-    screen="death";
-  }
+  screen = "death";
   if (screen == "death") {
     fill(black);
     rect(0, 0, width, height);
