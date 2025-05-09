@@ -27,14 +27,9 @@ class Vines{
   void update () {
      
       if (isSwinging) {
-        if(keyPressed && key == ' '){   
-          player.ySpeed = 0;
-        } 
-          
-          
           xSpeed = 100 * sin (0.03 * frameCount);
-          player.x = lowerx+xSpeed;
-          player.y = lowery;
+          worm.pos.x = lowerx+xSpeed;
+          worm.pos.y = lowery;
           
         }
         cameraMovement();
@@ -58,10 +53,10 @@ Rectangle getBounds() {
 
    // Check if the player is on the vine
   boolean onVine(Vines vines) {
-    return (vines.uppery + thickness >= player.y && 
-            vines.lowery + thickness <= player.y + 10 &&
+    return (vines.lowery + thickness >= player.y && 
+            vines.uppery + thickness <= player.y + 10 &&
             vines.lowerx + thickness > player.x && 
-            vines.upperx < player.x + player.w);
+            vines.upperx + thickness< player.x + player.w);
   }
 
   // Check if player is on vine

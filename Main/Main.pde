@@ -9,7 +9,7 @@ Platform[] platforms; //adding platform class
 
 // Adding Swinging Vines Class
 Vines[] vines;
-PVector vinesPOS = new PVector (1900, -400);//CHANGE THESE VARIABLES TO KEEP COLLISIONS 
+
 float vlength = 150; 
 
 void settings() {
@@ -44,6 +44,11 @@ void draw() {
   appleDraw();
   BananaDraw();
   popMatrix();
+  
+  
+  
+    
+    
   }
   menuDraw();
 }

@@ -8,7 +8,9 @@
  MAP
  */
 // SETTING lEVEL;
-boolean Level1, Level2=true, Level3; //Start game on LVL 1
+boolean Level1; //Start game on LVL 1
+boolean Level2=true;
+boolean Level3;
 Lvl1 lvl1;
 Lvl2 lvl2;
 Lvl3 lvl3;
@@ -28,14 +30,14 @@ color bgColor = (#F5F2F2), gray= (#7D867B),
   circleCol= (#FF0A2B), white= (#FFFCFC), black = (#000000), darkGray= (#767373),
   red = (#FF0324), orangeCol = (#FC9903);
 //Instantiate Settings Class
-Settings settings= new Settings (1700, 300, 100);
+Settings settings= new Settings (1400, 250, 100);
 //ArrayList to store all Level Nodes for the Level Select
 ArrayList<LevelNode> nodes;
 // Instantiate Orange Enemy Class
 //Orange orange= new Orange (width-200, height, 100);
 /*------------------------------------------------
-      START SCREEN SETUP
--------------------------------------------------*/
+ START SCREEN SETUP
+ -------------------------------------------------*/
 void startScreenSetup() {
   background (bgColor);
 
@@ -51,7 +53,7 @@ void menuDraw() {
     startScreen();
     break;
   case "game":
-    
+
     settingsButton();
     break;
   case "death":
@@ -85,8 +87,8 @@ void menuDraw() {
   text ("COORDS:\t"+mouseX +"\t," + mouseY, mouseX-50, mouseY-50);
 }
 /*------------------------------------------------
-      START SCREEN
--------------------------------------------------*/
+ START SCREEN
+ -------------------------------------------------*/
 void startScreen() {
   if (screen=="start") {
     boolean startClicked = (mouseX > 400 && mouseX < 1300 &&
@@ -127,8 +129,8 @@ void startScreen() {
   }
 }
 /*------------------------------------------------
-      SAVE SCREEN
--------------------------------------------------*/
+ SAVE SCREEN
+ -------------------------------------------------*/
 void saveScreen() {
   fill(black);
   settingsWindow();
@@ -204,8 +206,8 @@ void saveKeyPressed() {
 }
 
 /*------------------------------------------------
-      CREDITS SCREEN
--------------------------------------------------*/
+ CREDITS SCREEN
+ -------------------------------------------------*/
 
 void credits () {
   fill(black);
@@ -219,13 +221,13 @@ void credits () {
   }
 }
 /*------------------------------------------------
-      DEATH SCREEN
--------------------------------------------------*/
-void endScreen(){
-  if (currentHealth==0){// if player is dead, enter death screen 
+ DEATH SCREEN
+ -------------------------------------------------*/
+void endScreen() {
+  if (currentHealth==0) {// if player is dead, enter death screen
     screen="death";
   }
-  if (screen == "death"){
+  if (screen == "death") {
     fill(black);
     rect(0, 0, width, height);
     fill (white);
@@ -289,14 +291,14 @@ void initLevelNodes() {
  LEVEL CHANGER
  _____________________________________________*/
 void lvlSetup() {
-  if (Level1){
-  lvl1 = new Lvl1();
+  if (Level1) {
+    lvl1 = new Lvl1();
   }
-  if(Level2){
-  lvl2 = new Lvl2();
+  if (Level2) {
+    lvl2 = new Lvl2();
   }
-  if (Level3){
-  lvl3 = new Lvl3();
+  if (Level3) {
+    lvl3 = new Lvl3();
   }
 }
 
@@ -323,7 +325,7 @@ void lvlChanger() {
  _____________________________________________*/
 class Lvl1 {
   Lvl1() {
-   
+
     //CHANGE THE PLATFORM & VINE LOCATION VALUES TO  MATCH YOUR LEVEL DESIGN
 
     v = new Vine [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
@@ -338,12 +340,11 @@ class Lvl1 {
     platforms[2] = new Platform(width + 200, -650, 1000, 20);
     platforms[3] = new Platform(width + 200, -1350, 950, 20);
     platforms[4] = new Platform(width - 1000, -1300, 1000, 20);
-    
   }
 
   void run() {
     display();
-    update();   
+    update();
   }
   void display() {
     for (int i = 0; i < v.length; i++) {
@@ -352,7 +353,6 @@ class Lvl1 {
     for (int i = 0; i <platforms.length; i++) {
       platforms[i].display();
     }
-    
   }
   void update() {
     for (int i = 0; i < v.length; i++) {
@@ -374,29 +374,30 @@ class Lvl2 {
     //CHANGE THE PLATFORM & VINE LOCATION VALUES TO  MATCH YOUR LEVEL DESIGN
 
     platforms = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
-    platforms[0] = new Platform(100, 450, 440, 20);
-    platforms[1] = new Platform(600, 400, 100, 20);
-    platforms[2] = new Platform(800, 350, 100, 20);
+    platforms[0] = new Platform(0, 160, 440, 20);
+    platforms[1] = new Platform(500, 220, 200, 20);
+    platforms[2] = new Platform(750, 350, 200, 20);
     platforms[3] = new Platform(1000, 300, 100, 20);
     platforms[4] = new Platform(1200, 250, 100, 20);
+
+
 
     //IN PROGRESS
 
     vines = new Vines [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
-    for (int i =0; i<vines.length; i ++ ) {
-      vines[0] = new Vines (vinesPOS.x, vinesPOS.y, vinesPOS.x, vlength);
-      vines[1] = new Vines (vinesPOS.x + (i * 400), vinesPOS.y, vinesPOS.x + (i * 400), vlength);
-      vines[2] =new Vines (vinesPOS.x + (i * 800), vinesPOS.y, vinesPOS.x +(i * 800), vlength);
-    }
-     
+    vines[0] = new Vines (650, 0, 650, vlength);
+    vines[1] = new Vines (2300, -400, 2300, vlength);
+    vines[2] =new Vines (2700, -400, 2700, vlength);
+    worm.pos= new PVector(100,100);
   }
   void run() {
 
-      display();
-      update();
+    display();
+    update();
   }
 
   void display() {
+
     for (int i = 0; i < vines.length; i++) {
       vines[i].display();
     }
@@ -436,13 +437,11 @@ class Lvl3 {
     v[0] = new Vine(width - 150, 100, 75, 500);
     v[1] = new Vine(0, 0, 75, 470);
     v[2] = new Vine(0, 0, 75, 500);
-    
   }
   void run() {
 
     display();
     update();
-
   }
 
   void display() {

@@ -70,20 +70,20 @@ void movementKeyPressed() {
     player.jump();
     upPressed = true;
   }
-  if (keyCode == 32){
+  if (keyCode == 32) {
     spacePressed = true;
   }
-  if (!Level2){
-  for (int i = 0; i < v.length; i++) {
-    if (key == 'w' && v[i].isOnVine) {
-      player.climb();
-      println("demon");
+  if (!Level2) {
+    for (int i = 0; i < v.length; i++) {
+      if (key == 'w' && v[i].isOnVine) {
+        player.climb();
+        println("demon");
+      }
     }
-  }
   }
   // temp cheat code to upgrade dash (1 key)
   if (keyCode == 49) {
-    if (worm.upgrades.get("dash") < 2){
+    if (worm.upgrades.get("dash") < 2) {
       worm.upgrades.add("dash", 1);
     } else {
       worm.upgrades.set("dash", 0);
@@ -91,7 +91,7 @@ void movementKeyPressed() {
   }
   // temp cheat code to upgrade range (2 key)
   if (keyCode == 50) {
-    if (worm.upgrades.get("range") < 2){
+    if (worm.upgrades.get("range") < 2) {
       worm.upgrades.add("range", 1);
       worm.bulletLife += 350;
     } else {
@@ -101,7 +101,7 @@ void movementKeyPressed() {
   }
   // temp cheat code to upgrade agility (3 key)
   if (keyCode == 51) {
-    if (worm.upgrades.get("agility") < 2){
+    if (worm.upgrades.get("agility") < 2) {
       worm.upgrades.add("agility", 1);
       worm.speed += 1;
     } else {
@@ -132,7 +132,7 @@ void movementKeyReleased() {
   if (key == 'w' || key == 'W' ) {
     upPressed = false;
   }
-  if (keyCode == 32){
+  if (keyCode == 32) {
     spacePressed = false;
   }
 }
@@ -177,9 +177,9 @@ class Player {
   }
 
   // Rectangle for collision
-  Rectangle getBounds() {
-    return new Rectangle((int)x, (int)y, (int)w, (int)h);
-  }
+  //Rectangle getBounds() {
+  //  return new Rectangle((int)x, (int)y, (int)w, (int)h);
+  //}
 
   void update() {
     // Horizontal movement
@@ -191,42 +191,42 @@ class Player {
     y += ySpeed;
 
 
-    for (Platform p : platforms) {
-      {
-        float playerBottom = y + h;
-        float playerTop = y;
-        float platformTop = p.y;
-        float platformBottom = p.y + p.h;
-
-        // LANDING ON PLATFORM
-        if (ySpeed > 0 && playerBottom - ySpeed + 40 <= platformTop && playerBottom >= platformTop) {
-          // Player must be falling (ySpeed > 0)
-          // and must have already crossed above platform top
-          y = platformTop - h;
-          ySpeed = 0;
-          onSurface = true;
-        }
-        // HITTING FROM BELOW
-        else if (ySpeed < 0 && playerTop <= platformBottom && playerTop - ySpeed >= platformBottom) {
-          // Player must be moving upward (ySpeed < 0)
-          // and must have crossed below platform bottom
-          y = platformBottom;
-          ySpeed = 1; // small push downward
-        }
-      }
-    }
+      //for (Platform p : platforms) {
+      //  {
+      //    float playerBottom = y + h;
+      //    float playerTop = y;
+      //    float platformTop = p.y;
+      //    float platformBottom = p.y + p.h;
+  
+      //    // LANDING ON PLATFORM
+      //    if (ySpeed > 0 && playerBottom - ySpeed + 40 <= platformTop && playerBottom >= platformTop) {
+      //      // Player must be falling (ySpeed > 0)
+      //      // and must have already crossed above platform top
+      //      y = platformTop - h;
+      //      ySpeed = 0;
+      //      onSurface = true;
+      //    }
+      //    // HITTING FROM BELOW
+      //    else if (ySpeed < 0 && playerTop <= platformBottom && playerTop - ySpeed >= platformBottom) {
+      //      // Player must be moving upward (ySpeed < 0)
+      //      // and must have crossed below platform bottom
+      //      y = platformBottom;
+      //      ySpeed = 1; // small push downward
+      //    }
+      //  }
+      //}
 
 
     // GROUND COLLISION
-    for (Ground g : allGrounds) {
-      if (getBounds().intersects(g.getBounds())) {
-        if (ySpeed >= 0 && y + h <= g.pos.y + 10) {
-          y = g.pos.y - h;
-          ySpeed = 0;
-          onSurface = true;
-        }
-      }
-    }
+    //for (Ground g : allGrounds) {
+    //  if (getBounds().intersects(g.getBounds())) {
+    //    if (ySpeed >= 0 && y + h <= g.pos.y + 10) {
+    //      y = g.pos.y - h;
+    //      ySpeed = 0;
+    //      onSurface = true;
+    //    }
+    //  }
+    //}
 
     // Set movement state
     if (onSurface) {
@@ -285,46 +285,45 @@ void playerDraw() {
   //for (Platform p : platforms) {
   //  p.update();
   //  p.display();
-    //  if (isOnTop) {
-    //  }
+  //  if (isOnTop) {
+  //  }
 
 
-    //  // Check for collision with platform
-    //  if (isOnTop) {
-    //    isColliding = true;
-    //    print(player.canJump);
+  //  // Check for collision with platform
+  //  if (isOnTop) {
+  //    isColliding = true;
+  //    print(player.canJump);
 
-    //    worm.movCurrent = "walk";
-    //    player.canJump = true;
-    //    player.y = p.y - player.h; // Place player on top of platform
-    //  }
-    //}
+  //    worm.movCurrent = "walk";
+  //    player.canJump = true;
+  //    player.y = p.y - player.h; // Place player on top of platform
+  //  }
+  //}
 
-    //if (!isColliding) {
-    //  player.ySpeed += 0.5;  // Apply gravity when not colliding
-    //}
+  //if (!isColliding) {
+  //  player.ySpeed += 0.5;  // Apply gravity when not colliding
+  //}
 
 
-    //isColliding = false;  // Reset collision status each frame
+  //isColliding = false;  // Reset collision status each frame
 
-    // Handle health and invincibility (if applicable)
-    if (apple != null) {
-      // Handle collision with apple
-      if (!invincible && worm.getBounds().intersects(apple.getBounds())) {
-        worm.takeDmg(1);
-        
-      }
+  // Handle health and invincibility (if applicable)
+  if (apple != null) {
+    // Handle collision with apple
+    if (!invincible && worm.getBounds().intersects(apple.getBounds())) {
+      worm.takeDmg(1);
     }
+  }
 
-    // Handle invincibility timer
+  // Handle invincibility timer
 
-       if (invincible) {
+  if (invincible) {
     if (millis() - invincibleStartTime > invincibleDuration) {
       invincible = false;
-      
-    }}
-  //}
+    }
   }
+  //}
+}
 
 
 
@@ -345,10 +344,10 @@ class Play {
   boolean boosted = false;
   int dashStart = 0;
   int dashTime = 200; // milliseconds
-  
+
   // instantiate upgrade dictionary
   IntDict upgrades;
-  
+
   // constructor
   Play(float x, float y, float s) {
     // position
@@ -376,7 +375,7 @@ class Play {
 
     gunStates.append("aim");
     gunStates.append("fire");
-    
+
     // set upgrade levels
     upgrades = new IntDict();
     upgrades.set("dash", 0); // this will eventually pull int values from save data
@@ -386,7 +385,7 @@ class Play {
 
   // state hub
   void update() {
-    rectMode(CENTER);
+    //rectMode(CENTER);
     noFill();
     stroke(150, 40, 0);
 
@@ -426,6 +425,7 @@ class Play {
 
     noStroke();
     fill(255, 200, 150);
+    //rect(this.pos.x, this.pos.y, this.size.x, this.size.y);
 
 
     // movement update
@@ -457,11 +457,15 @@ class Play {
   }
   // walk update code
   void updateWalk() {
-    if (spacePressed && this.upgrades.get("dash") > 0){ // check for dash upgrade
+    if (spacePressed && this.upgrades.get("dash") > 0) { // check for dash upgrade
       this.dashStart = millis();
       this.movCurrent = "dash";
-    } else if (onAnyGround()) {
-      if (leftHeld) {
+    } 
+    else if (onAnyGround())
+    {
+      rect(this.pos.x, this.pos.y, this.size.x, this.size.y);
+      if (leftHeld)
+      {
         this.pos.x -= this.speed;
       }
       if (rightHeld) {
@@ -477,8 +481,9 @@ class Play {
       this.jumpVel = 0;
       this.movCurrent = "jump"; // causes player to fall if they walk off a platform edge
     }
+    println(onAnyGround());
 
-    if (!invincible || (millis() / 100) % 2 == 0) {
+     if (!invincible || (millis() / 100) % 2 == 0) {
       rect(this.pos.x, this.pos.y, this.size.x, this.size.y);
     }
   }
@@ -500,15 +505,15 @@ class Play {
       this.jumpVel = 0;
       this.movCurrent = "walk";
     }
-    
+
     // dash
-    if (spacePressed && this.upgrades.get("dash") > 0){
+    if (spacePressed && this.upgrades.get("dash") > 0) {
       this.dashStart = millis();
       this.movCurrent = "dash";
     }
-
-    if (!invincible || (millis() / 100) % 2 == 0) {
-      rect(this.pos.x, this.pos.y, this.size.x * 0.875, this.size.y * 1.125);
+    //println(movCurrent);
+     if (!invincible || (millis() / 100) % 2 == 0) {
+      rect(this.pos.x, this.pos.y, this.size.x * 0.875, this.size.y * 0.875);
     }
   }
 
@@ -518,18 +523,19 @@ class Play {
     for (Ground g : allGrounds) {
       Rectangle groundRect = new Rectangle(
         (int)g.pos.x,
-        (int)g.pos.y + 15,
+        (int)g.pos.y,
         (int)g.area.x,
         (int)g.area.y
         );
-      if (playerRect.intersects(groundRect)) return true;
+        for(int i = 0; i < platforms.length; i++)
+      if (playerRect.intersects(groundRect) || platforms[i].onPlat) return true;
     }
     return false;
   }
 
   // duck update code
   void updateDuck() {
-    if (spacePressed && this.upgrades.get("dash") > 0){
+    if (spacePressed && this.upgrades.get("dash") > 0) {
       this.dashStart = millis();
       this.movCurrent = "dash";
     } else if (onAnyGround()) {
@@ -572,18 +578,18 @@ class Play {
       rect(this.pos.x, this.pos.y, this.size.x, this.size.y);
     }
   }
-  
+
   // dash update code
-  void updateDash(){
-    if (facingRight){
+  void updateDash() {
+    if (facingRight) {
       this.pos.x += (this.speed*2.5);
     } else {
       this.pos.x -= (this.speed*2.5);
     }
-    if (millis() - this.dashStart >= this.dashTime){
+    if (millis() - this.dashStart >= this.dashTime) {
       this.movCurrent = "walk";
     }
-    
+
     if (!invincible || (millis() / 100) % 2 == 0) {
       rect(this.pos.x, this.pos.y, this.size.x * 1.2, this.size.y * 0.8);
     }
