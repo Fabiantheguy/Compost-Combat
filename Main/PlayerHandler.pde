@@ -440,6 +440,8 @@ class Play {
     }
     rectMode(CORNER);
   }
+  
+  // taking damage and checking for death
   void takeDmg(int l) {
     currentHealth -= l;
     // die if health is 0, start invincibility timer otherwise
@@ -453,6 +455,22 @@ class Play {
       invincibleStartTime = millis();
     }
   }
+  
+  // checking for vine to climb
+  void checkClimb(){
+    boolean touchingVine = false;
+    Vine currentVine;
+    for(int i=0; i<currentVines.size(); i++){
+      currentVine = currentVines.get(i);
+      if (currentVine.isOnVine(this)){
+        touchingVine = true;
+      }
+    }
+    if (upPressed && touchingVine){
+      movCurrent = "climb";
+    }
+  }
+  
   // walk update code
   void updateWalk() {
     if (spacePressed && this.upgrades.get("dash") > 0){ // check for dash upgrade
@@ -475,6 +493,8 @@ class Play {
       this.jumpVel = 0;
       this.movCurrent = "jump"; // causes player to fall if they walk off a platform edge
     }
+    
+    checkClimb(); // context-sensitive climbing state update
 
     if (!invincible || (millis() / 100) % 2 == 0) {
       rect(this.pos.x, this.pos.y, this.size.x, this.size.y);
@@ -498,6 +518,8 @@ class Play {
       this.jumpVel = 0;
       this.movCurrent = "walk";
     }
+    
+    checkClimb(); // context-sensitive climbing state update
     
     // dash
     if (spacePressed && this.upgrades.get("dash") > 0){
@@ -555,6 +577,8 @@ class Play {
     if (leftHeld || rightHeld) {
       if (upPressed) {
         this.jumpVel = this.initJump;
+      } else {
+        this.jumpVel = 0;
       }
       this.movCurrent = "jump";
     } else {
@@ -581,6 +605,8 @@ class Play {
     if (millis() - this.dashStart >= this.dashTime){
       this.movCurrent = "walk";
     }
+    
+    checkClimb(); // context-sensitive climbing state update
     
     if (!invincible || (millis() / 100) % 2 == 0) {
       rect(this.pos.x, this.pos.y, this.size.x * 1.2, this.size.y * 0.8);
