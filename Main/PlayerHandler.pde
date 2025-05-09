@@ -43,7 +43,7 @@ void playerSetup() {
   camPos = new PVector(0, 0);
   camTarget = new PVector(0, 0);
   allGrounds.add(grass);
-  items.add(new Item(500, 600, ItemType.HEALTH));
+  items.add(new Item(width - 850, 65, ItemType.HEALTH));
   items.add(new Item(700, 600, ItemType.FIRERATE));
 
   //}
@@ -276,6 +276,7 @@ void playSetup() {
 void playerDraw() {
   worm.update();  // Assuming worm is your player object and has an update method
   for (Item i : items) {
+    i.update();
     i.display();
     i.checkPickup(worm);
   }

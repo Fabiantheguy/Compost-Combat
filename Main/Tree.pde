@@ -68,33 +68,17 @@ class Vine {
     isOnVine = false;
 
 
-    // detects if the player and vine is touching makes boolean true
-    if (collidingWVine(worm)) {
-      isOnVine = true;
-      fill(0);
-      text("touching", worm.pos.x-100, worm.pos.y-100); // Show if player is touching vine on screen
-      println("touching");
-    }
-    if (!collidingWVine(worm)) {
-      println("not touching");
-    }
+
   }
 
   // Check if Player is Colliding with Vine
-  boolean collidingWVine(Play worm) {
+  boolean isOnVine(Play worm) {
     return getBounds().intersects(worm.getBounds());
-  }
-  // Check if the player is in the same spot as Vine
-  boolean onVine(Vine v) {
-    return (v.y + v.h >= player.y &&
-      v.y + v.h <= player.y + 10 &&
-      v.x + v.w > player.x &&
-      v.x < player.x + player.w);
   }
 
   // gets perimiter of the vine
   Rectangle getBounds() {
-    return new Rectangle((int) x, (int) w, (int) w, (int) h);
+    return new Rectangle((int) x, (int) y, (int) w, (int) h);
   }
 }
 

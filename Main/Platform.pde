@@ -3,12 +3,12 @@ float cameraMovement;
 class Platform {
   float x, y, w, h;
 
-  Platform (float x_, float y_, float w_, float h_) {
-    x = x_;
-    y = y_;
-    w = w_;
-    h =  h_;
-    cameraMovement= 1.3;
+  Platform (float x, float y, float w, float h) {
+    this.x = x;
+    this.y = y;
+    this.w = w;
+    this.h = h;
+    cameraMovement= 1.25;
   }
 
   void display () {

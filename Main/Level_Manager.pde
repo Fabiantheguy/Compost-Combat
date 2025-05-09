@@ -327,17 +327,17 @@ class Lvl1 {
     //CHANGE THE PLATFORM & VINE LOCATION VALUES TO  MATCH YOUR LEVEL DESIGN
 
     v = new Vine [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
-    v[0] = new Vine(width - 150, 100, 75, 500);
-    v[1] = new Vine(0, 0, 75, 470);
-    v[2] = new Vine(0, 0, 75, 500);
+    v[0] = new Vine(width - 150, 100, 75, 525);
+    v[1] = new Vine(width - 750, -700, 75, 785);
+    v[2] = new Vine(width + 750, -1350, 75, 700);
 
 
     platforms = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
-    platforms[0] = new Platform(width - 800, 80, 800, 20);
-    platforms[1] = new Platform(0, 0, 100, 20);
-    platforms[2] = new Platform(0, 0, 100, 20);
-    platforms[3] = new Platform(00, 00, 100, 20);
-    platforms[4] = new Platform(00, 0, 100, 20);
+    platforms[0] = new Platform(width - 900, 80, 800, 20);
+    platforms[1] = new Platform(width - 1200, -700, 1200, 20);
+    platforms[2] = new Platform(width + 200, -650, 1000, 20);
+    platforms[3] = new Platform(width + 200, -1350, 950, 20);
+    platforms[4] = new Platform(width - 1000, -1300, 1000, 20);
     
   }
 
@@ -352,6 +352,7 @@ class Lvl1 {
     for (int i = 0; i <platforms.length; i++) {
       platforms[i].display();
     }
+    
   }
   void update() {
     for (int i = 0; i < v.length; i++) {

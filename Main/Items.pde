@@ -7,12 +7,25 @@ class Item {
   float size = 30;
   ItemType type;
   boolean active = true;
+  float cameraShift;
 
   Item(float x, float y, ItemType t) {
     pos = new PVector(x, y);
     type = t;
+    cameraShift = 1.25;
   }
+  void update() {
+    // moves the vine to the right when player is moving to the left
+    if (player.left) {
+      pos.x += cameraShift;
+    }
 
+    // moves the vine to the left when the player is moving right
+    if (player.right) {
+      pos.x -= cameraShift;
+    }   
+  }
+  
   void display() {
     if (!active) return;
 
