@@ -20,6 +20,8 @@ boolean upAimed = false;
 boolean downAimed = false;
 boolean leftAimed = false;
 boolean rightAimed = false;
+boolean facingRight = true; // for dash
+boolean spacePressed = false;
 String[] lastAim = new String[4];
 boolean onSurface = false;  // Whether standing on platform or ground
 
@@ -52,24 +54,57 @@ void movementKeyPressed() {
   if (key == 'a' || key == 'A') {
     player.left = true;
     leftHeld = true;
+    facingRight = false;
   }
   // If 'D' or 'd' is pressed, move the player right
   if (key == 'd' || key == 'D') {
     player.right = true;
     rightHeld = true;
+    facingRight = true;
   }
   if (key == 's' || key == 'S') {
     downHeld = true;
   }
-  // If spacebar is pressed and the player is on the platform, make the player jump
+  // If w is pressed and the player is on the platform, make the player jump
   if (key == 'w' || key == 'W') {
     player.jump();
     upPressed = true;
+  }
+  if (keyCode == 32){
+    spacePressed = true;
   }
   for (int i = 0; i < v.length; i++) {
     if (key == 'w' && v[i].isOnVine) {
       player.climb();
       println("demon");
+    }
+  }
+  // temp cheat code to upgrade dash (1 key)
+  if (keyCode == 49) {
+    if (worm.upgrades.get("dash") < 2){
+      worm.upgrades.add("dash", 1);
+    } else {
+      worm.upgrades.set("dash", 0);
+    }
+  }
+  // temp cheat code to upgrade range (2 key)
+  if (keyCode == 50) {
+    if (worm.upgrades.get("range") < 2){
+      worm.upgrades.add("range", 1);
+      worm.bulletLife += 350;
+    } else {
+      worm.upgrades.set("range", 0);
+      worm.bulletLife = 700;
+    }
+  }
+  // temp cheat code to upgrade agility (3 key)
+  if (keyCode == 51) {
+    if (worm.upgrades.get("agility") < 2){
+      worm.upgrades.add("agility", 1);
+      worm.speed += 1;
+    } else {
+      worm.upgrades.set("agility", 0);
+      worm.speed = 5;
     }
   }
 }
@@ -94,6 +129,9 @@ void movementKeyReleased() {
   }
   if (key == 'w' || key == 'W' ) {
     upPressed = false;
+  }
+  if (keyCode == 32){
+    spacePressed = false;
   }
 }
 
@@ -298,10 +336,16 @@ class Play {
   PVector pos, size;
   float speed, jumpVel, initJump, aimRad, bulletSpeed;
   ArrayList<Bullet> bullets = new ArrayList<Bullet>();
-  int bulletCd, fireRate;
+  int bulletCd, fireRate, bulletLife;
   int baseFireRate = 150;
   int boostEndTime = 0;
   boolean boosted = false;
+  int dashStart = 0;
+  int dashTime = 200; // milliseconds
+  
+  // instantiate upgrade dictionary
+  IntDict upgrades;
+  
   // constructor
   Play(float x, float y, float s) {
     // position
@@ -311,11 +355,12 @@ class Play {
     // movement variables
     speed = s;
     jumpVel = 0;
-    initJump = 10;
+    initJump = 12;
 
     // shooting variables
     aimRad = 0;
     bulletSpeed = 10;
+    bulletLife = 700;
 
     // fire rate variables (in milliseconds)
     bulletCd = 0;
@@ -324,11 +369,16 @@ class Play {
     // append states to lists
     movStates.append("walk");
     movStates.append("jump");
-    movStates.append("g_dash");
-    movStates.append("a_dash");
+    movStates.append("dash");
 
     gunStates.append("aim");
     gunStates.append("fire");
+    
+    // set upgrade levels
+    upgrades = new IntDict();
+    upgrades.set("dash", 0); // this will eventually pull int values from save data
+    upgrades.set("range", 0); // increases range of bullets
+    upgrades.set("agility", 0); // increases speed
   }
 
   // state hub
@@ -382,10 +432,8 @@ class Play {
       this.updateJump();
     } else if (this.movCurrent == "duck") {
       this.updateDuck();
-    } else if (this.movCurrent == "g_dash") {
-      // this.updateGDash();
-    } else if (this.movCurrent == "a_dash") {
-      // this.updateADash();
+    } else if (this.movCurrent == "dash") {
+      this.updateDash();
     } else if (this.movCurrent == "climb") {
       this.updateClimb();
     }
@@ -406,17 +454,25 @@ class Play {
   }
   // walk update code
   void updateWalk() {
-    if (leftHeld) {
-      this.pos.x -= this.speed;
-    }
-    if (rightHeld) {
-      this.pos.x += this.speed;
-    }
-    if (upPressed) {
-      this.jumpVel = this.initJump;
-      this.movCurrent = "jump";
-    } else if (downHeld) {
-      this.movCurrent = "duck";
+    if (spacePressed && this.upgrades.get("dash") > 0){ // check for dash upgrade
+      this.dashStart = millis();
+      this.movCurrent = "dash";
+    } else if (onAnyGround()) {
+      if (leftHeld) {
+        this.pos.x -= this.speed;
+      }
+      if (rightHeld) {
+        this.pos.x += this.speed;
+      }
+      if (upPressed) {
+        this.jumpVel = this.initJump;
+        this.movCurrent = "jump";
+      } else if (downHeld) {
+        this.movCurrent = "duck";
+      }
+    } else {
+      this.jumpVel = 0;
+      this.movCurrent = "jump"; // causes player to fall if they walk off a platform edge
     }
 
     if (!invincible || (millis() / 100) % 2 == 0) {
@@ -424,7 +480,6 @@ class Play {
     }
   }
 
-  // jump update code
   // jump update code
   void updateJump() {
     this.pos.y -= this.jumpVel;
@@ -441,6 +496,12 @@ class Play {
     if (onAnyGround()) {
       this.jumpVel = 0;
       this.movCurrent = "walk";
+    }
+    
+    // dash
+    if (spacePressed && this.upgrades.get("dash") > 0){
+      this.dashStart = millis();
+      this.movCurrent = "dash";
     }
 
     if (!invincible || (millis() / 100) % 2 == 0) {
@@ -465,14 +526,22 @@ class Play {
 
   // duck update code
   void updateDuck() {
-    if (leftHeld) {
-      this.pos.x -= (this.speed*0.5);
-    }
-    if (rightHeld) {
-      this.pos.x += (this.speed*0.5);
-    }
-    if (downHeld == false) {
-      this.movCurrent = "walk";
+    if (spacePressed && this.upgrades.get("dash") > 0){
+      this.dashStart = millis();
+      this.movCurrent = "dash";
+    } else if (onAnyGround()) {
+      if (leftHeld) {
+        this.pos.x -= (this.speed*0.5);
+      }
+      if (rightHeld) {
+        this.pos.x += (this.speed*0.5);
+      }
+      if (downHeld == false) {
+        this.movCurrent = "walk";
+      }
+    } else {
+      this.jumpVel = 0;
+      this.movCurrent = "jump"; // causes player to fall if they walk off a platform edge
     }
 
     if (!invincible || (millis() / 100) % 2 == 0) {
@@ -498,6 +567,22 @@ class Play {
 
     if (!invincible || (millis() / 100) % 2 == 0) {
       rect(this.pos.x, this.pos.y, this.size.x, this.size.y);
+    }
+  }
+  
+  // dash update code
+  void updateDash(){
+    if (facingRight){
+      this.pos.x += (this.speed*2.5);
+    } else {
+      this.pos.x -= (this.speed*2.5);
+    }
+    if (millis() - this.dashStart >= this.dashTime){
+      this.movCurrent = "walk";
+    }
+    
+    if (!invincible || (millis() / 100) % 2 == 0) {
+      rect(this.pos.x, this.pos.y, this.size.x * 1.2, this.size.y * 0.8);
     }
   }
 
@@ -552,7 +637,7 @@ class Play {
 
     // check if bullet cooldown has elapsed
     if (millis() - this.bulletCd >= this.fireRate) {
-      bullets.add(new Bullet(this.aimRad, this.bulletSpeed, this.pos));
+      bullets.add(new Bullet(this.aimRad, this.bulletSpeed, this.pos, this.bulletLife));
       this.bulletCd = millis();
     }
 

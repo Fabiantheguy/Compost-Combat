@@ -3,11 +3,11 @@ class Bullet {
   PVector pos;
   int lifetime, startTime;
   
-  Bullet(float d, float s, PVector p) {
+  Bullet(float d, float s, PVector p, int l) {
     dirRad = d;
     speed = s;
     pos = new PVector(p.x, p.y);
-    lifetime = 600;
+    lifetime = l;
     startTime = millis();
   }
   
