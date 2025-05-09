@@ -38,7 +38,6 @@ PVector camTarget;
 void playerSetup() {
   player = new Player(width/15, height - 150);
   grass = new Ground(-1000, 625, 10000, 150);
-  sun = new Sun(width - 255, -250);
   tree = new Tree(width, -1880, 200, 5000);
   camPos = new PVector(0, 0);
   camTarget = new PVector(0, 0);

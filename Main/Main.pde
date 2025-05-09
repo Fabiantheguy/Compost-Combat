@@ -1,14 +1,13 @@
 import processing.sound.*;
 import java.awt.Rectangle;
 Ground grass;
-Sun sun;
 Tree tree;
 Vine[] v;
 Platform[] platforms; //adding platform class
 
 
 // Adding Vines Class
-Vines[] vines;
+swingingVines[] vines;
 PVector vinesPOS = new PVector (1900, -400);//CHANGE THESE VARIABLES TO KEEP COLLISIONS 
 float length = 150; 
 
@@ -38,7 +37,6 @@ void draw() {
   cameraDraw();
   grassDraw();
   lvlChanger();//CHANGES THE LEVELS THROUGHOUT GAMEPLAY
-  sunDraw();
   treeDraw();
   playerDraw();
   appleDraw();
