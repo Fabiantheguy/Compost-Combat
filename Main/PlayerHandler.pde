@@ -313,6 +313,14 @@ void playerDraw() {
         
       }
     }
+ 
+    if (bananabullet != null) {
+      // Handle collision with apple
+      if (!invincible && worm.getBounds().intersects(bananabullet.getBounds())) {
+        worm.takeDmg(1);
+        
+      }
+    }
 
     // Handle invincibility timer
 

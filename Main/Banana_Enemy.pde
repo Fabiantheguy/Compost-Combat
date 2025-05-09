@@ -2,6 +2,7 @@
 Banana banana;
 bananaBullet bananabullet;
 
+
 PImage bananaImage;
 
 //int respawnTime = 3000; // 3 seconds to respawn the apple
@@ -11,6 +12,8 @@ PImage bananaImage;
 void BananaSetup() {
   bananaImage = loadImage("Banana.png");
   banana = new Banana(width / 4, worm.pos.y - 100);
+
+
 }
 
 void BananaDraw() {
@@ -32,10 +35,11 @@ void BananaDraw() {
     banana.display();
   }
   
-  if (bullet != null) {
+  if (bananabullet != null) {
     bananabullet.update();
     bananabullet.display();
 }
+
 
 }
 
@@ -128,7 +132,7 @@ class Banana {
     return false;
   }
 
-  Rectangle getBounds() {
+ Rectangle getBounds() {
     return new Rectangle((int) x, (int) y, (int) w, (int) h);
   }
 }
@@ -155,6 +159,10 @@ class bananaBullet {
   void display() {
     //rect for bullet
     rect(x, y, 10, 10);   
+  }
+  
+ Rectangle getBounds() {
+    return new Rectangle((int) x, (int) y, 10, 10);
   }
   
 }
