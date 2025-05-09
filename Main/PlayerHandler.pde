@@ -73,11 +73,13 @@ void movementKeyPressed() {
   if (keyCode == 32){
     spacePressed = true;
   }
+  if (!Level2){
   for (int i = 0; i < v.length; i++) {
     if (key == 'w' && v[i].isOnVine) {
       player.climb();
       println("demon");
     }
+  }
   }
   // temp cheat code to upgrade dash (1 key)
   if (keyCode == 49) {

@@ -8,7 +8,7 @@
  MAP
  */
 // SETTING lEVEL;
-boolean Level1=true, Level2, Level3; //Start game on LVL 1
+boolean Level1, Level2=true, Level3; //Start game on LVL 1
 Lvl1 lvl1;
 Lvl2 lvl2;
 Lvl3 lvl3;
@@ -381,16 +381,13 @@ class Lvl2 {
     platforms[4] = new Platform(1200, 250, 100, 20);
 
     //IN PROGRESS
-     v = new Vine [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
-    v[0] = new Vine(width - 150, 100, 75, 500);
-    v[1] = new Vine(0, 0, 75, 470);
-    v[2] = new Vine(0, 0, 75, 500);
-    //vines = new Vines [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
-    //for (int i =0; i<vines.length; i ++ ) {
-    //  vines[0] = new Vines (vinesPOS.x, vinesPOS.y, vinesPOS.x, length);
-    //  vines[1] = new Vines (vinesPOS.x + (i * 400), vinesPOS.y, vinesPOS.x + (i * 400), length);
-    //  vines[2] =new Vines (vinesPOS.x + (i * 800), vinesPOS.y, vinesPOS.x +(i * 800), length);
-    //}
+
+    vines = new Vines [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
+    for (int i =0; i<vines.length; i ++ ) {
+      vines[0] = new Vines (vinesPOS.x, vinesPOS.y, vinesPOS.x, vlength);
+      vines[1] = new Vines (vinesPOS.x + (i * 400), vinesPOS.y, vinesPOS.x + (i * 400), vlength);
+      vines[2] =new Vines (vinesPOS.x + (i * 800), vinesPOS.y, vinesPOS.x +(i * 800), vlength);
+    }
      
   }
   void run() {
@@ -400,16 +397,16 @@ class Lvl2 {
   }
 
   void display() {
-    for (int i = 0; i < v.length; i++) {
-      v[i].display();
+    for (int i = 0; i < vines.length; i++) {
+      vines[i].display();
     }
     for (int i = 0; i <platforms.length; i++) {
       platforms[i].display();
     }
   }
   void update() {
-    for (int i = 0; i < v.length; i++) {
-      v[i].update();
+    for (int i = 0; i < vines.length; i++) {
+      vines[i].update();
     }
 
 

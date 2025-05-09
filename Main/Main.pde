@@ -7,10 +7,10 @@ Vine[] v;
 Platform[] platforms; //adding platform class
 
 
-// Adding Vines Class
+// Adding Swinging Vines Class
 Vines[] vines;
 PVector vinesPOS = new PVector (1900, -400);//CHANGE THESE VARIABLES TO KEEP COLLISIONS 
-float length = 150; 
+float vlength = 150; 
 
 void settings() {
   fullScreen();

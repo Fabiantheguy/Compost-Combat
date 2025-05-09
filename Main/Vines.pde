@@ -3,13 +3,14 @@ boolean isSwinging=false;
 class Vines{
   float upperx,uppery,lowerx,lowery;
   float xSpeed;
+  float thickness;
   Vines (float x, float y, float x2, float y2){
     upperx = x;
     uppery = y;
     lowerx = x2;
     lowery = y2;
     xSpeed = 0;
-    
+    thickness=30;
   }
   void run(){
     display();
@@ -24,17 +25,10 @@ class Vines{
     noStroke();
   }
   void update () {
-    isSwinging =player.x >= upperx - 30 && 
-    player.x <=lowerx + 25 &&
-    player.y > uppery - 50 && 
-    player.y < lowery + 40;
-
-      
+     
       if (isSwinging) {
-        if(keyPressed && key == ' '){
-       
+        if(keyPressed && key == ' '){   
           player.ySpeed = 0;
-          isSwinging= false;
         } 
           
           
@@ -56,4 +50,22 @@ class Vines{
 
   }
 }
+  //getting vine bounds
+Rectangle getBounds() {
+    return new Rectangle((int)upperx, (int)uppery, (int)lowerx, (int)lowery);
+  }
+
+
+   // Check if the player is on the vine
+  boolean onVine(Vines vines) {
+    return (vines.uppery + thickness >= player.y && 
+            vines.lowery + thickness <= player.y + 10 &&
+            vines.lowerx + thickness > player.x && 
+            vines.upperx < player.x + player.w);
+  }
+
+  // Check if player is on vine
+  boolean isSwinging(Play worm) {
+    return getBounds().intersects(worm.getBounds());
+  }
   }
