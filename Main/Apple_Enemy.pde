@@ -8,8 +8,16 @@ int lastDestroyedTime = -1; // -1 means no apple has died yet
 
 // Initialize the Apple and platform objects
 void appleSetup() {
-  appleImage = loadImage("Apple.png");
-  apple = new Apple(width / 4, worm.pos.y - 100);
+  // create aplle Enemy 
+  PImage[] appleFrames = new PImage[]{
+    loadImage("apple/Red.png"),
+    loadImage("apple/Blue.png"),
+    loadImage("apple/Orange.png"),
+    loadImage("apple/Teal.png")
+  };
+  EnemyFactory factory = new EnemyFactory(); 
+  apple = (Apple)factory.createEnemy("Apple", width / 4, height - 150, appleFrames); 
+  println("apple enemy is created"); 
 }
 
 void appleDraw() {
@@ -34,7 +42,7 @@ void appleDraw() {
 
 
 // Apple class
-class Apple {
+class Apple extends Enemy{
   float x, y;               // Position
   float w = 40, h = 40;     // Size
   float speed = 1;
@@ -46,17 +54,10 @@ class Apple {
   int frameTimer = 0;       // Used to time switching frames
   int frameInterval = 10;   // Change frame every 10 draw() calls
 
-  Apple(float x, float y) {
-    this.x = x;
-    this.y = y;
-
-    // Load the four frames (make sure these files are in your "data" folder)
-    frames = new PImage[4];
-    frames[0] = loadImage("apple/Red.png");
-    frames[1] = loadImage("apple/Teal.png");
-    frames[2] = loadImage("apple/Orange.png");
-    frames[3] = loadImage("apple/Blue.png");
-  }
+  Apple(float x, float y, EnemyType type, PImage[] availableImages) {
+    super(x, y, type,availableImages); // Initialize Enemy superclass
+    frames = availableImages; 
+  } 
 
   void follow(Play player) {
     if (player.pos.x < x - 1) x -= speed;
