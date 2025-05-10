@@ -348,11 +348,26 @@ class Play {
   // instantiate upgrade dictionary
   IntDict upgrades;
 
+  // A HashMap to hold all the possible states.
+  HashMap<String, PlayerState> stateMap;
+
   // constructor
   Play(float x, float y, float s) {
     // position
     pos = new PVector(x, y);
     size = new PVector(40, 40);
+
+    stateMap = new HashMap<String, PlayerState>(); //<>//
+    // Since WalkState, JumpState, etc. are defined as inner classes (non‑static),
+    // we instantiate them using "new" directly—inside the constructor, "this" is implied.
+    stateMap.put("walk", new WalkState());
+    stateMap.put("jump", new JumpState());
+    stateMap.put("duck", new DuckState());
+    stateMap.put("climb", new ClimbState()); 
+    stateMap.put("dash", new DashState()); //<>//
+          
+    // Set the initial state.
+    currentState = stateMap.get("walk");
 
     // movement variables
     speed = s;
@@ -427,19 +442,24 @@ class Play {
     fill(255, 200, 150);
     //rect(this.pos.x, this.pos.y, this.size.x, this.size.y);
 
-
     // movement update
-    if (this.movCurrent == "walk") {
-      this.updateWalk();
+    if (this.movCurrent == "walk") { //<>//
+      stateMap.get("walk").update(this); //<>//
+      stateMap.get("walk").display(this); //<>//
     } else if (this.movCurrent == "jump") {
-      this.updateJump();
+      stateMap.get("jump").update(this);
+      stateMap.get("jump").display(this);
     } else if (this.movCurrent == "duck") {
-      this.updateDuck();
-    } else if (this.movCurrent == "dash") {
-      this.updateDash();
+      stateMap.get("duck").update(this);
+      stateMap.get("duck").display(this);
+    } else if (this.movCurrent == "dash")  {
+      stateMap.get("dash").update(this);
+      stateMap.get("dash").display(this);
     } else if (this.movCurrent == "climb") {
-      this.updateClimb();
+      stateMap.get("climb").update(this);
+      stateMap.get("climb").display(this);
     }
+    
     rectMode(CORNER);
   }
   void takeDmg(int l) {
@@ -660,6 +680,12 @@ class Play {
   Rectangle getBounds() {
     return new Rectangle((int)this.pos.x, (int)this.pos.y,
       (int)this.size.x, (int)this.size.y);
+  }
+
+  void changeState(String newKey) {
+    if (stateMap.containsKey(newKey)) {
+      currentState = stateMap.get(newKey);
+    }
   }
 }
 
