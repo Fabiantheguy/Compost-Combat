@@ -43,8 +43,6 @@ void appleDraw() {
 
 // Apple class
 class Apple extends Enemy{
-  float x, y;               // Position
-  float w = 40, h = 40;     // Size
   float speed = 1;
   float ySpeed = 0;
   float gravity = 0.8;

@@ -46,9 +46,6 @@ void BananaDraw() {
 
 // Banana class
 class Banana extends Enemy {
- 
-  float x, y;               // Position
-  float w = 40, h = 40;     // Size
   float speed = 1;
   float ySpeed = 0;
   float gravity = 0.8;
