@@ -313,11 +313,19 @@ void playerDraw() {
         
       }
     }
+    
+    if (orange != null) {
+      // Handle collision with apple
+      if (!invincible && worm.getBounds().intersects(orange.getBounds())) {
+        worm.takeDmg(1);
+        
+      }
+    }
  
     if (bananabullet != null) {
       // Handle collision with apple
       if (!invincible && worm.getBounds().intersects(bananabullet.getBounds())) {
-        worm.takeDmg(1);
+        worm.takeDmg(2);
         
       }
     }

@@ -5,7 +5,7 @@ bananaBullet bananabullet;
 
 PImage bananaImage;
 
-//int respawnTime = 3000; // 3 seconds to respawn the apple
+//int respawnTime = 3000; // 3 seconds to respawn the banana
 //int lastDestroyedTime = -1; // -1 means no banans has died yet
 
 // Initialize the Banana and platform objects
@@ -35,7 +35,7 @@ void BananaDraw() {
     banana.display();
   }
   
-  if (bananabullet != null) {
+  if (bananabullet != null ) {
     bananabullet.update();
     bananabullet.display();
 }
@@ -66,9 +66,9 @@ class Banana {
     // Load the four frames (make sure these files are in your "data" folder)
     frames = new PImage[1];
     frames[0] = loadImage("Banana/Banana.png");
-    //frames[1] = loadImage("apple/Teal.png");
-    //frames[2] = loadImage("apple/Orange.png");
-    //frames[3] = loadImage("apple/Blue.png");
+    //frames[1] = loadImage("banana/Teal.png");
+    //frames[2] = loadImage("banana/Orange.png");
+    //frames[3] = loadImage("banana/Blue.png");
   }
 
   void follow(Play player) {
@@ -110,8 +110,7 @@ class Banana {
     if (frameTimer >= frameInterval) {
       frameTimer = 0;
       currentFrame = (currentFrame + 1) % frames.length;
-    }
-     
+    } 
   }
 
   void display() {

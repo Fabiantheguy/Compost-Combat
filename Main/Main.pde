@@ -20,6 +20,7 @@ void setup() {
 startScreenSetup();  
 appleSetup();  // Initialize the Apple (enemy) and platform setup
 BananaSetup();
+orangeSetup();
 playerSetup();
 playSetup();
 loadSaveData();
@@ -43,6 +44,7 @@ void draw() {
   playerDraw();
   appleDraw();
   BananaDraw();
+  orangeDraw();
   popMatrix();
   }
   menuDraw();
