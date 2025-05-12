@@ -9,8 +9,13 @@ PImage bananaImage;
 
 // Initialize the Banana and platform objects
 void BananaSetup() {
-  bananaImage = loadImage("Banana.png");
-  banana = new Banana(width / 4, worm.pos.y - 100);
+  PImage[] bananaFrames = new PImage[]{
+    // loadImage("Banana.png")
+      loadImage("apple/Red.png"),
+  }; 
+
+  EnemyFactory factory = new EnemyFactory();
+  banana = (Banana)factory.createEnemy("Banana", width / 4, height - 150,  bananaFrames); 
 }
 
 void BananaDraw() {
@@ -40,10 +45,7 @@ void BananaDraw() {
 }
 
 // Banana class
-class Banana {
- 
-  float x, y;               // Position
-  float w = 40, h = 40;     // Size
+class Banana extends Enemy {
   float speed = 1;
   float ySpeed = 0;
   float gravity = 0.8;
@@ -55,16 +57,9 @@ class Banana {
   
   boolean bananaShot = false;  //checking to see if the bullet is active
 
-  Banana(float x, float y) {
-    this.x = x;
-    this.y = y;
-
-    // Load the four frames (make sure these files are in your "data" folder)
-    frames = new PImage[1];
-    frames[0] = loadImage("Banana/Banana.png");
-    //frames[1] = loadImage("apple/Teal.png");
-    //frames[2] = loadImage("apple/Orange.png");
-    //frames[3] = loadImage("apple/Blue.png");
+  Banana(float x, float y, EnemyType type, PImage[] availableImages) {
+    super(x, y, type, availableImages); // Initialize Enemy superclass
+    frames = availableImages; 
   }
 
   void follow(Play player) {
