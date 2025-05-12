@@ -141,7 +141,7 @@ class bananaBullet {
   
   float x, y;
   //float w = 10, h = 10;
-  float speed = 8;
+  float speed = 18;
   //boolean active = false;
   
   bananaBullet(float X, float Y) { //Holds the bullet

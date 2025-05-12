@@ -315,9 +315,10 @@ void playerDraw() {
     }
     
     if (orange != null) {
-      // Handle collision with apple
+      // Handle collision with orange
       if (!invincible && worm.getBounds().intersects(orange.getBounds())) {
-        worm.takeDmg(1);
+        orange.orangeStun();
+        worm.takeDmg(3);
         
       }
     }

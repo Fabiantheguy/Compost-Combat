@@ -3,8 +3,9 @@ Orange orange;
 
 PImage orangeImage;
 
-int respawnTime = 3000; // 3 seconds to respawn the orange
-int lastDestroyedTime = -1; // -1 means no orange has died yet
+int orangeRespawnTime = 3000; // 3 seconds to respawn the apple
+int orangeLastDestroyedTime = -1; // -1 means no apple has died yet
+
 
 // Initialize the orange and platform objects
 void orangeSetup() {
@@ -15,14 +16,14 @@ void orangeSetup() {
 void orangeDraw() {
   if (orange == null) {
     // orange is dead
-    if (lastDestroyedTime < 0) {
+    if (orangeLastDestroyedTime < 0) {
       // Timer hasn't started yet — start it now
-      lastDestroyedTime = millis();
+      orangeLastDestroyedTime = millis();
     }
     // Check if enough time has passed to respawn
-    if (millis() - lastDestroyedTime > respawnTime) {
+    if (millis() - orangeLastDestroyedTime > orangeRespawnTime) {
       orange = new Orange(width / 4, worm.pos.y - 100);
-      lastDestroyedTime = -1; // Reset timer
+      orangeLastDestroyedTime = -1; // Reset timer
     }
   } else {
     // orange is alive
@@ -30,6 +31,7 @@ void orangeDraw() {
     orange.update();
     orange.display();
   }
+  
 }
 
 
@@ -37,7 +39,7 @@ void orangeDraw() {
 class Orange {
   float x, y;               // Position
   float w = 40, h = 40;     // Size
-  float speed = 1;
+  float speed = 12;
   float ySpeed = 0;
   float gravity = 0.8;
 
@@ -45,6 +47,9 @@ class Orange {
   int currentFrame = 0;     // Index of current frame
   int frameTimer = 0;       // Used to time switching frames
   int frameInterval = 10;   // Change frame every 10 draw() calls
+  
+  boolean orangeMove = true;
+  float orangeStop = -1;
 
   Orange(float x, float y) {
     this.x = x;
@@ -52,15 +57,20 @@ class Orange {
 
     // Load the four frames (make sure these files are in your "data" folder)
     frames = new PImage[1];
-    frames[0] = loadImage("Orange.png");
+    frames[0] = loadImage("orange/Orange.png");
   }
 
   void follow(Play player) {
-    if (player.pos.x < x - 1) x -= speed;
-    else if (player.pos.x > x + 1) x += speed;
+      if (orangeMove) {
+        if (player.pos.x < x - 1) x -= speed;
+        else if (player.pos.x > x + 1) x += speed;
+    }
   }
+  
 
   void update() {
+    
+    
     // Gravity
     ySpeed += gravity;
     y += ySpeed;
@@ -81,6 +91,7 @@ class Orange {
         break;
       }
     }
+    
 
     // Animation
     frameTimer++;
@@ -111,3 +122,17 @@ class Orange {
   Rectangle getBounds() {
     return new Rectangle((int) x, (int) y, (int) w, (int) h);
   }
+  
+  void orangeStun() {
+    orangeMove = false;       
+    orangeStop = millis();
+    
+    if (!orangeMove && millis() - orangeStop >= 3000) {
+      orangeMove = true;
+      
+    }
+
+
+  }
+
+}
