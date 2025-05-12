@@ -48,8 +48,8 @@ class Orange {
   int frameTimer = 0;       // Used to time switching frames
   int frameInterval = 10;   // Change frame every 10 draw() calls
   
-  boolean orangeMove = true;
-  float orangeStop = -1;
+  boolean orangeMove = true; //orange can move
+  int orangeStop = -1; //orange stop for certain amount of seconds
 
   Orange(float x, float y) {
     this.x = x;
@@ -59,7 +59,7 @@ class Orange {
     frames = new PImage[1];
     frames[0] = loadImage("orange/Orange.png");
   }
-
+  //follow player if the orangeMove function is true
   void follow(Play player) {
       if (orangeMove) {
         if (player.pos.x < x - 1) x -= speed;
@@ -69,8 +69,13 @@ class Orange {
   
 
   void update() {
-    
-    
+ 
+    //Time until orange can move
+    if (!orangeMove && millis() - orangeStop >= 3000) {
+      orangeMove = true;
+      
+    }
+ 
     // Gravity
     ySpeed += gravity;
     y += ySpeed;
@@ -122,17 +127,11 @@ class Orange {
   Rectangle getBounds() {
     return new Rectangle((int) x, (int) y, (int) w, (int) h);
   }
-  
+  //Making the orange stunned making sure to call it within the player
   void orangeStun() {
     orangeMove = false;       
     orangeStop = millis();
-    
-    if (!orangeMove && millis() - orangeStop >= 3000) {
-      orangeMove = true;
-      
-    }
 
-
-  }
+}
 
 }
