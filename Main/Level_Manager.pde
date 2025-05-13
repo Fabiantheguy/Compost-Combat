@@ -427,42 +427,44 @@ class Lvl3 {
 
     //CHANGE THE PLATFORM & VINE LOCATION VALUES TO  MATCH YOUR LEVEL DESIGN
 
-    platforms = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
-    platforms[0] = new Platform(100, 450, 440, 20);
-    platforms[1] = new Platform(600, 400, 100, 20);
-    platforms[2] = new Platform(800, 350, 100, 20);
-    platforms[3] = new Platform(1000, 300, 100, 20);
-    platforms[4] = new Platform(1200, 250, 100, 20);
+    platforms = new Platform[6];
+    platforms[0] = new Platform(1300, 200, 250, 20);  // Starts directly after The end of level 2
+    platforms[1] = new Platform(1500, 100, 200, 20);  // Climb up
+    platforms[2] = new Platform(1650, -50, 250, 20);  // Mid-level challenge
+    platforms[3] = new Platform(1800, -200, 180, 20); // Narrower
+    platforms[4] = new Platform(2000, -350, 300, 20); // More open space
+    platforms[5] = new Platform(2200, -500, 250, 20); // Final platform
 
+    // Vines to bridge larger vertical gaps
+    v = new Vine[4];
+    v[0] = new Vine(1450, 100, 75, 150);   // From plat 0 to plat 1
+    v[1] = new Vine(1600, -50, 75, 150);   // From plat 1 to plat 2
+    v[2] = new Vine(1750, -200, 75, 150);  // From plat 2 to plat 3
+    v[3] = new Vine(2150, -500, 75, 200);  // Final ascent
 
-    v = new Vine [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
-    v[0] = new Vine(width - 150, 100, 75, 500);
-    v[1] = new Vine(0, 0, 75, 470);
-    v[2] = new Vine(0, 0, 75, 500);
-    
+    // Respawn worm near Level 2's exit
+    worm.pos = new PVector(1350, 150);
   }
-  void run() {
 
+  void run() {
     display();
     update();
-
   }
 
   void display() {
     for (int i = 0; i < v.length; i++) {
       v[i].display();
     }
-    for (int i = 0; i <platforms.length; i++) {
+    for (int i = 0; i < platforms.length; i++) {
       platforms[i].display();
     }
   }
+
   void update() {
     for (int i = 0; i < v.length; i++) {
       v[i].update();
     }
-
-
-    for (int i = 0; i <platforms.length; i++) {
+    for (int i = 0; i < platforms.length; i++) {
       platforms[i].update();
     }
   }
