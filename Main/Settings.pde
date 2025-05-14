@@ -40,12 +40,12 @@ class Settings {
 
       //Volume Bar
       fill(white, 90);
-      rect(800, 745, 500, 20);
+      rect(760, 745, 500, 20);
 
       fill(black);
       rect(x, 725, 10, 60);
 
-      boolean onVolumeBar = mouseX > 790 && mouseX < 1300&&
+      boolean onVolumeBar = mouseX > 760 && mouseX < 1250&&
         mouseY >700 && mouseY <800;
 
       if (onVolumeBar) {
