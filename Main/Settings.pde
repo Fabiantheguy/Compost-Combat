@@ -101,9 +101,12 @@ class Settings {
       fill(gray);
       settingsWindow();
       fill(black);
-      textSize(72);
-      text("MAP",
-        width/3, height/4);
+      textSize(36);
+      text("Map", width/2.075, height/5);
+      text("Base", width / 2 - 37, 350);
+      text("Level #1", width / 2 - 362.5, 550);
+      text("Level #2", width / 2 + 237.5, 550);
+      text("Level #3", width / 2 - 462.5, 750);
         //Draw all Node connections, that are behind nodes
       for (LevelNode node : nodes) {
         node.drawConnections();

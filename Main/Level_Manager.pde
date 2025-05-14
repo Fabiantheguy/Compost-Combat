@@ -270,14 +270,14 @@ void loadSaveData() {
 void initLevelNodes() {
   nodes = new ArrayList<LevelNode>();
   //Created a example level structure(Change if need be)
-  LevelNode root = new LevelNode(width / 2, 300, "cleared");
-  LevelNode child1 = new LevelNode(width / 2 - 300, 500, "unlocked");
-  LevelNode child2 = new LevelNode(width / 2 + 300, 500, "locked");
-  LevelNode child3 = new LevelNode(width / 2 - 400, 700, "locked");
+  LevelNode root = new LevelNode(width / 2, 300, "Home");
+  LevelNode child1 = new LevelNode(width / 2 - 300, 500, "Unlocked");
+  LevelNode child2 = new LevelNode(width / 2 + 300, 500, "Locked");
+  LevelNode child3 = new LevelNode(width / 2 - 400, 700, "Locked");
 
   root.addChild(child1);
-  root.addChild(child2);
-  child1.addChild(child3);
+  child1.addChild(child2);
+  child2.addChild(child3);
 
   nodes.add(root);
   nodes.add(child1);

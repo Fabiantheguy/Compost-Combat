@@ -21,9 +21,10 @@ class LevelNode {
   }
   //Determines the color of node based on the node's current state
   color getColorForState(String s) {
-    if (s.equals("locked")) return color(0, 0, 0); // Black for locked
-    if (s.equals("unlocked")) return color(255, 0, 0); // Red for unlocked/New
-    if (s.equals("cleared")) return color(0, 200, 255);// Blue for cleared/Done
+    if (s.equals("Home")) return color(0, 255, 0);// Green for the Home Node of the Map Screen
+    if (s.equals("Locked")) return color(0, 0, 0); // Black for locked
+    if (s.equals("Unlocked")) return color(255, 0, 0); // Red for unlocked/New
+    if (s.equals("Completed")) return color(0, 200, 255);// Blue for cleared/Done
     return color(0); // will default to color (Black) for unknown states
   }
   //Transition the nodes current color towards it target color smoothly
@@ -49,8 +50,8 @@ class LevelNode {
   void checkClick() {
     if (isMouseOver()) {
       //Toggles state when clicked: Locked -> Unlocked -> Cleared
-      if (state.equals("locked")) state = "unlocked";
-      else if (state.equals("unlocked")) state = "cleared";
+      if (state.equals("Locked")) state = "Unlocked";
+      else if (state.equals("Unlocked")) state = "Completed";
       //Updates target color for transition
       targetColor = getColorForState(state);
     }
