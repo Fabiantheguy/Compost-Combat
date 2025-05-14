@@ -50,7 +50,7 @@ class Apple {
   int currentFrame = 0;     // Index of current frame
   int frameTimer = 0;       // Used to time switching frames
   int frameInterval = 10;   // Change frame every 10 draw() calls
-
+  boolean isOnRightEdge = false, isOnLeftEdge = false; // detects if apple is on left or right edge                              
   Apple(float x, float y) {
     this.x = x;
     this.y = y;
@@ -64,12 +64,24 @@ class Apple {
   }
 
   void patrol() {
+    
+    // detects if the apple is either on the left edge or the right edge
     for (Platform p : platforms){
-      if(x < p.x){
-        x += speed;
-      } else if (x > p.x + p.w){
-        x -= speed;
+      if(x <= p.x){
+        isOnLeftEdge = true;
+      } else if (x - 20 >= p.x + p.w){
+        isOnRightEdge = true;
       }
+      
+      if(isOnLeftEdge){
+        x += speed;
+        isOnRightEdge = false;
+          if(isOnRightEdge){
+            x -= speed;
+            isOnLeftEdge = false;
+        
+        } 
+      } 
     }
     
   }
