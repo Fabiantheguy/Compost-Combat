@@ -10,7 +10,7 @@ int lastDestroyedTime = -1; // -1 means no apple has died yet
 void appleSetup() {
   appleImage = loadImage("Apple.png");
   apple = new Apple [3];
-  apple[0] = new Apple(width / 4, worm.pos.y - 100);
+  apple[0] = new Apple(width - 800, 80);
   apple[1] = new Apple(0, 0);
   apple[2] = new Apple(0, 0);
 }
@@ -30,7 +30,7 @@ void appleDraw() {
   } else {
     // Apple is alive
     for(Apple apple : apple){  
-      apple.follow(worm);
+      apple.patrol();
       apple.update();
       apple.display();
     }
@@ -63,9 +63,15 @@ class Apple {
     frames[3] = loadImage("apple/Blue.png");
   }
 
-  void follow(Play player) {
-    if (player.pos.x < x - 1) x -= speed;
-    else if (player.pos.x > x + 1) x += speed;
+  void patrol() {
+    for (Platform p : platforms){
+      if(x < p.x){
+        x += speed;
+      } else if (x > p.x + p.w){
+        x -= speed;
+      }
+    }
+    
   }
 
   void update() {
@@ -85,6 +91,21 @@ class Apple {
 
       if (appleRect.intersects(groundRect)) {
         y = g.pos.y - h + 1; // Snap apple to ground
+        ySpeed = 0;
+        break;
+      }
+    }
+    
+    for (Platform p : platforms) {
+      Rectangle platRect = new Rectangle (
+        (int) p.x,
+        (int) p.y,
+        (int) p.w,
+        (int) p.y
+      );
+      
+      if (appleRect.intersects(platRect)) {
+        y = p.y - h + 1; // Snap apple to platform
         ySpeed = 0;
         break;
       }
