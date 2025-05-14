@@ -1,5 +1,5 @@
 // Secluded variables for the enemy (Apple), and platform //<>// //<>//
-Apple apple;
+Apple[] apple;
 
 PImage appleImage;
 
@@ -9,7 +9,10 @@ int lastDestroyedTime = -1; // -1 means no apple has died yet
 // Initialize the Apple and platform objects
 void appleSetup() {
   appleImage = loadImage("Apple.png");
-  apple = new Apple(width / 4, worm.pos.y - 100);
+  apple = new Apple [3];
+  apple[0] = new Apple(width / 4, worm.pos.y - 100);
+  apple[1] = new Apple(0, 0);
+  apple[2] = new Apple(0, 0);
 }
 
 void appleDraw() {
@@ -21,14 +24,16 @@ void appleDraw() {
     }
     // Check if enough time has passed to respawn
     if (millis() - lastDestroyedTime > respawnTime) {
-      apple = new Apple(width / 4, worm.pos.y - 100);
+      //apple = new Apple(width / 4, worm.pos.y - 100);
       lastDestroyedTime = -1; // Reset timer
     }
   } else {
     // Apple is alive
-    apple.follow(worm);
-    apple.update();
-    apple.display();
+    for(Apple apple : apple){  
+      apple.follow(worm);
+      apple.update();
+      apple.display();
+    }
   }
 }
 

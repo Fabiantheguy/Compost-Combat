@@ -304,10 +304,12 @@ void playerDraw() {
 
     //isColliding = false;  // Reset collision status each frame
 
+  
     // Handle health and invincibility (if applicable)
-    if (apple != null) {
+    for (Apple apple : apple){
+      if (apple != null) {
       // Handle collision with apple
-      if (!invincible && worm.getBounds().intersects(apple.getBounds())) {
+        if (!invincible && worm.getBounds().intersects(apple.getBounds())) {
         worm.takeDmg(1);
         
       }
@@ -320,6 +322,7 @@ void playerDraw() {
       invincible = false;
       
     }}
+    }
   //}
   }
 

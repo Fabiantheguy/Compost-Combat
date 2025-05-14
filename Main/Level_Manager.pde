@@ -9,7 +9,7 @@
  */
 // SETTING lEVEL;
 boolean Level1=true, Level2, Level3; //Start game on LVL 1
-Lvl1 lvl1;
+Lvl1 lvl1; 
 Lvl2 lvl2;
 Lvl3 lvl3;
 
