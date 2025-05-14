@@ -349,7 +349,7 @@ class Lvl1 {
       currentVines.add(v[i]);
     }
     
-    currentPlats.clear(); // clear current vines to prepare to add this level's set
+    currentPlats.clear(); // clear current platforms to prepare to add this level's set
     // add each platform in this level's array to the current platforms list
     for(int i=0; i<platforms.length; i++){
       currentPlats.add(platforms[i]);

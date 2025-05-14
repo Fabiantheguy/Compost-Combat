@@ -407,11 +407,9 @@ class Play {
     strokeWeight(6);
     // firing update
     if (this.gunCurrent == "ready") {
-      // this.updateReady();
       stateMap.get("ready").update(this);
       stateMap.get("ready").display(this);
     } else if (this.gunCurrent == "fire") {
-      // this.updateFire();
       stateMap.get("fire").update(this);
       stateMap.get("fire").display(this);
     }
@@ -514,67 +512,6 @@ class Play {
       if (pl.isColliding(this)) return true;
     }
     return false;
-  }
-
-  // non-firing update code
-  void updateReady() {
-    // if aiming matrix is activated, enter firing state
-    if (lastAim[0] != "none" || lastAim[1] != "none") {
-      this.gunCurrent = "fire";
-    }
-  }
-
-  // firing update code
-  void updateFire() {
-    // original mouse aiming code, in case the rest of the team sees the light
-    // line(this.pos.x, this.pos.y, mouseX, mouseY);
-
-    // new 8-directional aiming code
-    // had to change this to use key codes
-    // 37-40 are in ascending order: left, up, right, down
-    pushMatrix();
-    translate(this.pos.x+20, this.pos.y+10);
-    if (int(lastAim[0]) == 38) {
-      if (int(lastAim[1]) == 37) {
-        rotate(PI/-4); // rotate matrix (for aiming visuals)
-        this.aimRad = PI*1.75; // set value of aim direction (for bullets)
-      } else if (int(lastAim[1]) == 39) {
-        rotate(PI/4);
-        this.aimRad = PI/4;
-      } else {
-        this.aimRad = 0;
-      }
-    } else if (int(lastAim[1]) == 37) {
-      rotate(PI/-2);
-      this.aimRad = PI*1.5;
-      if (int(lastAim[0]) == 40) {
-        rotate(PI/-4);
-        this.aimRad = PI*1.25;
-      }
-    } else if (int(lastAim[1]) == 39) {
-      rotate(PI/2);
-      this.aimRad = PI/2;
-      if (int(lastAim[0]) == 40) {
-        rotate(PI/4);
-        this.aimRad = PI*0.75;
-      }
-    } else if (int(lastAim[0]) == 40) {
-      rotate(PI);
-      this.aimRad = PI;
-    }
-    line(0, 0, 0, -70); // visual aiming line - this is the only reason i push matrix
-    popMatrix();
-
-    // check if bullet cooldown has elapsed
-    if (millis() - this.bulletCd >= this.fireRate) {
-      bullets.add(new Bullet(this.aimRad, this.bulletSpeed, this.pos, this.bulletLife));
-      this.bulletCd = millis();
-    }
-
-    // if no keys are pressed, exit this state
-    if (lastAim[0] == "none" && lastAim[1] == "none") {
-      this.gunCurrent = "ready";
-    }
   }
 
   // Return the bounding box of the player (used for collision detection)
