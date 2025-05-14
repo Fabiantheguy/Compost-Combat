@@ -353,6 +353,9 @@ class Play {
   
   // player's current state
   PlayerState currentState;
+  
+  // current vine that the entire play class can access, trust me i need this -nate
+  Vine currentVine;
 
   // constructor
   Play(float x, float y, float s) {
@@ -483,11 +486,11 @@ class Play {
   // checking for vine to climb
   void checkClimb(){
     boolean touchingVine = false;
-    Vine currentVine;
     for(int i=0; i<currentVines.size(); i++){
-      currentVine = currentVines.get(i);
+      currentVine = currentVines.get(i); // uses currentVine in the player's variable section
       if (currentVine.isOnVine(this)){
         touchingVine = true;
+        break;
       }
     }
     if (upPressed && touchingVine){

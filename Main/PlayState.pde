@@ -151,10 +151,19 @@ class ClimbState implements PlayerState {
       player.movCurrent = "jump";
     } else {
       if (upPressed) {
-        player.pos.y -= (player.speed * 0.6);
+        if(player.currentVine.isOnVine(player)){
+          player.pos.y -= (player.speed * 0.6);
+        } else {
+          player.jumpVel = player.initJump;
+          player.movCurrent = "jump";
+        }
       }
       if (downHeld) {
-        player.pos.y += (player.speed * 0.6);
+        if(player.onAnyGround()){
+          player.movCurrent = "walk";
+        } else {
+          player.pos.y += (player.speed * 0.6);
+        }
       }
     }
   }
