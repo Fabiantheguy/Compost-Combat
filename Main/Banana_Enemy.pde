@@ -27,7 +27,7 @@ void BananaDraw() {
     }
     // Check if enough time has passed to respawn
     if (millis() - lastDestroyedTime > respawnTime) {
-      banana = new Banana(width / 4, worm.pos.y - 90);
+      // banana = new Banana(width / 4, worm.pos.y - 90);
       lastDestroyedTime = -1; // Reset timer
     }
   } else {

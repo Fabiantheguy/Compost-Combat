@@ -29,7 +29,7 @@ void appleDraw() {
     }
     // Check if enough time has passed to respawn
     if (millis() - lastDestroyedTime > respawnTime) {
-      apple = new Apple(width / 4, worm.pos.y - 100);
+      // apple = new Apple(width / 4, worm.pos.y - 100);
       lastDestroyedTime = -1; // Reset timer
     }
   } else {

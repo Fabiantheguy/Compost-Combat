@@ -20,19 +20,6 @@ class Platform {
 
   void update () {
     cameraMovement();
-    if (isColliding(worm)) {
-      //println("running");
-      onPlat=true;
-      worm.movCurrent="walk";//If player is colliding w/ plat
-      //worm.updateWalk();
-      if (upPressed) {//Getting player to jump when on plat
-        worm.movCurrent = "jump";
-        worm.jumpVel = worm.initJump;
-        worm.updateJump();
-      }
-    } else {
-      onPlat = false;
-    }
     
     //onPlat = onPlatform(this);
     //println(onPlat);

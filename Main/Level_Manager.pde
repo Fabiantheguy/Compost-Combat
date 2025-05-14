@@ -8,15 +8,16 @@
  MAP
  */
 // SETTING lEVEL;
-boolean Level1; //Start game on LVL 1
-boolean Level2=true;
+boolean Level1=true; //Start game on LVL 1
+boolean Level2;
 boolean Level3;
 Lvl1 lvl1;
 Lvl2 lvl2;
 Lvl3 lvl3;
 
-// a global list for vines so the player can actually access them
+// global lists for level objects so the player can actually access them
 ArrayList<Vine> currentVines = new ArrayList<Vine>();
+ArrayList<Platform> currentPlats = new ArrayList<Platform>();
 
 //Scene Variables
 Sound s;
@@ -346,6 +347,12 @@ class Lvl1 {
     // add each vine in this level's array to the current vines list
     for(int i=0; i<v.length; i++){
       currentVines.add(v[i]);
+    }
+    
+    currentPlats.clear(); // clear current vines to prepare to add this level's set
+    // add each platform in this level's array to the current platforms list
+    for(int i=0; i<platforms.length; i++){
+      currentPlats.add(platforms[i]);
     }
   }
 

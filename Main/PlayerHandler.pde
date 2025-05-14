@@ -494,72 +494,11 @@ class Play {
       movCurrent = "climb";
     }
   }
-  
-  // walk update code
-  void updateWalk() {
-    if (spacePressed && this.upgrades.get("dash") > 0) { // check for dash upgrade
-      this.dashStart = millis();
-      this.movCurrent = "dash";
-    } 
-    else if (onAnyGround())
-    {
-      rect(this.pos.x, this.pos.y, this.size.x, this.size.y);
-      if (leftHeld)
-      {
-        this.pos.x -= this.speed;
-      }
-      if (rightHeld) {
-        this.pos.x += this.speed;
-      }
-      if (upPressed) {
-        this.jumpVel = this.initJump;
-        this.movCurrent = "jump";
-      } else if (downHeld) {
-        this.movCurrent = "duck";
-      }
-    } else {
-      this.jumpVel = 0;
-      this.movCurrent = "jump"; // causes player to fall if they walk off a platform edge
-    }
-    println(onAnyGround());
-
-     if (!invincible || (millis() / 100) % 2 == 0) {
-      rect(this.pos.x, this.pos.y, this.size.x, this.size.y);
-    }
-  }
-
-  // jump update code
-  void updateJump() {
-    this.pos.y -= this.jumpVel;
-    this.jumpVel -= 0.5;
-
-    if (leftHeld) {
-      this.pos.x -= (this.speed * 0.6);
-    }
-    if (rightHeld) {
-      this.pos.x += (this.speed * 0.6);
-    }
-
-    // Use collision detection instead of hardcoded Y
-    if (onAnyGround()) {
-      this.jumpVel = 0;
-      this.movCurrent = "walk";
-    }
-
-    // dash
-    if (spacePressed && this.upgrades.get("dash") > 0) {
-      this.dashStart = millis();
-      this.movCurrent = "dash";
-    }
-    //println(movCurrent);
-     if (!invincible || (millis() / 100) % 2 == 0) {
-      rect(this.pos.x, this.pos.y, this.size.x * 0.875, this.size.y * 0.875);
-    }
-  }
 
   // checks if the player is colliding with any ground
   boolean onAnyGround() {
     Rectangle playerRect = this.getBounds();
+    // check if player collides with all grounds
     for (Ground g : allGrounds) {
       Rectangle groundRect = new Rectangle(
         (int)g.pos.x,
@@ -567,72 +506,13 @@ class Play {
         (int)g.area.x,
         (int)g.area.y
         );
-        for(int i = 0; i < platforms.length; i++)
-      if (playerRect.intersects(groundRect) || platforms[i].onPlat) return true;
+      if (playerRect.intersects(groundRect)) return true;
+    }
+    // check if player collides with all platforms
+    for (Platform pl : currentPlats) {
+      if (pl.isColliding(this)) return true;
     }
     return false;
-  }
-
-  // duck update code
-  void updateDuck() {
-    if (spacePressed && this.upgrades.get("dash") > 0) {
-      this.dashStart = millis();
-      this.movCurrent = "dash";
-    } else if (onAnyGround()) {
-      if (leftHeld) {
-        this.pos.x -= (this.speed*0.5);
-      }
-      if (rightHeld) {
-        this.pos.x += (this.speed*0.5);
-      }
-      if (downHeld == false) {
-        this.movCurrent = "walk";
-      }
-    } else {
-      this.jumpVel = 0;
-      this.movCurrent = "jump"; // causes player to fall if they walk off a platform edge
-    }
-
-    if (!invincible || (millis() / 100) % 2 == 0) {
-      rect(this.pos.x, this.pos.y, this.size.x * 1.125, this.size.y * 0.875);
-    }
-  }
-
-  // climbing update code
-  void updateClimb() {
-    if (leftHeld || rightHeld) {
-      if (upPressed) {
-        this.jumpVel = this.initJump;
-      }
-      this.movCurrent = "jump";
-    } else {
-      if (upPressed) {
-        this.pos.y -= (this.speed * 0.6);
-      }
-      if (downHeld) {
-        this.pos.y += (this.speed * 0.6);
-      }
-    }
-
-    if (!invincible || (millis() / 100) % 2 == 0) {
-      rect(this.pos.x, this.pos.y, this.size.x, this.size.y);
-    }
-  }
-
-  // dash update code
-  void updateDash() {
-    if (facingRight) {
-      this.pos.x += (this.speed*2.5);
-    } else {
-      this.pos.x -= (this.speed*2.5);
-    }
-    if (millis() - this.dashStart >= this.dashTime) {
-      this.movCurrent = "walk";
-    }
-
-    if (!invincible || (millis() / 100) % 2 == 0) {
-      rect(this.pos.x, this.pos.y, this.size.x * 1.2, this.size.y * 0.8);
-    }
   }
 
   // non-firing update code
