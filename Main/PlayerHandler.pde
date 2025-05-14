@@ -350,6 +350,9 @@ class Play {
 
   // A HashMap to hold all the possible states.
   HashMap<String, PlayerState> stateMap;
+  
+  // player's current state
+  PlayerState currentState;
 
   // constructor
   Play(float x, float y, float s) {
@@ -476,6 +479,22 @@ class Play {
       invincibleStartTime = millis();
     }
   }
+  
+  // checking for vine to climb
+  void checkClimb(){
+    boolean touchingVine = false;
+    Vine currentVine;
+    for(int i=0; i<currentVines.size(); i++){
+      currentVine = currentVines.get(i);
+      if (currentVine.isOnVine(this)){
+        touchingVine = true;
+      }
+    }
+    if (upPressed && touchingVine){
+      movCurrent = "climb";
+    }
+  }
+  
   // walk update code
   void updateWalk() {
     if (spacePressed && this.upgrades.get("dash") > 0) { // check for dash upgrade

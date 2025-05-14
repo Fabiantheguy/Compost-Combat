@@ -15,6 +15,9 @@ Lvl1 lvl1;
 Lvl2 lvl2;
 Lvl3 lvl3;
 
+// a global list for vines so the player can actually access them
+ArrayList<Vine> currentVines = new ArrayList<Vine>();
+
 //Scene Variables
 Sound s;
 float amp = map(mouseY, 0, height, 0.0, 1.0);
@@ -338,6 +341,12 @@ class Lvl1 {
     platforms[2] = new Platform(width + 200, -650, 1000, 20);
     platforms[3] = new Platform(width + 200, -1350, 950, 20);
     platforms[4] = new Platform(width - 1000, -1300, 1000, 20);
+    
+    currentVines.clear(); // clear current vines to prepare to add this level's set
+    // add each vine in this level's array to the current vines list
+    for(int i=0; i<v.length; i++){
+      currentVines.add(v[i]);
+    }
   }
 
   void run() {
