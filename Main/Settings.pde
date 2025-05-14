@@ -103,7 +103,7 @@ class Settings {
       fill(black);
       textSize(36);
       text("Map", width/2.075, height/5);
-      text("Base", width / 2 - 37, 350);
+      text("Start\nPoint", width / 2 - 37, 350);
       text("Level #1", width / 2 - 362.5, 550);
       text("Level #2", width / 2 + 237.5, 550);
       text("Level #3", width / 2 - 462.5, 750);

@@ -21,7 +21,7 @@ class LevelNode {
   }
   //Determines the color of node based on the node's current state
   color getColorForState(String s) {
-    if (s.equals("Home")) return color(0, 255, 0);// Green for the Home Node of the Map Screen
+    if (s.equals("Spawn")) return color(0, 255, 0);// Green for the Spawn Node of the Map Screen
     if (s.equals("Locked")) return color(0, 0, 0); // Black for locked
     if (s.equals("Unlocked")) return color(255, 0, 0); // Red for unlocked/New
     if (s.equals("Completed")) return color(0, 200, 255);// Blue for cleared/Done
