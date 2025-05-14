@@ -49,9 +49,23 @@ class LevelNode {
   //Checks if a node was clicked
   void checkClick() {
     if (isMouseOver()) {
-      //Toggles state when clicked: Locked -> Unlocked -> Cleared
-      if (state.equals("Locked")) state = "Unlocked";
-      else if (state.equals("Unlocked")) state = "Completed";
+      //If a Level has the state of "Unlocked" and is clicked on, it checks and loads a level based on its index number.  
+      //EX. (If Level one has the "Unlocked" state and the index number equals 1 then it loads level one only)
+     if (state.equals("Unlocked")) {
+      int index = nodes.indexOf(this);
+
+      
+      // Set level flags
+      Level1 = Level2 = Level3 = false;
+      if (index == 1) Level1 = true;
+      else if (index == 2) Level2 = true;
+      else if (index == 3) Level3 = true;
+
+      lvlSetup();   
+      screen = "game";   // Switch to game screen
+      mousePressed = false;
+    }
+
       //Updates target color for transition
       targetColor = getColorForState(state);
     }
