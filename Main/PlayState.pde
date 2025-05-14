@@ -77,7 +77,9 @@ class JumpState implements PlayerState {
       player.movCurrent = "walk";
     }
     
+    
     player.checkClimb(); // context-sensitive climbing state update
+    
     
     // dash
     if (spacePressed && player.upgrades.get("dash") > 0){
@@ -202,6 +204,85 @@ class DashState implements PlayerState {
       rect(player.pos.x, player.pos.y, player.size.x * 1.2, player.size.y * 0.8);
     }
   }
+}
+
+// Ready state - the player's weapon is on standby
+class ReadyState implements PlayerState {
+  
+  // Explicit no-argument constructor
+  public ReadyState() {
+    //empty 
+  }
+  
+  // Each state must define how to update the player.
+  public void update(Play player){
+    // if aiming matrix is activated, enter firing state
+    if (lastAim[0] != "none" || lastAim[1] != "none") {
+      player.gunCurrent = "fire";
+    }
+  };
+  
+  // Each state may define its own display (or you could keep display in Play).
+  public void display(Play player){
+    //empty (there is currently nothing to display for this state)
+  };
+}
+
+// Firing state - the player's weapon is firing
+class FiringState implements PlayerState {
+  
+  // Explicit no-argument constructor
+  public FiringState() {
+    //empty 
+  }
+  
+  // Each state must define how to update the player.
+  public void update(Play player){
+    // new 8-directional aiming code
+    // had to change this to use key codes
+    // 37-40 are in ascending order: left, up, right, down
+    if (int(lastAim[0]) == 38) {
+      if (int(lastAim[1]) == 37) {
+        player.aimRad = PI*1.75; // set value of aim direction (for bullets)
+      } else if (int(lastAim[1]) == 39) {
+        player.aimRad = PI/4;
+      } else {
+        player.aimRad = 0;
+      }
+    } else if (int(lastAim[1]) == 37) {
+      player.aimRad = PI*1.5;
+      if (int(lastAim[0]) == 40) {
+        player.aimRad = PI*1.25;
+      }
+    } else if (int(lastAim[1]) == 39) {
+      player.aimRad = PI/2;
+      if (int(lastAim[0]) == 40) {
+        player.aimRad = PI*0.75;
+      }
+    } else if (int(lastAim[0]) == 40) {
+      player.aimRad = PI;
+    }
+
+    // check if bullet cooldown has elapsed
+    if (millis() - player.bulletCd >= player.fireRate) {
+      player.bullets.add(new Bullet(player.aimRad, player.bulletSpeed, player.center, player.bulletLife));
+      player.bulletCd = millis();
+    }
+
+    // if no keys are pressed, exit this state
+    if (lastAim[0] == "none" && lastAim[1] == "none") {
+      player.gunCurrent = "ready";
+    }
+  };
+  
+  // Each state may define its own display (or you could keep display in Play).
+  public void display(Play player){
+    pushMatrix();
+    translate(player.center.x, player.center.y);
+    rotate(player.aimRad);
+    line(0, 0, 0, -70); // visual aiming line - this is the only reason i push matrix
+    popMatrix();
+  };
 }
 
 // You can also create additional states 

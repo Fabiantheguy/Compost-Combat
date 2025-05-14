@@ -331,11 +331,9 @@ void playerDraw() {
 // === Player class containing the FSMs ===
 class Play {
   // instantiate variables
-  StringList movStates = new StringList();
   String movCurrent = "walk";
-  StringList gunStates  = new StringList();
   String gunCurrent = "ready";
-  PVector pos, size;
+  PVector pos, size, center;
   float speed, jumpVel, initJump, aimRad, bulletSpeed;
   ArrayList<Bullet> bullets = new ArrayList<Bullet>();
   int bulletCd, fireRate, bulletLife;
@@ -362,6 +360,7 @@ class Play {
     // position
     pos = new PVector(x, y);
     size = new PVector(40, 40);
+    center = new PVector(pos.x + (size.x/2), pos.y + (size.y/2));
 
   // Create a HashMap to store different movement states 
     stateMap = new HashMap<String, PlayerState>(); //<>//
@@ -372,6 +371,8 @@ class Play {
     stateMap.put("duck", new DuckState());
     stateMap.put("climb", new ClimbState()); 
     stateMap.put("dash", new DashState()); //<>//
+    stateMap.put("ready", new ReadyState());
+    stateMap.put("fire", new FiringState());
           
     // Set the initial state.
     currentState = stateMap.get("walk");
@@ -390,14 +391,6 @@ class Play {
     bulletCd = 0;
     fireRate = baseFireRate;
 
-    // append states to lists
-    movStates.append("walk");
-    movStates.append("jump");
-    movStates.append("dash");
-
-    gunStates.append("aim");
-    gunStates.append("fire");
-
     // set upgrade levels
     upgrades = new IntDict();
     upgrades.set("dash", 0); // this will eventually pull int values from save data
@@ -407,15 +400,20 @@ class Play {
 
   // state hub
   void update() {
-    //rectMode(CENTER);
+    center.x = pos.x + (size.x/2);
+    center.y = pos.y + (size.y/2); // to replace rectMode(CENTER);
     noFill();
     stroke(150, 40, 0);
-    strokeWeight(10);
+    strokeWeight(6);
     // firing update
     if (this.gunCurrent == "ready") {
-      this.updateReady();
+      // this.updateReady();
+      stateMap.get("ready").update(this);
+      stateMap.get("ready").display(this);
     } else if (this.gunCurrent == "fire") {
-      this.updateFire();
+      // this.updateFire();
+      stateMap.get("fire").update(this);
+      stateMap.get("fire").display(this);
     }
     if (boosted && millis() > boostEndTime) {
       fireRate = baseFireRate;
