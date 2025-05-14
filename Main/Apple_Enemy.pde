@@ -6,7 +6,7 @@ PImage appleImage;
 int respawnTime = 3000; // 3 seconds to respawn the apple
 int lastDestroyedTime = -1; // -1 means no apple has died yet
 
-// Initialize the Apple and platform objects
+// Initialize the Apple objects
 void appleSetup() {
   // create aplle Enemy 
   PImage[] appleFrames = new PImage[]{

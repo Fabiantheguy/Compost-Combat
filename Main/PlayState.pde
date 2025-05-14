@@ -7,6 +7,7 @@ interface PlayerState {
   void display(Play player);
 }
 
+// Walking state - default movement behavior
 class WalkState implements PlayerState {
   
   // Explicit no-argument constructor
@@ -14,6 +15,7 @@ class WalkState implements PlayerState {
     //empty 
   }
 
+  // Handles movement logic in the walking state 
   public void update(Play player) {
   if (spacePressed && player.upgrades.get("dash") > 0){ // check for dash upgrade
       player.dashStart = millis();
@@ -39,6 +41,7 @@ class WalkState implements PlayerState {
     player.checkClimb(); // context-sensitive climbing state update
   }
   
+  // Handles player display in walking state
   public void display(Play player) {
     // Draw the player normally:
      if (!invincible || (millis() / 100) % 2 == 0) {
@@ -48,7 +51,7 @@ class WalkState implements PlayerState {
   } 
 }
 
-
+// Jumping state - manages air movement and gravity
 class JumpState implements PlayerState {
   
   // Explicit no-argument constructor
@@ -84,6 +87,7 @@ class JumpState implements PlayerState {
     println("update jump state");
   }
   
+  // Handles player display while jumping 
   public void display(Play player) {
     if (!invincible || (millis() / 100) % 2 == 0) {
       rect(player.pos.x, player.pos.y, player.size.x * 0.875, player.size.y * 1.125);
@@ -92,7 +96,7 @@ class JumpState implements PlayerState {
   }
 }
 
-
+// Ducking state - allows crouching and slower movement
 class DuckState implements PlayerState {
   
   // Explicit no-argument constructor
@@ -100,6 +104,7 @@ class DuckState implements PlayerState {
     //empty 
   }
   
+  // Handles movement logic in the ducking state
   public void update(Play player) {
    if (spacePressed && player.upgrades.get("dash") > 0){
       player.dashStart = millis();
@@ -120,6 +125,7 @@ class DuckState implements PlayerState {
     }
   }
   
+   // Handles player display while ducking
    public void display(Play player) {
      if (!invincible || (millis() / 100) % 2 == 0) {
       rect(player.pos.x, player.pos.y, player.size.x * 1.125, player.size.y * 0.875);
@@ -134,6 +140,7 @@ class ClimbState implements PlayerState {
     //empty 
   }
   
+  // Climbing state - handles vertical movement on climbable surfaces
   public void update(Play player) {
     if (leftHeld || rightHeld) {
       if (upPressed) {
@@ -151,7 +158,7 @@ class ClimbState implements PlayerState {
       }
     }
   }
-  
+  // Handles player display while climbing
    public void display(Play player) {
      if (!invincible || (millis() / 100) % 2 == 0) {
       rect(player.pos.x, player.pos.y, player.size.x, player.size.y);
@@ -159,6 +166,7 @@ class ClimbState implements PlayerState {
   }
 }
 
+// Dashing state - fast horizontal movement in one direction
 class DashState implements PlayerState {
   
   // Explicit no-argument constructor
@@ -179,6 +187,7 @@ class DashState implements PlayerState {
     player.checkClimb(); // context-sensitive climbing state update
   }
   
+  // Handles player display while dashing
    public void display(Play player) {
      if (!invincible || (millis() / 100) % 2 == 0) {
       rect(player.pos.x, player.pos.y, player.size.x * 1.2, player.size.y * 0.8);
@@ -186,4 +195,4 @@ class DashState implements PlayerState {
   }
 }
 
-// You can also create additional states like ClimbState, DashState, etc
+// You can also create additional states 

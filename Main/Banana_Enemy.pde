@@ -7,7 +7,7 @@ PImage bananaImage;
 //int respawnTime = 3000; // 3 seconds to respawn the apple
 //int lastDestroyedTime = -1; // -1 means no banans has died yet
 
-// Initialize the Banana and platform objects
+// Initialize the Banana objects
 void BananaSetup() {
   PImage[] bananaFrames = new PImage[]{
     // loadImage("Banana.png")
