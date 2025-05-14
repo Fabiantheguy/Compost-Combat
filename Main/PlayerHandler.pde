@@ -357,9 +357,10 @@ class Play {
     pos = new PVector(x, y);
     size = new PVector(40, 40);
 
+  // Create a HashMap to store different movement states 
     stateMap = new HashMap<String, PlayerState>(); //<>//
-    // Since WalkState, JumpState, etc. are defined as inner classes (non‑static),
-    // we instantiate them using "new" directly—inside the constructor, "this" is implied.
+    // Instantiate and store various player states
+    // These states must be defined elsewhere as classes implementing PlayerState
     stateMap.put("walk", new WalkState());
     stateMap.put("jump", new JumpState());
     stateMap.put("duck", new DuckState());

@@ -18,7 +18,7 @@ abstract class Entity {
   }
 }
 
-//define all properties of enemy here, which has different type and different platform
+//define all properties of enemy here, which has different type 
 
 class Enemy extends Entity {
   EnemyType type;
@@ -53,7 +53,7 @@ class Enemy extends Entity {
 }
 
 // enmey facatory usd to create the enermy denamically, can add new tyoe of enemy,
-// each enemy has its own type and platform
+// each enemy has its own type 
 
 class EnemyFactory {
   
@@ -74,7 +74,7 @@ class EnemyFactory {
         return null;
     }
 
-    // Create the enemy associated with the platform, like apple or banana
+    // Create the enemy like apple or banana
     println("new enemy"); 
      if (type.equals("Apple")) {
         return new Apple(x, y, enemyType,frames);        
