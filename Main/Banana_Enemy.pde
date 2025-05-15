@@ -10,14 +10,23 @@ PImage bananaImage;
 
 // Initialize the Banana objects
 void BananaSetup() {
-  PImage[] bananaFrames = new PImage[]{
-    // loadImage("Banana.png")
-      loadImage("apple/Red.png"),
-  }; 
+  PImage sheet = loadImage("Enemy Sprites/Banana.png"); // Full sprite sheet
+
+  int cols = 6;
+  int rows = 1;
+  int frameW = sheet.width / cols;
+  int frameH = sheet.height / rows;
+
+  PImage[] bananaFrames = new PImage[cols];
+
+  for (int i = 0; i < cols; i++) {
+    bananaFrames[i] = sheet.get(i * frameW, 0, frameW, frameH);
+  }
 
   EnemyFactory factory = new EnemyFactory();
-  banana = (Banana)factory.createEnemy("Banana", width / 4, height - 150,  bananaFrames); 
+  banana = (Banana) factory.createEnemy("Banana", width / 4, height - 500, bananaFrames);
 }
+
 
 void BananaDraw() {
   if (banana == null) {
@@ -37,13 +46,11 @@ void BananaDraw() {
     banana.update();
     banana.display();
   }
-  
+
   if (bananabullet != null ) {
     bananabullet.update();
     bananabullet.display();
-}
-
-
+  }
 }
 
 // Banana class
@@ -56,12 +63,12 @@ class Banana extends Enemy {
   int currentFrame = 0;     // Index of current frame
   int frameTimer = 0;       // Used to time switching frames
   int frameInterval = 10;   // Change frame every 10 draw() calls
-  
+
   boolean bananaShot = false;  //checking to see if the bullet is active
 
   Banana(float x, float y, EnemyType type, PImage[] availableImages) {
     super(x, y, type, availableImages); // Initialize Enemy superclass
-    frames = availableImages; 
+    frames = availableImages;
   }
 
   void follow(Play player) {
@@ -78,8 +85,8 @@ class Banana extends Enemy {
 
     //uses the float from the banana bullet inside of the bullet class.
     if ( !bananaShot ) {
-      bananabullet = new bananaBullet(width / 4, worm.pos.y - 100); 
-      
+      bananabullet = new bananaBullet(width / 4, worm.pos.y - 100);
+
       bananaShot = true;
     }
 
@@ -89,7 +96,7 @@ class Banana extends Enemy {
         (int) g.pos.y,
         (int) g.area.x,
         (int) g.area.y
-      );
+        );
 
       if (bananaRect.intersects(groundRect)) {
         y = g.pos.y - h + 1; // Snap banans to ground
@@ -103,7 +110,7 @@ class Banana extends Enemy {
     if (frameTimer >= frameInterval) {
       frameTimer = 0;
       currentFrame = (currentFrame + 1) % frames.length;
-    } 
+    }
   }
 
   void display() {
@@ -118,43 +125,42 @@ class Banana extends Enemy {
         (int) g.pos.y,
         (int) g.area.x,
         (int) g.area.y
-      );
+        );
       if (bananaRect.intersects(groundRect)) return true;
     }
     return false;
   }
 
- Rectangle getBounds() {
+  Rectangle getBounds() {
     return new Rectangle((int) x, (int) y, (int) w, (int) h);
   }
 }
 
 
 class bananaBullet {
-  
+
   float x, y;
   //float w = 10, h = 10;
   float speed = 18;
   //boolean active = false;
-  
+
   bananaBullet(float X, float Y) { //Holds the bullet
-    
+
     x = X;
     y = Y;
   }
-  
+
   void update() {
     //position increasing fromm the x
     x += speed;
   }
-  
+
   void display() {
     //rect for bullet
-    rect(x, y, 10, 10);   
+    rect(x, y, 10, 10);
   }
-  
- Rectangle getBounds() {
+
+  Rectangle getBounds() {
     return new Rectangle((int) x, (int) y, 10, 10);
   }
-  
 }
