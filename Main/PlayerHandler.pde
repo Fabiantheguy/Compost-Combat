@@ -39,8 +39,8 @@ void playerSetup() {
   player = new Player(width/15, height - 150);
   grass = new Ground(-1000, 625, 10000, 150);
   tree = new Tree(width, -1880, 200, 5000);
-  camPos = new PVector(0, 0);
-  camTarget = new PVector(0, 0);
+  camPos = new PVector(width - 1200, -740);
+  camTarget = new PVector(width - 1200, -740);
   allGrounds.add(grass);
   items.add(new Item(width - 750, 65, ItemType.HEALTH));
   items.add(new Item(700, 600, ItemType.FIRERATE));
@@ -135,19 +135,7 @@ void movementKeyReleased() {
 }
 
 void cameraDraw() {
-  // When player is near left edge camera stays into center of frame
-  if (player.x <= 50.0) {
-    camTarget.set(grass.pos.x, player.y - height/2 + player.h/2 - 400);
-  } else {
-    camTarget.set(player.x - width/2 + player.w/2, player.y - height/2 + player.h/2 - 400);
-  }
-
-  // When player is near right edge camera stays into center of frame
-  if (player.x >= 3000) {
-    camTarget.set(grass.area.y - 1050, worm.pos.y - height/2 - 400);
-  } else {
-    camTarget.set(worm.pos.x - width/2, worm.pos.y - height/2 - 400);
-  }
+  
 
   // Smooth interpolation toward the target camera position
   camPos.lerp(camTarget, 0.05); // Adjust 0.05 to tweak smoothing

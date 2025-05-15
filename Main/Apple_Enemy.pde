@@ -9,10 +9,6 @@ int lastDestroyedTime = -1; // -1 means no apple has died yet
 // Initialize the Apple and platform objects
 void appleSetup() {
   appleImage = loadImage("Apple.png");
-  apple = new Apple [3];
-  apple[0] = new Apple(width - 800, 80);
-  apple[1] = new Apple(0, 0);
-  apple[2] = new Apple(0, 0);
 }
 
 void appleDraw() {
@@ -50,11 +46,17 @@ class Apple {
   int currentFrame = 0;     // Index of current frame
   int frameTimer = 0;       // Used to time switching frames
   int frameInterval = 10;   // Change frame every 10 draw() calls
-  boolean isOnRightEdge = false, isOnLeftEdge = false; // detects if apple is on left or right edge                              
-  Apple(float x, float y) {
+  float rightEdge, leftEdge; // edge of platform      
+  boolean movingRight = true; // detects if the apple is moving right
+  Platform platform;
+  
+  Apple(float x, float y, Platform platform) {
     this.x = x;
     this.y = y;
-
+    this.platform = platform;
+    this.leftEdge = platform.x;
+    this.rightEdge = platform.x + platform.w;
+    
     // Load the four frames (make sure these files are in your "data" folder)
     frames = new PImage[4];
     frames[0] = loadImage("apple/Red.png");
@@ -64,26 +66,22 @@ class Apple {
   }
 
   void patrol() {
-    
-    // detects if the apple is either on the left edge or the right edge
-    for (Platform p : platforms){
-      if(x <= p.x){
-        isOnLeftEdge = true;
-      } else if (x - 20 >= p.x + p.w){
-        isOnRightEdge = true;
+    // if the boolean is true the apple moves right
+    if (movingRight){
+      x += speed;
+      // if the apple is on the right edge the apple no longer moves right
+      if(x >= rightEdge){
+        movingRight = false;
       }
-      
-      if(isOnLeftEdge){
-        x += speed;
-        isOnRightEdge = false;
-          if(isOnRightEdge){
-            x -= speed;
-            isOnLeftEdge = false;
-        
-        } 
-      } 
+      // if the apple is no longer moving right it moves to the left
+    } else if (!movingRight){
+      x -= speed;
+      // if the apple reaches the left edge it moves right again
+      if (x <= leftEdge){
+        movingRight = true;
+      }
     }
-    
+   
   }
 
   void update() {
@@ -113,7 +111,7 @@ class Apple {
         (int) p.x,
         (int) p.y,
         (int) p.w,
-        (int) p.y
+        (int) p.h
       );
       
       if (appleRect.intersects(platRect)) {

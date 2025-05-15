@@ -339,6 +339,11 @@ class Lvl1 {
     platforms[3] = new Platform(width + 200, -1350, 950, 20);
     platforms[4] = new Platform(width - 1000, -1300, 1000, 20);
     
+  apple = new Apple [3];
+  apple[0] = new Apple(width - 800, 80, platforms[0]);
+  apple[1] = new Apple(width - 1200, -740,platforms[1]);
+  apple[2] = new Apple(width + 200, -1390, platforms[3]);
+    
   }
 
   void run() {
