@@ -11,6 +11,7 @@ int invincibleDuration = 1000; // milliseconds of invincibility
 ArrayList<Item> items = new ArrayList<Item>();
 
 Play worm = new Play(1000, 610, 5); // spawn location
+
 // === Global key states ===
 boolean leftHeld = false;
 boolean rightHeld = false;
@@ -352,7 +353,6 @@ class Play {
   String gunCurrent = "ready";
   PVector pos, size, center;
   float speed, jumpVel, initJump, aimRad, bulletSpeed;
-  ArrayList<Bullet> bullets = new ArrayList<Bullet>();
   int bulletCd, fireRate, bulletLife;
   int baseFireRate = 150;
   int boostEndTime = 0;
@@ -360,17 +360,12 @@ class Play {
   int dashStart = 0;
   int dashTime = 200; // milliseconds
 
-  // instantiate upgrade dictionary
-  IntDict upgrades;
-
-  // A HashMap to hold all the possible states.
-  HashMap<String, PlayerState> stateMap;
-  
-  // player's current state
-  PlayerState currentState;
-  
-  // current vine that the entire play class can access, trust me i need this -nate
-  Vine currentVine;
+  // instantiate complex data
+  IntDict upgrades; // instantiate upgrade dictionary
+  HashMap<String, PlayerState> stateMap; // A HashMap to hold all the possible states.
+  PlayerState currentState; // player's current state
+  Vine currentVine; // current vine that the entire play class can access, trust me i need this -nate
+  BulletPool bPool = new BulletPool(); // object pool for the player's bullets
 
   // constructor
   Play(float x, float y, float s) {
@@ -447,14 +442,14 @@ class Play {
     }
 
     // bullet update
-    for (int i=0; i<bullets.size(); i++) {
+    for (Bullet bullet : bPool.allBullets) {
       // check if the bullet needs to be updated or deleted
-      Bullet bullet = bullets.get(i);
-      if (millis() - bullet.startTime >= bullet.lifetime) {
-        bullets.remove(i);
-      } else {
-
-        bullet.update();
+      if (bullet.active) {
+        if (millis() - bullet.startTime >= bullet.lifetime) {
+          bullet.destroy();
+        } else {
+          bullet.update();
+        }
       }
     }
 

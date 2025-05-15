@@ -265,7 +265,7 @@ class FiringState implements PlayerState {
 
     // check if bullet cooldown has elapsed
     if (millis() - player.bulletCd >= player.fireRate) {
-      player.bullets.add(new Bullet(player.aimRad, player.bulletSpeed, player.center, player.bulletLife));
+      player.bPool.allBullets[player.bPool.nextFree].ready(player.aimRad, player.bulletSpeed, player.center, player.bulletLife);
       player.bulletCd = millis();
     }
 

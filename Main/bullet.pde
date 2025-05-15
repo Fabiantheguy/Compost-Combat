@@ -4,6 +4,7 @@ class Bullet {
   PVector pos;
   int lifetime, startTime, myID, nextBullet;
   BulletPool pool;
+  boolean active = false;
   
   Bullet(float d, float s, PVector p, int l) {
     dirRad = d;
@@ -32,6 +33,7 @@ class Bullet {
     pos = new PVector(p.x, p.y);
     lifetime = l;
     startTime = millis();
+    active = true;
     pool.nextFree = nextBullet; // sets the next bullet in line to be called by the pool
   }
   
@@ -54,11 +56,12 @@ class Bullet {
       orange = null;  // Destroy the orange
       // Optionally, handle bullet deletion after collision if needed
     }
-
-    // return the bullet to the free list when the time is over
-    if (millis() - startTime >= lifetime) {
-      pool.nextFree = myID; // this allows the bullet to set itself as the next free one
-    }
+  }
+  
+  // runs when the bullet is destroyed
+  void destroy(){
+    active = false;
+    pool.nextFree = myID; // this allows the bullet to set itself as the next free one
   }
 
   Rectangle getBounds() {
