@@ -69,12 +69,15 @@ class Settings {
 
       if (startClicked && mousePressed) {
         screen = "start";
+        cameFromGameScr = false;
         mousePressed = false;
       }
       if (mapClicked && mousePressed) {
+        cameFromGameScr = false;
         screen= "map";
       }
       if (exitClicked && mousePressed) {
+        cameFromGameScr = false;
         fill(gray, 85);
         stroke(gray);
         strokeCap(ROUND);
@@ -87,9 +90,11 @@ class Settings {
       }
       if (onX() && mousePressed) {
         screen = "game";
+        cameFromGameScr = false;
       }
       if (onX() && mousePressed && screen =="map") {
         screen = "settings";
+        cameFromGameScr = false;
         mousePressed = false;
       }
     }
@@ -188,6 +193,7 @@ void settingsButton() {
 
     if (mousePressed) {
       circleCol = #0208F5;
+      cameFromGameScr = (screen.equals("game")); // Only true if coming from main game screen
       screen = "settings";
     }
   }

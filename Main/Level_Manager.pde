@@ -10,6 +10,7 @@
 // SETTING lEVEL;
 boolean playerWins = false;
 boolean Level1, Level2, Level3; //Start game on LVL 1
+Boolean cameFromGameScr = false;
 Lvl1 lvl1;
 Lvl2 lvl2;
 Lvl3 lvl3;
