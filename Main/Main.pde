@@ -28,12 +28,16 @@ lvlSetup();
 
 
 void draw() {
+  if(screen.equals("loading")){
+    loadingScreen();
+    return;
+  }
+  
   background(50,255,50);
 
   
   if (screen == "game") {
   pushMatrix();
-  
   soundSetup();
   cameraDraw();
   grassDraw();
