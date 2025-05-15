@@ -8,7 +8,7 @@ PImage bananaImage;
 //int respawnTime = 3000; // 3 seconds to respawn the banana
 //int lastDestroyedTime = -1; // -1 means no banans has died yet
 
-// Initialize the Banana and platform objects
+// Initialize the Banana objects
 void BananaSetup() {
   bananaImage = loadImage("Banana.png");
   banana = new Banana(width / 4, worm.pos.y - 100);
