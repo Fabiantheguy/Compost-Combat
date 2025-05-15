@@ -266,6 +266,7 @@ class Player {
     ySpeed = 0;
   }
 }
+
 void playSetup() {
   lastAim[0] = "none";
   lastAim[1] = "none";
@@ -313,23 +314,24 @@ void playerDraw() {
     if (!invincible && worm.getBounds().intersects(apple.getBounds())) {
       worm.takeDmg(1);
     }
+  }
     
-    if (orange != null) {
-      // Handle collision with orange
-      if (!invincible && worm.getBounds().intersects(orange.getBounds())) {
-        orange.orangeStun();
-        worm.takeDmg(3);
-        
-      }
+  if (orange != null) {
+    // Handle collision with orange
+    if (!invincible && worm.getBounds().intersects(orange.getBounds())) {
+      orange.orangeStun();
+      worm.takeDmg(3);
+      
     }
+  }
  
-    if (bananabullet != null) {
-      // Handle collision with apple
-      if (!invincible && worm.getBounds().intersects(bananabullet.getBounds())) {
-        worm.takeDmg(2);
-        
-      }
+  if (bananabullet != null) {
+    // Handle collision with apple
+    if (!invincible && worm.getBounds().intersects(bananabullet.getBounds())) {
+      worm.takeDmg(2);
+      
     }
+  }
 
   // Handle invincibility timer
 
@@ -338,7 +340,6 @@ void playerDraw() {
       invincible = false;
     }
   }
-  //}
 }
 
 
