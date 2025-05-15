@@ -43,17 +43,19 @@ class Settings {
       rect(760, 745, 500, 20);
 
       fill(black);
-      rect(x, 725, 10, 60);
+      rect(constrain(x, 800, 1301), 725, 10, 60);
 
       boolean onVolumeBar = mouseX > 760 && mouseX < 1250&&
         mouseY >700 && mouseY <800;
 
       if (onVolumeBar) {
+        fill(white);
+        text(int(amp) + "%", constrain(x, 800, 1301) - 50, 720);
         if (mousePressed) {
-          x=mouseX;
-          amp = mouseX/16;
-          if (mouseX>1300) {
-            mouseX=1300;
+          x=constrain(mouseX, 800, 1301);;
+          amp = map(mouseX, 800, 1301, 0, 101);
+          if (mouseX>1301) {
+            mouseX=1301;
           }
         }
       }
@@ -99,9 +101,12 @@ class Settings {
       fill(gray);
       settingsWindow();
       fill(black);
-      textSize(72);
-      text("MAP",
-        width/3, height/4);
+      textSize(36);
+      text("Map", width/2.075, height/5);
+      text("Start\nPoint", width / 2 - 37, 350);
+      text("Level #1", width / 2 - 362.5, 550);
+      text("Level #2", width / 2 + 237.5, 550);
+      text("Level #3", width / 2 - 462.5, 750);
         //Draw all Node connections, that are behind nodes
       for (LevelNode node : nodes) {
         node.drawConnections();

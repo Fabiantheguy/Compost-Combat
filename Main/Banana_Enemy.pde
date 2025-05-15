@@ -2,9 +2,10 @@
 Banana banana;
 bananaBullet bananabullet;
 
+
 PImage bananaImage;
 
-//int respawnTime = 3000; // 3 seconds to respawn the apple
+//int respawnTime = 3000; // 3 seconds to respawn the banana
 //int lastDestroyedTime = -1; // -1 means no banans has died yet
 
 // Initialize the Banana objects
@@ -37,10 +38,11 @@ void BananaDraw() {
     banana.display();
   }
   
-  if (bullet != null) {
+  if (bananabullet != null ) {
     bananabullet.update();
     bananabullet.display();
 }
+
 
 }
 
@@ -101,8 +103,7 @@ class Banana extends Enemy {
     if (frameTimer >= frameInterval) {
       frameTimer = 0;
       currentFrame = (currentFrame + 1) % frames.length;
-    }
-     
+    } 
   }
 
   void display() {
@@ -123,7 +124,7 @@ class Banana extends Enemy {
     return false;
   }
 
-  Rectangle getBounds() {
+ Rectangle getBounds() {
     return new Rectangle((int) x, (int) y, (int) w, (int) h);
   }
 }
@@ -133,7 +134,7 @@ class bananaBullet {
   
   float x, y;
   //float w = 10, h = 10;
-  float speed = 8;
+  float speed = 18;
   //boolean active = false;
   
   bananaBullet(float X, float Y) { //Holds the bullet
@@ -150,6 +151,10 @@ class bananaBullet {
   void display() {
     //rect for bullet
     rect(x, y, 10, 10);   
+  }
+  
+ Rectangle getBounds() {
+    return new Rectangle((int) x, (int) y, 10, 10);
   }
   
 }
