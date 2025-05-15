@@ -25,6 +25,11 @@ class Bullet {
       apple = null;  // Destroy the apple
       // Optionally, handle bullet deletion after collision if needed
     }
+    
+    if (orange != null && getBounds().intersects(orange.getBounds())) {
+      orange = null;  // Destroy the orange
+      // Optionally, handle bullet deletion after collision if needed
+    }
 
     // Optionally delete the bullet when lifetime is over
     if (millis() - startTime >= lifetime) {

@@ -2,20 +2,18 @@
 Banana banana;
 bananaBullet bananabullet;
 
+
 PImage bananaImage;
 
-//int respawnTime = 3000; // 3 seconds to respawn the apple
+//int respawnTime = 3000; // 3 seconds to respawn the banana
 //int lastDestroyedTime = -1; // -1 means no banans has died yet
 
 // Initialize the Banana and platform objects
 void BananaSetup() {
-  PImage[] bananaFrames = new PImage[]{
-    // loadImage("Banana.png")
-      loadImage("apple/Red.png"),
-  }; 
+  bananaImage = loadImage("Banana.png");
+  banana = new Banana(width / 4, worm.pos.y - 100);
 
-  EnemyFactory factory = new EnemyFactory();
-  banana = (Banana)factory.createEnemy("Banana", width / 4, height - 150,  bananaFrames); 
+
 }
 
 void BananaDraw() {
@@ -37,15 +35,19 @@ void BananaDraw() {
     banana.display();
   }
   
-  if (bullet != null) {
+  if (bananabullet != null ) {
     bananabullet.update();
     bananabullet.display();
 }
 
+
 }
 
 // Banana class
-class Banana extends Enemy {
+class Banana {
+ 
+  float x, y;               // Position
+  float w = 40, h = 40;     // Size
   float speed = 1;
   float ySpeed = 0;
   float gravity = 0.8;
@@ -57,9 +59,16 @@ class Banana extends Enemy {
   
   boolean bananaShot = false;  //checking to see if the bullet is active
 
-  Banana(float x, float y, EnemyType type, PImage[] availableImages) {
-    super(x, y, type, availableImages); // Initialize Enemy superclass
-    frames = availableImages; 
+  Banana(float x, float y) {
+    this.x = x;
+    this.y = y;
+
+    // Load the four frames (make sure these files are in your "data" folder)
+    frames = new PImage[1];
+    frames[0] = loadImage("Banana/Banana.png");
+    //frames[1] = loadImage("banana/Teal.png");
+    //frames[2] = loadImage("banana/Orange.png");
+    //frames[3] = loadImage("banana/Blue.png");
   }
 
   void follow(Play player) {
@@ -101,8 +110,7 @@ class Banana extends Enemy {
     if (frameTimer >= frameInterval) {
       frameTimer = 0;
       currentFrame = (currentFrame + 1) % frames.length;
-    }
-     
+    } 
   }
 
   void display() {
@@ -123,7 +131,7 @@ class Banana extends Enemy {
     return false;
   }
 
-  Rectangle getBounds() {
+ Rectangle getBounds() {
     return new Rectangle((int) x, (int) y, (int) w, (int) h);
   }
 }
@@ -133,7 +141,7 @@ class bananaBullet {
   
   float x, y;
   //float w = 10, h = 10;
-  float speed = 8;
+  float speed = 18;
   //boolean active = false;
   
   bananaBullet(float X, float Y) { //Holds the bullet
@@ -150,6 +158,10 @@ class bananaBullet {
   void display() {
     //rect for bullet
     rect(x, y, 10, 10);   
+  }
+  
+ Rectangle getBounds() {
+    return new Rectangle((int) x, (int) y, 10, 10);
   }
   
 }
