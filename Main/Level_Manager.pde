@@ -10,6 +10,10 @@
 // SETTING lEVEL;
 boolean playerWins = false;
 boolean Level1, Level2, Level3; //Start game on LVL 1
+boolean cameFromGameScr = false;
+boolean showLoading = false;
+int loadingStartTime = 0;
+String levelToLoad = "";
 Lvl1 lvl1;
 Lvl2 lvl2;
 Lvl3 lvl3;
@@ -287,6 +291,48 @@ void initLevelNodes() {
   nodes.add(child1);
   nodes.add(child2);
   nodes.add(child3);
+}
+
+void loadingScreen() {
+  background(0);
+  fill(255);
+  textSize(72);
+  text("Loading...\nPlease Wait", width / 2.5, height / 2 - 100);
+  
+  // Draws a loading Progress bar
+  float barWidth = 600;
+  float barHeight = 40;
+  float barX = width / 2 - barWidth / 2;
+  float barY = height / 2;
+
+  fill(50);
+  stroke(255);
+  strokeWeight(3);
+  rect(barX, barY, barWidth, barHeight, 10);
+
+  // Progress is based on how much time has passed
+  float progress = constrain((millis() - loadingStartTime) / 2000.0, 0, 1);
+  fill(255, 0, 0);
+  noStroke();
+  rect(barX, barY, barWidth * progress, barHeight, 10);
+
+  // Once the progress bar is filled, It will load the desired unlocked level that was chosen
+  if (progress >= 1.0)
+
+  if (millis() - loadingStartTime > 2000) {
+    screen = "game";
+    showLoading = false;
+
+    // Set level flags
+    Level1 = Level2 = Level3 = false;
+    if (levelToLoad.equals("Level1")) Level1 = true;
+    else if (levelToLoad.equals("Level2")) Level2 = true;
+    else if (levelToLoad.equals("Level3")) Level3 = true;
+
+    lvlSetup();
+    screen = "game";
+    showLoading = false;
+  }
 }
 
 /*_____________________________________________

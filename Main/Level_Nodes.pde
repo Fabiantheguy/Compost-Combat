@@ -55,14 +55,15 @@ class LevelNode {
       int index = nodes.indexOf(this);
 
       
-      // Set level flags
-      Level1 = Level2 = Level3 = false;
-      if (index == 1) Level1 = true;
-      else if (index == 2) Level2 = true;
-      else if (index == 3) Level3 = true;
+      // Assigning which level to load based on which gets chosen and is unlocked
+      if (index == 1) levelToLoad = "Level1";
+      else if (index == 2) levelToLoad = "Level2";
+      else if (index == 3) levelToLoad = "Level3";
 
-      lvlSetup();   
-      screen = "game";   // Switch to game screen
+      // Trigger loading screen
+      showLoading = true;
+      loadingStartTime = millis();
+      screen = "loading";
       mousePressed = false;
     }
 
