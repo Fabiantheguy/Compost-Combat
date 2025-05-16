@@ -21,9 +21,10 @@ class LevelNode {
   }
   //Determines the color of node based on the node's current state
   color getColorForState(String s) {
-    if (s.equals("locked")) return color(0, 0, 0); // Black for locked
-    if (s.equals("unlocked")) return color(255, 0, 0); // Red for unlocked/New
-    if (s.equals("cleared")) return color(0, 200, 255);// Blue for cleared/Done
+    if (s.equals("Spawn")) return color(0, 255, 0);// Green for the Spawn Node of the Map Screen
+    if (s.equals("Locked")) return color(0, 0, 0); // Black for locked
+    if (s.equals("Unlocked")) return color(255, 0, 0); // Red for unlocked/New
+    if (s.equals("Completed")) return color(0, 200, 255);// Blue for cleared/Done
     return color(0); // will default to color (Black) for unknown states
   }
   //Transition the nodes current color towards it target color smoothly
@@ -48,9 +49,24 @@ class LevelNode {
   //Checks if a node was clicked
   void checkClick() {
     if (isMouseOver()) {
-      //Toggles state when clicked: Locked -> Unlocked -> Cleared
-      if (state.equals("locked")) state = "unlocked";
-      else if (state.equals("unlocked")) state = "cleared";
+      //If a Level has the state of "Unlocked" and is clicked on, it checks and loads a level based on its index number.  
+      //EX. (If Level one has the "Unlocked" state and the index number equals 1 then it loads level one only)
+     if (state.equals("Unlocked")) {
+      int index = nodes.indexOf(this);
+
+      
+      // Assigning which level to load based on which gets chosen and is unlocked
+      if (index == 1) levelToLoad = "Level1";
+      else if (index == 2) levelToLoad = "Level2";
+      else if (index == 3) levelToLoad = "Level3";
+
+      // Trigger loading screen
+      showLoading = true;
+      loadingStartTime = millis();
+      screen = "loading";
+      mousePressed = false;
+    }
+
       //Updates target color for transition
       targetColor = getColorForState(state);
     }

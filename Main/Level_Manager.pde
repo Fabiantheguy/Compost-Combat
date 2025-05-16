@@ -8,7 +8,12 @@
  MAP
  */
 // SETTING lEVEL;
-boolean Level1=true, Level2, Level3; //Start game on LVL 1
+boolean playerWins = false;
+boolean Level1, Level2, Level3; //Start game on LVL 1
+boolean cameFromGameScr = false;
+boolean showLoading = false;
+int loadingStartTime = 0;
+String levelToLoad = "";
 Lvl1 lvl1;
 Lvl2 lvl2;
 Lvl3 lvl3;
@@ -168,7 +173,7 @@ void saveScreen() {
           typingName = true;
         }
         if (slotNamed[i]) {
-          screen = "game";
+          screen = "map";
         }
         if (saveSlotNames[i].equals("Empty Slot")) {
           saveSlotNames[i] = "";
@@ -197,7 +202,7 @@ void saveKeyPressed() {
       typingName = false;
       if (saveSlotNames[activeSlot].trim().length() > 0) {
         slotNamed[activeSlot] = true;
-        screen = "game";
+        screen = "map";
         saveToFile(); // Save to JSON
       }
     } else if (key != CODED) {
@@ -273,19 +278,62 @@ void loadSaveData() {
 void initLevelNodes() {
   nodes = new ArrayList<LevelNode>();
   //Created a example level structure(Change if need be)
-  LevelNode root = new LevelNode(width / 2, 300, "cleared");
-  LevelNode child1 = new LevelNode(width / 2 - 300, 500, "unlocked");
-  LevelNode child2 = new LevelNode(width / 2 + 300, 500, "locked");
-  LevelNode child3 = new LevelNode(width / 2 - 400, 700, "locked");
-
+  LevelNode root = new LevelNode(width / 2, 300, "Spawn");
+  LevelNode child1 = new LevelNode(width / 2 - 300, 500, "Unlocked");
+  LevelNode child2 = new LevelNode(width / 2 + 300, 500, "Locked");
+  LevelNode child3 = new LevelNode(width / 2 - 400, 700, "Locked");
+  //If you want to change what level is displayed, change the Level state located in the quotation marks from "Locked" To "Unlocked". 
+  //Then when the game is ran, pick the level you want and it should display all the elements shown in that level based on dedicated level class setup. 
   root.addChild(child1);
-  root.addChild(child2);
-  child1.addChild(child3);
+  child1.addChild(child2);
+  child2.addChild(child3);
 
   nodes.add(root);
   nodes.add(child1);
   nodes.add(child2);
   nodes.add(child3);
+}
+
+void loadingScreen() {
+  background(0);
+  fill(255);
+  textSize(72);
+  text("Loading...\nPlease Wait", width / 2.5, height / 2 - 100);
+  
+  // Draws a loading Progress bar
+  float barWidth = 600;
+  float barHeight = 40;
+  float barX = width / 2 - barWidth / 2;
+  float barY = height / 2;
+
+  fill(50);
+  stroke(255);
+  strokeWeight(3);
+  rect(barX, barY, barWidth, barHeight, 10);
+
+  // Progress is based on how much time has passed
+  float progress = constrain((millis() - loadingStartTime) / 2000.0, 0, 1);
+  fill(255, 0, 0);
+  noStroke();
+  rect(barX, barY, barWidth * progress, barHeight, 10);
+
+  // Once the progress bar is filled, It will load the desired unlocked level that was chosen
+  if (progress >= 1.0)
+
+  if (millis() - loadingStartTime > 2000) {
+    screen = "game";
+    showLoading = false;
+
+    // Set level flags
+    Level1 = Level2 = Level3 = false;
+    if (levelToLoad.equals("Level1")) Level1 = true;
+    else if (levelToLoad.equals("Level2")) Level2 = true;
+    else if (levelToLoad.equals("Level3")) Level3 = true;
+
+    lvlSetup();
+    screen = "game";
+    showLoading = false;
+  }
 }
 
 /*_____________________________________________
@@ -319,6 +367,26 @@ void lvlChanger() {
     Level2=false;
     lvl3.run();
   }
+  if (playerWins) {
+  // Marks current level as Completed if the player completed it
+  for (int i = 1; i < nodes.size(); i++) {
+    if ((Level1 && i == 1) || (Level2 && i == 2) || (Level3 && i == 3)) {
+      nodes.get(i).state = "Completed";
+      nodes.get(i).targetColor = nodes.get(i).getColorForState("Completed");
+
+      if (i + 1 < nodes.size()) {
+        nodes.get(i + 1).state = "Unlocked";
+        nodes.get(i + 1).targetColor = nodes.get(i + 1).getColorForState("Unlocked");
+      }
+      break;
+    }
+  }
+
+  Level1 = Level2 = Level3 = false;
+  playerWins = true;
+  screen = "map";
+}
+
 }
 
 /*_____________________________________________

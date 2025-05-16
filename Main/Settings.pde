@@ -69,12 +69,15 @@ class Settings {
 
       if (startClicked && mousePressed) {
         screen = "start";
+        cameFromGameScr = false;
         mousePressed = false;
       }
       if (mapClicked && mousePressed) {
+        cameFromGameScr = false;
         screen= "map";
       }
       if (exitClicked && mousePressed) {
+        cameFromGameScr = false;
         fill(gray, 85);
         stroke(gray);
         strokeCap(ROUND);
@@ -87,9 +90,11 @@ class Settings {
       }
       if (onX() && mousePressed) {
         screen = "game";
+        cameFromGameScr = false;
       }
       if (onX() && mousePressed && screen =="map") {
         screen = "settings";
+        cameFromGameScr = false;
         mousePressed = false;
       }
     }
@@ -101,9 +106,12 @@ class Settings {
       fill(gray);
       settingsWindow();
       fill(black);
-      textSize(72);
-      text("MAP",
-        width/3, height/4);
+      textSize(36);
+      text("Map", width/2.075, height/5);
+      text("Start\nPoint", width / 2 - 37, 350);
+      text("Level #1", width / 2 - 362.5, 550);
+      text("Level #2", width / 2 + 237.5, 550);
+      text("Level #3", width / 2 - 462.5, 750);
         //Draw all Node connections, that are behind nodes
       for (LevelNode node : nodes) {
         node.drawConnections();
@@ -112,6 +120,8 @@ class Settings {
       for (LevelNode node : nodes) {
         node.display();
       }
+      
+      drawLegend();
 
       exitButton();
       if (onX() && mousePressed) {
@@ -121,6 +131,48 @@ class Settings {
     }
   }
 }
+void drawLegend() {
+  float legendX = 100;
+  float legendY = height - 250;
+  float boxW = 300;
+  float boxH = 245;
+  float rowHeight = 50;
+
+  fill(white, 230);
+  stroke(black);
+  strokeWeight(2);
+  rect(legendX, legendY, boxW, boxH, 10);
+
+  textSize(24);
+  fill(black);
+  text("Map Legend/Key:", legendX + 20, legendY + 30);
+  
+  // Start
+  fill(0,255,0);
+  ellipse(legendX + 30, legendY + 60, 20, 20);
+  fill(black);
+  text("= Spawn", legendX + 60, legendY + 67.5);
+
+  // Locked
+  fill(0);
+  ellipse(legendX + 30, legendY + 108, 20, 20);
+  fill(black);
+  text("= Locked", legendX + 60, legendY + 116);
+
+  // Unlocked
+  fill(255, 0, 0);
+  ellipse(legendX + 30, legendY + 107 + rowHeight, 20, 20);
+  fill(black);
+  text("= Unlocked", legendX + 60, legendY + 115 + rowHeight);
+
+  // Completed
+  fill(0, 200, 255);
+  ellipse(legendX + 30, legendY + 110 + rowHeight * 2, 20, 20);
+  fill(black);
+  text("= Completed", legendX + 60, legendY + 117.5 + rowHeight * 2);
+}
+
+
 void settingsButton() {
   boolean onSettings = mouseX>settings.rectX-10 && mouseX<settings.rectX+settings.rectX2 &&
     mouseY>settings.rectY-200 && mouseY< settings.rectY+settings.rectY2;
@@ -141,6 +193,7 @@ void settingsButton() {
 
     if (mousePressed) {
       circleCol = #0208F5;
+      cameFromGameScr = (screen.equals("game")); // Only true if coming from main game screen
       screen = "settings";
     }
   }

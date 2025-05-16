@@ -29,12 +29,16 @@ lvlSetup();
 
 
 void draw() {
+  if(screen.equals("loading")){
+    loadingScreen();
+    return;
+  }
+  
   background(50,255,50);
 
   
   if (screen == "game") {
   pushMatrix();
-  
   soundSetup();
   cameraDraw();
   grassDraw();
@@ -56,6 +60,20 @@ void draw() {
 }
 
 void keyPressed() {
+    if (key == ESC) {
+    key = 0; // Prevent default ESC behavior of closing out of the game
+
+    // Toggle between both game and settings screens if ESC key is pressed only in the game screen
+    if (screen.equals("game")) {
+      cameFromGameScr = true;
+      screen = "settings";
+    } else if (screen.equals("settings")&& cameFromGameScr) {
+      screen = "game";
+      cameFromGameScr = false;
+    }
+
+    return;
+  }
   aimKeyPressed();
   movementKeyPressed();
   saveKeyPressed();
