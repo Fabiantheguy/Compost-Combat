@@ -1,11 +1,12 @@
 // class for moving, damage-dealing projectiles
 class Bullet {
-  float dirRad, speed;
+  float dirRad, speed, momentumX, momentumY;
   PVector pos;
   int lifetime, startTime, myID, nextBullet;
   BulletPool pool;
   boolean active = false;
   
+  // old pre-object pool constructor
   Bullet(float d, float s, PVector p, int l) {
     dirRad = d;
     speed = s;
@@ -27,10 +28,12 @@ class Bullet {
   }
   
   // set up bullet from object pool to be fired
-  void ready(float d, float s, PVector p, int l) {
+  void ready(float d, float s, float mX, float mY, PVector p, int l) {
     dirRad = d;
     speed = s;
     pos = new PVector(p.x, p.y);
+    momentumX = mX; // sets bullet momentum to player momentum at time of shooting
+    momentumY = mY;
     lifetime = l;
     startTime = millis();
     active = true;
@@ -38,8 +41,10 @@ class Bullet {
   }
   
   void update() {
-    this.pos.x += (this.speed * sin(this.dirRad));
-    this.pos.y -= (this.speed * cos(this.dirRad));
+    pos.x += (this.speed * sin(this.dirRad));
+    pos.x += momentumX;
+    pos.y -= (this.speed * cos(this.dirRad));
+    pos.y -= momentumY;
     
     // draw bullet
     noStroke();
