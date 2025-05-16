@@ -17,15 +17,18 @@ class WalkState implements PlayerState {
 
   // Handles movement logic in the walking state 
   public void update(Play player) {
-  if (spacePressed && player.upgrades.get("dash") > 0){ // check for dash upgrade
+    if (spacePressed && player.upgrades.get("dash") > 0){ // check for dash upgrade
       player.dashStart = millis();
       player.movCurrent = "dash";
     } else if (player.onAnyGround()) {
-      if (leftHeld) {
+      if (leftHeld && !rightHeld) {
         player.pos.x -= player.speed;
-      }
-      if (rightHeld) {
+        player.checkMomentum((player.speed*-1), 0);
+      } else if (rightHeld && !leftHeld) {
         player.pos.x += player.speed;
+        player.checkMomentum(player.speed, 0);
+      } else {
+        player.checkMomentum(0, 0);
       }
       if (upPressed) {
         player.jumpVel = player.initJump;
@@ -34,7 +37,7 @@ class WalkState implements PlayerState {
         player.movCurrent = "duck";
       }
     } else {
-     player.jumpVel = 0;
+      player.jumpVel = 0;
       player.movCurrent = "jump"; // causes player to fall if they walk off a platform edge
     }
     
@@ -47,7 +50,7 @@ class WalkState implements PlayerState {
      if (!invincible || (millis() / 100) % 2 == 0) {
       rect(player.pos.x, player.pos.y, player.size.x, player.size.y);
     }
-     println("display walk state");
+    // println("display walk state");
   } 
 }
 
@@ -64,11 +67,14 @@ class JumpState implements PlayerState {
     player.pos.y -= player.jumpVel;
     player.jumpVel -= 0.5;
 
-    if (leftHeld) {
+    if (leftHeld && !rightHeld) {
       player.pos.x -= (player.speed * 0.6);
-    }
-    if (rightHeld) {
+      player.checkMomentum((player.speed*-0.6), 0);
+    } else if (rightHeld && !leftHeld) {
       player.pos.x += (player.speed * 0.6);
+      player.checkMomentum((player.speed*0.6), 0);
+    } else {
+      player.checkMomentum(0, 0); // replace 0s in second input for all of these
     }
 
     // Use collision detection instead of hardcoded Y
@@ -86,7 +92,7 @@ class JumpState implements PlayerState {
       player.dashStart = millis();
       player.movCurrent = "dash";
     }
-    println("update jump state");
+    // println("update jump state");
   }
   
   // Handles player display while jumping 
@@ -94,7 +100,7 @@ class JumpState implements PlayerState {
     if (!invincible || (millis() / 100) % 2 == 0) {
       rect(player.pos.x, player.pos.y, player.size.x * 0.875, player.size.y * 1.125);
     }
-    println("display jump state");
+    // println("display jump state");
   }
 }
 
@@ -112,11 +118,14 @@ class DuckState implements PlayerState {
       player.dashStart = millis();
       player.movCurrent = "dash";
     } else if (player.onAnyGround()) {
-      if (leftHeld) {
+      if (leftHeld && !rightHeld) {
         player.pos.x -= (player.speed*0.5);
-      }
-      if (rightHeld) {
+        player.checkMomentum((player.speed*-0.5), 0);
+      } else if (rightHeld && !leftHeld) {
         player.pos.x += (player.speed*0.5);
+        player.checkMomentum((player.speed*0.5), 0);
+      } else {
+        player.checkMomentum(0, 0);
       }
       if (downHeld == false) {
         player.movCurrent = "walk";
@@ -152,20 +161,23 @@ class ClimbState implements PlayerState {
       }
       player.movCurrent = "jump";
     } else {
-      if (upPressed) {
+      if (upPressed && !downHeld) {
         if(player.currentVine.isOnVine(player)){
           player.pos.y -= (player.speed * 0.6);
+          player.checkMomentum(0, (player.speed * -0.6));
         } else {
           player.jumpVel = player.initJump;
           player.movCurrent = "jump";
         }
-      }
-      if (downHeld) {
+      } else if (downHeld && !upPressed) {
         if(player.onAnyGround()){
           player.movCurrent = "walk";
         } else {
           player.pos.y += (player.speed * 0.6);
+          player.checkMomentum(0, (player.speed * 0.6));
         }
+      } else {
+        player.checkMomentum(0, 0);
       }
     }
   }
@@ -188,8 +200,10 @@ class DashState implements PlayerState {
   public void update(Play player) {
      if (facingRight){
       player.pos.x += (player.speed*2.5);
+      player.checkMomentum((player.speed*2.5), 0);
     } else {
       player.pos.x -= (player.speed*2.5);
+      player.checkMomentum((player.speed*-2.5), 0);
     }
     if (millis() - player.dashStart >= player.dashTime){
       player.movCurrent = "walk";
@@ -265,7 +279,8 @@ class FiringState implements PlayerState {
 
     // check if bullet cooldown has elapsed
     if (millis() - player.bulletCd >= player.fireRate) {
-      player.bPool.allBullets[player.bPool.nextFree].ready(player.aimRad, player.bulletSpeed, player.center, player.bulletLife);
+      player.bPool.allBullets[player.bPool.nextFree].ready(player.aimRad, player.bulletSpeed, player.momentumX,
+                                                           player.momentumY, player.center, player.bulletLife);
       player.bulletCd = millis();
     }
 

@@ -23,8 +23,10 @@ boolean leftAimed = false;
 boolean rightAimed = false;
 boolean facingRight = true; // for dash
 boolean spacePressed = false;
+boolean movPressed = false; // for dirty flag
 String[] lastAim = new String[4];
 boolean onSurface = false;  // Whether standing on platform or ground
+int[] movKeyCodes = {87, 65, 83, 68, 32}; // all key codes used in movement
 
 /*
  This tab features a simple player that is to be used for testing enemies.
@@ -53,21 +55,25 @@ void playerSetup() {
 void movementKeyPressed() {
   // If 'A' or 'a' is pressed, move the player left
   if (key == 'a' || key == 'A') {
+    if(!leftHeld) worm.dirtyMomentum = true; // when held bool changes, dirty flag turns on
     player.left = true;
     leftHeld = true;
     facingRight = false;
   }
   // If 'D' or 'd' is pressed, move the player right
   if (key == 'd' || key == 'D') {
+    if(!rightHeld) worm.dirtyMomentum = true; // when held bool changes, dirty flag turns on
     player.right = true;
     rightHeld = true;
     facingRight = true;
   }
   if (key == 's' || key == 'S') {
+    if(!downHeld) worm.dirtyMomentum = true; // when held bool changes, dirty flag turns on
     downHeld = true;
   }
   // If w is pressed and the player is on the platform, make the player jump
   if (key == 'w' || key == 'W') {
+    if(!upPressed) worm.dirtyMomentum = true; // when held bool changes, dirty flag turns on
     player.jump();
     upPressed = true;
   }
@@ -82,6 +88,7 @@ void movementKeyPressed() {
       }
     }
   }
+  
   // temp cheat code to upgrade dash (1 key)
   if (keyCode == 49) {
     if (worm.upgrades.get("dash") < 2) {
@@ -135,6 +142,14 @@ void movementKeyReleased() {
   }
   if (keyCode == 32) {
     spacePressed = false;
+  }
+  
+  // activates dirty flag if any movement key is pressed
+  for(int val : movKeyCodes){
+    if (keyCode == val) {
+      worm.dirtyMomentum = true;
+      break;
+    }
   }
 }
 
@@ -352,13 +367,14 @@ class Play {
   String movCurrent = "walk";
   String gunCurrent = "ready";
   PVector pos, size, center;
-  float speed, jumpVel, initJump, aimRad, bulletSpeed;
+  float speed, jumpVel, initJump, aimRad, bulletSpeed, momentumX, momentumY;
   int bulletCd, fireRate, bulletLife;
   int baseFireRate = 150;
   int boostEndTime = 0;
-  boolean boosted = false;
+  boolean boosted = false, dirtyMomentum = true;
   int dashStart = 0;
   int dashTime = 200; // milliseconds
+  // int test = 0; // temporary while i test dirty flag -nate
 
   // instantiate complex data
   IntDict upgrades; // instantiate upgrade dictionary
@@ -373,8 +389,10 @@ class Play {
     pos = new PVector(x, y);
     size = new PVector(40, 40);
     center = new PVector(pos.x + (size.x/2), pos.y + (size.y/2));
+    momentumX = 0;
+    momentumY = 0;
 
-  // Create a HashMap to store different movement states 
+    // Create a HashMap to store different movement states 
     stateMap = new HashMap<String, PlayerState>(); //<>//
     // Instantiate and store various player states
     // These states must be defined elsewhere as classes implementing PlayerState
@@ -535,6 +553,17 @@ class Play {
   void changeState(String newKey) {
     if (stateMap.containsKey(newKey)) {
       currentState = stateMap.get(newKey);
+    }
+  }
+  
+  // momentum check function
+  void checkMomentum(float mX, float mY){
+    if(dirtyMomentum){
+      momentumX = mX;
+      momentumY = mY;
+      dirtyMomentum = false;
+      // test++;
+      // println(test + " dirty flags triggered");
     }
   }
 }
