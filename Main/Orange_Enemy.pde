@@ -1,7 +1,7 @@
-// Secluded variables for the enemy (orange), and platform //<>// //<>//
+// Secluded variables for the enemy (orange), and platform //<>// //<>// //<>//
 Orange orange;
 
-PImage orangeImage;
+PImage spriteSheetOrange = loadImage("Orange.png");
 
 int orangeRespawnTime = 3000; // 3 seconds to respawn the apple
 int orangeLastDestroyedTime = -1; // -1 means no apple has died yet
@@ -9,7 +9,6 @@ int orangeLastDestroyedTime = -1; // -1 means no apple has died yet
 
 // Initialize the orange and platform objects
 void orangeSetup() {
-  orangeImage = loadImage("Orange.png");
   orange = new Orange(width / 4, worm.pos.y - 100);
 }
 
@@ -47,7 +46,21 @@ class Orange {
   int currentFrame = 0;     // Index of current frame
   int frameTimer = 0;       // Used to time switching frames
   int frameInterval = 10;   // Change frame every 10 draw() calls
+   int cols = 6;
+  int rows = 1; 
+  int frameW =spriteSheetOrange. width / cols;
+  int frameH = spriteSheetOrange. height / rows; 
+  int frameTimer = 0;       // Used to time switching frames
+  int frameInterval = 10;   // Change frame every 10 draw() calls
+  int frameCounter = 0;
   
+  
+    int index; 
+      //for (int i =0; i < cols; i++){
+       // frames[index++] = spriteSheetOrange.get(i * frameW,  frameH, frameW, frameH);
+     // }
+     
+     
   boolean orangeMove = true; //orange can move
   int orangeStop = -1; //orange stop for certain amount of seconds
 
@@ -79,6 +92,11 @@ class Orange {
     // Gravity
     ySpeed += gravity;
     y += ySpeed;
+    
+    frameCounter ++;
+    if (frameCounter >= frameInterval){
+      currentFrame = (currentFrame + 1) %totalFrames;
+      frameCounter = 0;
 
     Rectangle orangeRect = getBounds();
 

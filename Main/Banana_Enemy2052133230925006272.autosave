@@ -53,24 +53,23 @@ class Banana extends Enemy {
   float ySpeed = 0;
   float gravity = 0.8;
 
-  PImage spriteSheetBanana = loadImage("Banana.png"); 
+  PImage spriteSheet =  loadImage("Banana.png"); 
 ;       // 
   PImage[] frames;          // Array of animation frames
   int currentFrame = 0;     // Index of current frame
   int totalFrames = 6;
   int cols = 6;
-  int rows = 1; 
-  int frameW =spriteSheetBanana. width / cols;
-  int frameH = spriteSheetBanana. height / rows; 
+  int frameW =spriteSheet. width / cols;
+  int frameH = spriteSheet. height / rows; 
   int frameTimer = 0;       // Used to time switching frames
   int frameInterval = 10;   // Change frame every 10 draw() calls
   int frameCounter = 0;
   
   
     int index; 
-      //for (int i =0; i < cols; i++){
-       // frames[index++] = spriteSheetBanana.get(i * frameW,  frameH, frameW, frameH);
-     // }
+      for (int i =0; i < cols; i++){
+       frames[index++] = spriteSheet.get(i * frameW,  frameH, frameW, frameH);
+      }
 
   
   boolean bananaShot = false;  //checking to see if the bullet is active
