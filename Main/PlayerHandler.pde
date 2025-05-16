@@ -535,11 +535,21 @@ class Play {
         (int)g.area.x,
         (int)g.area.y
         );
-      if (playerRect.intersects(groundRect)) return true;
+      if (playerRect.intersects(groundRect)) {
+        if (pos.y > g.pos.y - (size.y/2)){
+          pos.y = g.pos.y - (size.y/2);
+        }
+        return true;
+      }
     }
     // check if player collides with all platforms
     for (Platform pl : currentPlats) {
-      if (pl.isColliding(this)) return true;
+      if (pl.isColliding(this)) {
+        if (pos.y > pl.y - (size.y/2)){
+          pos.y = pl.y - (size.y/2);
+        }
+        return true;
+      }
     }
     return false;
   }
