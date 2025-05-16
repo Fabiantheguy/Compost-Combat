@@ -1,7 +1,6 @@
 import processing.sound.*;
 import java.awt.Rectangle;
 Ground grass;
-Sun sun;
 Tree tree;
 Vine[] v;
 Platform[] platforms; //adding platform class
@@ -18,8 +17,6 @@ void settings() {
 
 void setup() {
 startScreenSetup();  
-appleSetup();  // Initialize the Apple (enemy) and platform setup
-BananaSetup();
 orangeSetup();
 playerSetup();
 playSetup();
@@ -39,7 +36,6 @@ void draw() {
   cameraDraw();
   grassDraw();
   lvlChanger();//CHANGES THE LEVELS THROUGHOUT GAMEPLAY
-  sunDraw();
   treeDraw();
   playerDraw();
   appleDraw();

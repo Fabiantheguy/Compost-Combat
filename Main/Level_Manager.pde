@@ -362,6 +362,21 @@ class Lvl1 {
     platforms[2] = new Platform(width + 200, -650, 1000, 20);
     platforms[3] = new Platform(width + 200, -1350, 950, 20);
     platforms[4] = new Platform(width - 1000, -1300, 1000, 20);
+      
+    PImage[] appleFrames = new PImage[]{
+    loadImage("apple/Red.png"),
+    loadImage("apple/Blue.png"),
+    loadImage("apple/Orange.png"),
+    loadImage("apple/Teal.png")
+    };
+    PImage[] bananaFrames = new PImage[]{
+      loadImage("Banana.png"),
+      loadImage("apple/Red.png"),
+    };
+    EnemyFactory factory = new EnemyFactory();
+    
+    apple = (Apple)factory.createEnemy("Apple", width / 4, height - 150, appleFrames, platforms[0]);
+    banana = (Banana)factory.createEnemy("Banana", width / 4, height - 150,  bananaFrames, platforms[3]); 
     
     currentVines.clear(); // clear current vines to prepare to add this level's set
     // add each vine in this level's array to the current vines list

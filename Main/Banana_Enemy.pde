@@ -2,23 +2,6 @@
 Banana banana;
 bananaBullet bananabullet;
 
-
-PImage bananaImage;
-
-//int respawnTime = 3000; // 3 seconds to respawn the banana
-//int lastDestroyedTime = -1; // -1 means no banans has died yet
-
-// Initialize the Banana objects
-void BananaSetup() {
-  PImage[] bananaFrames = new PImage[]{
-    // loadImage("Banana.png")
-      loadImage("apple/Red.png"),
-  }; 
-
-  EnemyFactory factory = new EnemyFactory();
-  banana = (Banana)factory.createEnemy("Banana", width / 4, height - 150,  bananaFrames); 
-}
-
 void BananaDraw() {
   if (banana == null) {
     // Banana is dead
@@ -107,7 +90,6 @@ class Banana extends Enemy {
   }
 
   void display() {
-    image(frames[currentFrame], x - 20, y - 30, 80, 80);
   }
 
   boolean onAnyGround() {

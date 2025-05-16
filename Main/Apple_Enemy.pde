@@ -7,18 +7,7 @@ int respawnTime = 3000; // 3 seconds to respawn the apple
 int lastDestroyedTime = -1; // -1 means no apple has died yet
 
 // Initialize the Apple objects
-void appleSetup() {
-  // create aplle Enemy 
-  PImage[] appleFrames = new PImage[]{
-    loadImage("apple/Red.png"),
-    loadImage("apple/Blue.png"),
-    loadImage("apple/Orange.png"),
-    loadImage("apple/Teal.png")
-  };
-  EnemyFactory factory = new EnemyFactory(); 
-  apple = (Apple)factory.createEnemy("Apple", width / 4, height - 150, appleFrames); 
-  println("apple enemy is created"); 
-}
+
 
 void appleDraw() {
   if (apple == null) {
@@ -34,7 +23,7 @@ void appleDraw() {
     }
   } else {
     // Apple is alive
-    apple.follow(worm);
+    apple.patrol();
     apple.update();
     apple.display();
   }
@@ -42,7 +31,7 @@ void appleDraw() {
 
 
 // Apple class
-class Apple extends Enemy{
+class Apple extends Enemy {
   float speed = 1;
   float ySpeed = 0;
   float gravity = 0.8;
@@ -51,17 +40,37 @@ class Apple extends Enemy{
   int currentFrame = 0;     // Index of current frame
   int frameTimer = 0;       // Used to time switching frames
   int frameInterval = 10;   // Change frame every 10 draw() calls
+  float rightEdge, leftEdge; // edge of platform
+  boolean movingRight = true; // detects if apple is moving right
+  Platform platform;
 
-  Apple(float x, float y, EnemyType type, PImage[] availableImages) {
-    super(x, y, type,availableImages); // Initialize Enemy superclass
-    frames = availableImages; 
-  } 
-
-  void follow(Play player) {
-    if (player.pos.x < x - 1) x -= speed;
-    else if (player.pos.x > x + 1) x += speed;
+  Apple(float x, float y, EnemyType type, PImage[] availableImages, Platform platform) {
+    super(x, y, type, availableImages); // Initialize Enemy superclass
+    frames = availableImages;
+    this.platform = platform;
+    this.leftEdge = platform.x;
+    this.rightEdge = platform.x + platform.w;
   }
 
+  void patrol() {
+    // if the boolean is true the apple moves right
+
+    if (movingRight) {
+      x += speed;
+      // if the apple is on the right edge the apple no longer moves right
+      if (x >= rightEdge) {
+        movingRight = false;
+      }
+      // if the apple is no longer moving right it moves to the left
+    } else if (!movingRight) {
+      x -= speed;
+      // if the apple reaches the left edge it moves right again
+      if (x <= leftEdge) {
+        movingRight = true;
+      }
+    }
+  }
+  
   void update() {
     // Gravity
     ySpeed += gravity;
@@ -75,7 +84,7 @@ class Apple extends Enemy{
         (int) g.pos.y,
         (int) g.area.x,
         (int) g.area.y
-      );
+        );
 
       if (appleRect.intersects(groundRect)) {
         y = g.pos.y - h + 1; // Snap apple to ground
@@ -104,7 +113,7 @@ class Apple extends Enemy{
         (int) g.pos.y,
         (int) g.area.x,
         (int) g.area.y
-      );
+        );
       if (appleRect.intersects(groundRect)) return true;
     }
     return false;

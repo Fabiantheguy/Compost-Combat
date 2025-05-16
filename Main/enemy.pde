@@ -1,4 +1,5 @@
 import java.awt.Rectangle;
+Platform platform;
 
 abstract class Entity {
   float x, y, w, h; 
@@ -60,7 +61,7 @@ class EnemyFactory {
   EnemyType appleType, bananaType;
  
   
- Enemy createEnemy(String type, float x, float y, PImage[] frames) {
+ Enemy createEnemy(String type, float x, float y, PImage[] frames, Platform platform) {
     EnemyType enemyType;
 
     switch (type) {
@@ -77,7 +78,7 @@ class EnemyFactory {
     // Create the enemy like apple or banana
     println("new enemy"); 
      if (type.equals("Apple")) {
-        return new Apple(x, y, enemyType,frames);        
+        return new Apple(x, y, enemyType,frames, platform);        
      } else if (type.equals("Banana")) {
         return new Banana(x, y, enemyType, frames);
     } else {
