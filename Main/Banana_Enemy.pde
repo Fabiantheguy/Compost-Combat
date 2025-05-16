@@ -48,14 +48,29 @@ void BananaDraw() {
 
 // Banana class
 class Banana extends Enemy {
+
   float speed = 1;
   float ySpeed = 0;
   float gravity = 0.8;
 
+  PImage spriteSheet =  loadImage("Banana.png"); 
+;       // 
   PImage[] frames;          // Array of animation frames
   int currentFrame = 0;     // Index of current frame
+  int totalFrames = 6;
+  int cols = 6;
+  int frameW =spriteSheet. width / cols;
+  int frameH = spriteSheet. height / rows; 
   int frameTimer = 0;       // Used to time switching frames
   int frameInterval = 10;   // Change frame every 10 draw() calls
+  int frameCounter = 0;
+  
+  
+    int index; 
+      //for (int i =0; i < cols; i++){
+      //  frames[index++] = spriteSheet.get(i * frameW,  frameH, frameW, frameH);
+      //}
+
   
   boolean bananaShot = false;  //checking to see if the bullet is active
 
@@ -73,6 +88,12 @@ class Banana extends Enemy {
     // Gravity
     ySpeed += gravity;
     y += ySpeed;
+    
+    frameCounter ++;
+    if (frameCounter >= frameInterval){
+      currentFrame = (currentFrame + 1) %totalFrames;
+      frameCounter = 0;
+    }
 
     Rectangle bananaRect = getBounds();
 
