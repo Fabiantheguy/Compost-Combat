@@ -24,7 +24,7 @@ ArrayList<Platform> currentPlats = new ArrayList<Platform>();
 
 //Scene Variables
 Sound s;
-float amp = map(mouseY, 0, height, 0.0, 1.0);
+float amp = map(mouseY, 0, height, 0.0, 1.0); // amplitude of the volume slider
 String screen = "start";
 int radius = 30;
 float x=800;

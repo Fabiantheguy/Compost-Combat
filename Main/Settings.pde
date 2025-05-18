@@ -43,19 +43,21 @@ class Settings {
       rect(760, 745, 500, 20);
 
       fill(black);
-      rect(constrain(x, 800, 1301), 725, 10, 60);
+      rect(constrain(x, 759, 1251), 725, 10, 60);
 
-      boolean onVolumeBar = mouseX > 760 && mouseX < 1250&&
+      boolean onVolumeBar = mouseX > 759 && mouseX < 1251&&
         mouseY >700 && mouseY <800;
 
       if (onVolumeBar) {
         fill(white);
-        text(int(amp) + "%", constrain(x, 800, 1301) - 50, 720);
+        text(int(amp) + "%", constrain(x, 759, 1251) - 50, 720);
         if (mousePressed) {
-          x=constrain(mouseX, 800, 1301);;
-          amp = map(mouseX, 800, 1301, 0, 101);
-          if (mouseX>1301) {
-            mouseX=1301;
+          x=constrain(mouseX, 759, 1251);;
+          amp = map(mouseX, 759, 1251, 0, 101);
+          masterVol = constrain(amp/100, 0.0, 1.0);
+          Sound.volume(masterVol); // sets the overall volume of the game
+          if (mouseX>1251) {
+            mouseX=1251;
           }
         }
       }
