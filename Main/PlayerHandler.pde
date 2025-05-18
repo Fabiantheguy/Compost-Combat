@@ -337,10 +337,11 @@ void playerDraw() {
     
   if (orange != null) {
     // Handle collision with orange
-    if (!invincible && worm.getBounds().intersects(orange.getBounds())) {
-      orange.orangeStun();
-      worm.takeDmg(3);
-      
+    for (Orange currentOrange : orange) {
+      if (!invincible && worm.getBounds().intersects(currentOrange.getBounds())) {
+        currentOrange.orangeStun();
+        worm.takeDmg(3);
+      }
     }
   }
  

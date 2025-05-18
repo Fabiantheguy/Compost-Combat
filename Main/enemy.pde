@@ -28,9 +28,12 @@ class Enemy extends Entity {
   int frameTimer = 0;
   int frameInterval = 10;
   int hitPoints; // the HP of the enemy (most have 1)
+  float initX, initY;
 
   Enemy(float x, float y, int hp, EnemyType type, PImage[] availableImages) {
     super(x, y, 40, 40); // Now width & height are passed
+    initX = x;
+    initY = y; // enemies need to remember their starting position to respawn
     this.type = type;
     this.frames = availableImages; 
     hitPoints = hp;

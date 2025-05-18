@@ -49,7 +49,7 @@ void draw() {
   playerDraw();
   appleDraw();
   BananaDraw();
-  // orangeDraw();
+  orangeDraw();
   popMatrix();
   
   

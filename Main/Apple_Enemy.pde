@@ -32,8 +32,9 @@ void appleDraw() {
         }
         // Check if enough time has passed to respawn
         if (millis() - lastDestroyedTime > respawnTime) {
+          currentApple.x = currentApple.initX;
+          currentApple.y = currentApple.initY;
           currentApple.hitPoints = 1;
-          // should probably add something to send the apple back to its starting position
           lastDestroyedTime = -1; // Reset timer
         }
       }
