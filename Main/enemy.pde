@@ -78,7 +78,7 @@ class EnemyFactory {
     // Create the enemy like apple or banana
     println("new enemy"); 
      if (type.equals("Apple")) {
-        return new Apple(x, y, enemyType,frames, platform);        
+        return new Apple(x, y, platform);        
      } else if (type.equals("Banana")) {
         return new Banana(x, y, enemyType, frames);
     } else {

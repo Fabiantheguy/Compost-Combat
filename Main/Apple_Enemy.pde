@@ -1,14 +1,18 @@
 // Secluded variables for the enemy (Apple), and platform //<>// //<>//
 Apple[] apple;
 
-PImage appleImage;
+PImage[] appleFrames; // global apple frames array that all apples load from
 
 int respawnTime = 3000; // 3 seconds to respawn the apple
 int lastDestroyedTime = -1; // -1 means no apple has died yet
 
 // Initialize the Apple and platform objects
 void appleSetup() {
-  appleImage = loadImage("Apple.png");
+  appleFrames = new PImage[4];
+  appleFrames[0] = loadImage("apple/Red.png");
+  appleFrames[1] = loadImage("apple/Teal.png");
+  appleFrames[2] = loadImage("apple/Orange.png");
+  appleFrames[3] = loadImage("apple/Blue.png");
 }
 
 void appleDraw() {
@@ -49,8 +53,7 @@ class Apple extends Enemy {
   Platform platform;
   
   Apple(float x, float y, Platform platform) {
-    this.x = x;
-    this.y = y;
+    super(x, y, appleType, appleFrames);
     this.platform = platform;
     this.leftEdge = platform.x;
     this.rightEdge = platform.x + platform.w;

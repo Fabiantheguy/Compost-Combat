@@ -214,10 +214,8 @@ class Platform {
       onSurface=true;
       player.canJump = true;
 
-      println ("working");
-      worm.pos.y = y - worm.size.y /2;
+      // println ("working");
       player.ySpeed = 0;
-      worm.movCurrent = "walk";
     }
   }
 

@@ -10,7 +10,11 @@ float masterVol = 1.0; // master volume for the game - stored as a float between
 // Adding Vines Class
 swingingVines[] vines;
 PVector vinesPOS = new PVector (1900, -400);//CHANGE THESE VARIABLES TO KEEP COLLISIONS 
-float length = 150; 
+float vlength = 150; 
+
+// for testing purposes, delete later
+int[] konacode = {38, 38, 40, 40, 37, 39, 37, 39, 66, 65};
+int konaCurrent = 0;
 
 void settings() {
   fullScreen();
@@ -74,6 +78,20 @@ void keyPressed() {
   aimKeyPressed();
   movementKeyPressed();
   saveKeyPressed();
+  
+  // cheat code to unlock all levels for testing purposes, delete later
+  if(keyCode == konacode[konaCurrent]){
+    if(konaCurrent < konacode.length - 1){
+      konaCurrent++;
+    } else {
+      for (int i=0; i < nodes.size(); i++){
+        LevelNode currentNode = nodes.get(i);
+        if(currentNode.state == "Locked"){
+          currentNode.state = "Unlocked";
+        }
+      }
+    }
+  }
 }
 
 void keyReleased() {

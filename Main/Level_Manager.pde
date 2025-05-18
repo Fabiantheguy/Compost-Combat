@@ -412,7 +412,8 @@ class Lvl1 {
     platforms[2] = new Platform(width + 200, -650, 1000, 20);
     platforms[3] = new Platform(width + 200, -1350, 950, 20);
     platforms[4] = new Platform(width - 1000, -1300, 1000, 20);
-      
+    
+    /*
     PImage[] appleFrames = new PImage[]{
     loadImage("apple/Red.png"),
     loadImage("apple/Blue.png"),
@@ -423,6 +424,7 @@ class Lvl1 {
       loadImage("Banana.png"),
       loadImage("apple/Red.png"),
     };
+    */
     EnemyFactory factory = new EnemyFactory(); 
     
     currentVines.clear(); // clear current vines to prepare to add this level's set
@@ -486,10 +488,19 @@ class Lvl2 {
 
     //IN PROGRESS
 
-    vines = new Vines [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
-    vines[0] = new Vines (650, 0, 650, vlength);
-    vines[1] = new Vines (2300, -400, 2300, vlength);
-    vines[2] =new Vines (2700, -400, 2700, vlength);
+    vines = new swingingVines [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
+    vines[0] = new swingingVines (650, 0, 650, vlength);
+    vines[1] = new swingingVines (2300, -400, 2300, vlength);
+    vines[2] =new swingingVines (2700, -400, 2700, vlength);
+    
+    // add current swinging vines to a global list (WIP)
+    
+    currentPlats.clear(); // clear current platforms to prepare to add this level's set
+    // add each platform in this level's array to the current platforms list
+    for(int i=0; i<platforms.length; i++){
+      currentPlats.add(platforms[i]);
+    }
+    
     worm.pos= new PVector(100,100);
   }
   void run() {
@@ -541,6 +552,18 @@ class Lvl3 {
     v[1] = new Vine(1600, -50, 75, 150);   // From plat 1 to plat 2
     v[2] = new Vine(1750, -200, 75, 150);  // From plat 2 to plat 3
     v[3] = new Vine(2150, -500, 75, 200);  // Final ascent
+    
+    currentVines.clear(); // clear current vines to prepare to add this level's set
+    // add each vine in this level's array to the current vines list
+    for(int i=0; i<v.length; i++){
+      currentVines.add(v[i]);
+    }
+    
+    currentPlats.clear(); // clear current platforms to prepare to add this level's set
+    // add each platform in this level's array to the current platforms list
+    for(int i=0; i<platforms.length; i++){
+      currentPlats.add(platforms[i]);
+    }
 
     // Respawn worm near Level 2's exit
     worm.pos = new PVector(1350, 150);
