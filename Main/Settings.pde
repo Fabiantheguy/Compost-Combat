@@ -80,6 +80,8 @@ class Settings {
 
       if (startClicked && mousePressed) {
         screen = "start";
+        titleScreenMusic.loop();
+        level1Music.stop();
         cameFromGameScr = false;
         mousePressed = false;
       }

@@ -325,6 +325,10 @@ void loadingScreen() {
 
   if (millis() - loadingStartTime > 2000) {
     screen = "game";
+    if (showLoading) {
+      titleScreenMusic.stop();
+      level1Music.loop(); 
+    }
     showLoading = false;
 
     // Set level flags

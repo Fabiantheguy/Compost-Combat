@@ -21,12 +21,14 @@ void settings() {
 }
 
 void setup() {
+soundSetup();
 startScreenSetup();  
 orangeSetup();
 playerSetup();
 playSetup();
 loadSaveData();
 lvlSetup();
+titleScreenMusic.loop();
 }
 
 
@@ -41,7 +43,6 @@ void draw() {
   
   if (screen == "game") {
   pushMatrix();
-  soundSetup();
   cameraDraw();
   grassDraw();
   lvlChanger();//CHANGES THE LEVELS THROUGHOUT GAMEPLAY
