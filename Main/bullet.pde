@@ -55,7 +55,7 @@ class Bullet {
     if (apple != null) {
       for (Apple currentApple : apple){
         if (getBounds().intersects(currentApple.getBounds())){
-          currentApple = null;  // Destroy the apple
+          currentApple.hitPoints--;  // Damage the apple
         }
       // Optionally, handle bullet deletion after collision if needed
     }

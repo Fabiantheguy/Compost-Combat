@@ -27,11 +27,13 @@ class Enemy extends Entity {
   int currentFrame = 0;
   int frameTimer = 0;
   int frameInterval = 10;
+  int hitPoints; // the HP of the enemy (most have 1)
 
-  Enemy(float x, float y, EnemyType type, PImage[] availableImages) {
+  Enemy(float x, float y, int hp, EnemyType type, PImage[] availableImages) {
     super(x, y, 40, 40); // Now width & height are passed
     this.type = type;
     this.frames = availableImages; 
+    hitPoints = hp;
   }
     
 
@@ -82,7 +84,7 @@ class EnemyFactory {
      } else if (type.equals("Banana")) {
         return new Banana(x, y, enemyType, frames);
     } else {
-        return new Enemy(x, y, enemyType, frames);
+        return new Enemy(x, y, 1, enemyType, frames);
     }
   }
 }

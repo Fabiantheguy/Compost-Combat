@@ -43,7 +43,7 @@ class Banana extends Enemy {
   boolean bananaShot = false;  //checking to see if the bullet is active
 
   Banana(float x, float y, EnemyType type, PImage[] availableImages) {
-    super(x, y, type, availableImages); // Initialize Enemy superclass
+    super(x, y, 3, type, availableImages); // Initialize Enemy superclass
     frames = availableImages; 
   }
 

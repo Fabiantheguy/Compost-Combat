@@ -328,7 +328,7 @@ void playerDraw() {
   if (apple != null){
     for (Apple currentApple : apple) {
       // Handle collision with apple
-      if (!invincible && worm.getBounds().intersects(currentApple.getBounds())) {
+      if (!invincible && worm.getBounds().intersects(currentApple.getBounds()) && currentApple.hitPoints > 0) {
         worm.takeDmg(1);
         
       }
