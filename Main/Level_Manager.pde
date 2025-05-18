@@ -246,6 +246,7 @@ void saveToFile() {
   for (int i = 0; i < 4; i++) {
     json.setString("slot" + i, saveSlotNames[i]);
   }
+  json.setFloat("volume", masterVol);
   saveJSONObject(json, sketchPath("gameData.json")); // Use full path
 }
 
@@ -261,6 +262,7 @@ void loadSaveData() {
     for (int i = 0; i < 4; i++) {
       json.setString("slot" + i, "Empty Slot");
     }
+    json.setFloat("volume", 1.0);
     saveJSONObject(json, savePath); // Save new default file
   } else {
     json = loadJSONObject(savePath); // Load it if it exists
@@ -273,6 +275,8 @@ void loadSaveData() {
       slotNamed[i] = true;
     }
   }
+  Sound.volume(json.getFloat("volume"));
+  masterVol = json.getFloat("volume");
 }
 void initLevelNodes() {
   nodes = new ArrayList<LevelNode>();

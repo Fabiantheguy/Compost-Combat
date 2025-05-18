@@ -4,7 +4,7 @@ Ground grass;
 Tree tree;
 Vine[] v;
 Platform[] platforms; //adding platform class
-float masterVol; // master volume for the game - stored as a float between 0.00 and 1.00
+float masterVol = 1.0; // master volume for the game - stored as a float between 0.0 and 1.0
 
 // Adding Swinging Vines Class
 Vines[] vines;

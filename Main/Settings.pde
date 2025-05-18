@@ -3,6 +3,7 @@ class Settings {
   float size, move,
     rectX, rectY, rectX2, rectY2;
   PVector rectangle= new PVector (500, 300);
+  boolean changingVol = false; // flag for if the player is currently changing the volume
 
   Settings (float x, float y, float s) {
     pos= new PVector (x, y);
@@ -52,6 +53,7 @@ class Settings {
         fill(white);
         text(int(amp) + "%", constrain(x, 759, 1251) - 50, 720);
         if (mousePressed) {
+          changingVol = true;
           x=constrain(mouseX, 759, 1251);;
           amp = map(mouseX, 759, 1251, 0, 101);
           masterVol = constrain(amp/100, 0.0, 1.0);
@@ -61,6 +63,13 @@ class Settings {
           }
         }
       }
+      // putting this outside the onVolumeBar check allows the volume to be easily set to exactly 0% or 100%
+      if(changingVol && !mousePressed) {
+        saveToFile();
+        changingVol = false; // writes volume data to JSON only when mouse is released
+        println("Volume data saved!");
+      }
+      
       //SWITCHING SCREENS BASED ON MOUSE CLICKS
       boolean startClicked = mouseX> rectStart && mouseX<rectEnd &&
         mouseY>300 && mouseY < 400;
