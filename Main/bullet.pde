@@ -52,6 +52,7 @@ class Bullet {
     circle(this.pos.x, this.pos.y, 10);
     
     // Safeguard: Ensure apple exists before checking collision
+    for (Apple apple : apple){
     if (apple != null && getBounds().intersects(apple.getBounds())) {
       apple = null;  // Destroy the apple
       // Optionally, handle bullet deletion after collision if needed
@@ -60,6 +61,7 @@ class Bullet {
     if (orange != null && getBounds().intersects(orange.getBounds())) {
       orange = null;  // Destroy the orange
       // Optionally, handle bullet deletion after collision if needed
+    }
     }
   }
   

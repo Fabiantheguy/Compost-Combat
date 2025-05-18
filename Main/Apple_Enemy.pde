@@ -1,13 +1,15 @@
-// Secluded variables for the enemy (Apple), and platform //<>// //<>// //<>//
-Apple apple;
+// Secluded variables for the enemy (Apple), and platform //<>// //<>//
+Apple[] apple;
 
 PImage appleImage;
 
 int respawnTime = 3000; // 3 seconds to respawn the apple
 int lastDestroyedTime = -1; // -1 means no apple has died yet
 
-// Initialize the Apple objects
-
+// Initialize the Apple and platform objects
+void appleSetup() {
+  appleImage = loadImage("Apple.png");
+}
 
 void appleDraw() {
   if (apple == null) {
@@ -18,14 +20,16 @@ void appleDraw() {
     }
     // Check if enough time has passed to respawn
     if (millis() - lastDestroyedTime > respawnTime) {
-      // apple = new Apple(width / 4, worm.pos.y - 100);
+      //apple = new Apple(width / 4, worm.pos.y - 100);
       lastDestroyedTime = -1; // Reset timer
     }
   } else {
     // Apple is alive
-    apple.patrol();
-    apple.update();
-    apple.display();
+    for(Apple apple : apple){  
+      apple.patrol();
+      apple.update();
+      apple.display();
+    }
   }
 }
 
@@ -40,36 +44,44 @@ class Apple extends Enemy {
   int currentFrame = 0;     // Index of current frame
   int frameTimer = 0;       // Used to time switching frames
   int frameInterval = 10;   // Change frame every 10 draw() calls
-  float rightEdge, leftEdge; // edge of platform
-  boolean movingRight = true; // detects if apple is moving right
+  float rightEdge, leftEdge; // edge of platform      
+  boolean movingRight = true; // detects if the apple is moving right
   Platform platform;
-
-  Apple(float x, float y, EnemyType type, PImage[] availableImages, Platform platform) {
-    super(x, y, type, availableImages); // Initialize Enemy superclass
-    frames = availableImages;
+  
+  Apple(float x, float y, Platform platform) {
+    this.x = x;
+    this.y = y;
     this.platform = platform;
     this.leftEdge = platform.x;
     this.rightEdge = platform.x + platform.w;
+    
+    // Load the four frames (make sure these files are in your "data" folder)
+    frames = new PImage[4];
+    frames[0] = loadImage("apple/Red.png");
+    frames[1] = loadImage("apple/Teal.png");
+    frames[2] = loadImage("apple/Orange.png");
+    frames[3] = loadImage("apple/Blue.png");
   }
 
   void patrol() {
     // if the boolean is true the apple moves right
-
-    if (movingRight) {
+    if (movingRight){
       x += speed;
       // if the apple is on the right edge the apple no longer moves right
-      if (x >= rightEdge) {
+      if(x >= rightEdge){
         movingRight = false;
       }
       // if the apple is no longer moving right it moves to the left
-    } else if (!movingRight) {
+    } else if (!movingRight){
       x -= speed;
       // if the apple reaches the left edge it moves right again
-      if (x <= leftEdge) {
+      if (x <= leftEdge){
         movingRight = true;
       }
     }
+   
   }
+
   
   void update() {
     // Gravity
@@ -88,6 +100,21 @@ class Apple extends Enemy {
 
       if (appleRect.intersects(groundRect)) {
         y = g.pos.y - h + 1; // Snap apple to ground
+        ySpeed = 0;
+        break;
+      }
+    }
+    
+    for (Platform p : platforms) {
+      Rectangle platRect = new Rectangle (
+        (int) p.x,
+        (int) p.y,
+        (int) p.w,
+        (int) p.h
+      );
+      
+      if (appleRect.intersects(platRect)) {
+        y = p.y - h + 1; // Snap apple to platform
         ySpeed = 0;
         break;
       }

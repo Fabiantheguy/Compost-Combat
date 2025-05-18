@@ -6,10 +6,11 @@ Vine[] v;
 Platform[] platforms; //adding platform class
 float masterVol = 1.0; // master volume for the game - stored as a float between 0.0 and 1.0
 
-// Adding Swinging Vines Class
-Vines[] vines;
 
-float vlength = 150; 
+// Adding Vines Class
+swingingVines[] vines;
+PVector vinesPOS = new PVector (1900, -400);//CHANGE THESE VARIABLES TO KEEP COLLISIONS 
+float length = 150; 
 
 void settings() {
   fullScreen();

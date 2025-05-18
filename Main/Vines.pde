@@ -1,3 +1,4 @@
+/*
 boolean isSwinging=false;
 
 class Vines{
@@ -64,3 +65,4 @@ Rectangle getBounds() {
     return getBounds().intersects(worm.getBounds());
   }
   }
+  */
