@@ -58,6 +58,12 @@ class Enemy extends Entity {
 class EnemyFactory {
   
   EnemyType appleType, bananaType;
+
+  // Constructor to initialize enemy types
+  EnemyFactory() {
+      appleType = new EnemyType("Apple", 3.0); // Example values: name, spead
+      bananaType = new EnemyType("Banana", 8.0);
+  }
  
   
  Enemy createEnemy(String type, float x, float y, PImage[] frames) {
