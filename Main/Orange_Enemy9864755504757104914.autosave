@@ -1,4 +1,4 @@
-// Secluded variables for the enemy (orange), and platform //<>//
+// Secluded variables for the enemy (orange), and platform
 Orange orange;
 
 PImage orangeImage;

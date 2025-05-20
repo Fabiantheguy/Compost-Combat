@@ -1,4 +1,4 @@
-// Secluded variables for the enemy (Apple), and platform //<>// //<>//
+// Secluded variables for the enemy (Apple), and platform //<>// //<>// //<>//
 Apple[] apple;
 
 PImage[] appleFrames; // global apple frames array that all apples load from
@@ -13,6 +13,7 @@ void appleSetup() {
   appleFrames[1] = loadImage("apple/Teal.png");
   appleFrames[2] = loadImage("apple/Orange.png");
   appleFrames[3] = loadImage("apple/Blue.png");
+
 }
 
 void appleDraw() {
