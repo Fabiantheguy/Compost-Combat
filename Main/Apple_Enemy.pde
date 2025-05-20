@@ -1,4 +1,4 @@
-// Secluded variables for the enemy (Apple), and platform //<>// //<>// //<>//
+// Secluded variables for the enemy (Apple), and platform //<>// //<>// //<>// //<>//
 Apple[] apple;
 
 PImage[] appleFrames; // global apple frames array that all apples load from
@@ -8,11 +8,10 @@ int lastDestroyedTime = -1; // -1 means no apple has died yet
 
 // Initialize the Apple and platform objects
 void appleSetup() {
-  appleFrames = new PImage[4];
-  appleFrames[0] = loadImage("apple/Red.png");
-  appleFrames[1] = loadImage("apple/Teal.png");
-  appleFrames[2] = loadImage("apple/Orange.png");
-  appleFrames[3] = loadImage("apple/Blue.png");
+  appleFrames = new PImage[3];
+  appleFrames[0] = loadImage("apple/A1.png");
+  appleFrames[1] = loadImage("apple/A2.png");
+  appleFrames[2] = loadImage("apple/A3.png");
 
 }
 
@@ -60,11 +59,10 @@ class Apple extends Enemy {
     this.rightEdge = platform.x + platform.w;
     
     // Load the four frames (make sure these files are in your "data" folder)
-    frames = new PImage[4];
-    frames[0] = loadImage("apple/Red.png");
-    frames[1] = loadImage("apple/Teal.png");
-    frames[2] = loadImage("apple/Orange.png");
-    frames[3] = loadImage("apple/Blue.png");
+    frames = new PImage[3]; // CHANGED TO THREE 
+    frames[0] = loadImage("apple/A1.png");
+    frames[1] = loadImage("apple/A2.png");
+    frames[2] = loadImage("apple/A3.png");
   }
 
   void patrol() {
