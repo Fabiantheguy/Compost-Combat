@@ -328,7 +328,7 @@ void playerDraw() {
   if (apple != null){
     for (Apple currentApple : apple) {
       // Handle collision with apple
-      if (!invincible && worm.getBounds().intersects(currentApple.getBounds())) {
+      if (!invincible && worm.getBounds().intersects(currentApple.getBounds()) && currentApple.hitPoints > 0) {
         worm.takeDmg(1);
         
       }
@@ -337,10 +337,11 @@ void playerDraw() {
     
   if (orange != null) {
     // Handle collision with orange
-    if (!invincible && worm.getBounds().intersects(orange.getBounds())) {
-      orange.orangeStun();
-      worm.takeDmg(3);
-      
+    for (Orange currentOrange : orange) {
+      if (!invincible && worm.getBounds().intersects(currentOrange.getBounds())) {
+        currentOrange.orangeStun();
+        worm.takeDmg(3);
+      }
     }
   }
  
