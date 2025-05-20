@@ -11,7 +11,7 @@ boolean backgroundMusicStarted;
 // button = new SoundFile(this, "data/ButtonButton.mp3");
 // jump = new SoundFile(this, "data/JumpSound.mp3");
 // hurt = new SoundFile(this, "data/HurtFruit.mp3");
-<<<<<<< Updated upstream
+// <<<<<<< Updated upstream
 
 void soundSetup() {
   if(!backgroundMusicStarted) {
@@ -20,7 +20,7 @@ void soundSetup() {
     level1Music.loop();  // This will play the song in a loop
   }
 }
-=======
+// =======
 void jumpSound(){
  if (key == 'w' || key == 'W'){
   if(jump.isPlaying() == false){
@@ -30,7 +30,7 @@ void jumpSound(){
  }
 
 /*void fruitHurt(){
-  
+  if(!
 }
 
 /* void jump() {
@@ -41,4 +41,4 @@ void jumpSound(){
     }
   }
 */
->>>>>>> Stashed changes
+// >>>>>>> Stashed changes
