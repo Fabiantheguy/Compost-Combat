@@ -1,4 +1,4 @@
-// Secluded variables for the enemy (Apple), and platform //<>// //<>// //<>//
+// Secluded variables for the enemy (Apple), and platform //<>// //<>// //<>// //<>//
 Apple apple;
 
 PImage appleImage;
@@ -10,10 +10,9 @@ int lastDestroyedTime = -1; // -1 means no apple has died yet
 void appleSetup() {
   // create aplle Enemy 
   PImage[] appleFrames = new PImage[]{
-    loadImage("apple/Red.png"),
-    loadImage("apple/Blue.png"),
-    loadImage("apple/Orange.png"),
-    loadImage("apple/Teal.png")
+    loadImage("apple/A1.png"),
+    loadImage("apple/A2.png"),
+    loadImage("apple/A3.png")
   };
   EnemyFactory factory = new EnemyFactory(); 
   apple = (Apple)factory.createEnemy("Apple", width / 4, height - 150, appleFrames); 
