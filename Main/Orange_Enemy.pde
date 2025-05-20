@@ -1,4 +1,4 @@
-// Secluded variables for the enemy (orange), and platform //<>//
+// Secluded variables for the enemy (orange), and platform //<>// //<>//
 Orange orange;
 
 PImage orangeImage;
@@ -9,7 +9,7 @@ int orangeLastDestroyedTime = -1; // -1 means no apple has died yet
 
 // Initialize the orange and platform objects
 void orangeSetup() {
-  orangeImage = loadImage("Orange.png");
+  orangeImage = loadImage("O3.png");
   orange = new Orange(width / 4, worm.pos.y - 100);
 }
 
@@ -57,7 +57,7 @@ class Orange {
 
     // Load the four frames (make sure these files are in your "data" folder)
     frames = new PImage[1];
-    frames[0] = loadImage("orange/Orange.png");
+    frames[0] = loadImage("orange/O3.png");
   }
   //follow player if the orangeMove function is true
   void follow(Play player) {
