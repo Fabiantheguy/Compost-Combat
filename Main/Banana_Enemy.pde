@@ -11,8 +11,7 @@ PImage bananaImage;
 // Initialize the Banana objects
 void BananaSetup() {
   PImage[] bananaFrames = new PImage[]{
-    // loadImage("Banana.png")
-      loadImage("apple/Red.png"),
+     loadImage("Banana.png")
   }; 
 
   EnemyFactory factory = new EnemyFactory();
