@@ -21,3 +21,16 @@ void soundSetup() {
     level1Music.stop();
   }
 }
+
+void wormJump() {
+  jump = new SoundFile(this, "data/JumpSound.mp3");  
+  if (keyPressed) {
+    if (key == 'w' || key == 'W') {
+      jump.play();
+    }
+}
+
+/* void fruitHurt(){
+  
+}
+*/
