@@ -1,39 +1,50 @@
-// Secluded variables for the enemy (orange), and platform //<>//
-Orange orange;
-PImage orangeImage;
+// Secluded variables for the enemy (orange), and platform
+Orange[] orange;
 
-int orangeRespawnTime = 3000; // 3 seconds to respawn the orange
+PImage[] orangeFrames;
+
+int orangeRespawnTime = 3000; // 3 seconds to respawn the apple
 int orangeLastDestroyedTime = -1; // -1 means no orange has died yet
+
 
 // Initialize the orange and platform objects
 void orangeSetup() {
-  orangeImage = loadImage("O3.png");
-  orange = new Orange(width / 4, worm.pos.y - 100);
+  orangeFrames = new PImage[1];
+  orangeFrames[0] = loadImage("orange/O1.png");
+  orange = new Orange[1];
+  orange[0] = new Orange(width / 4, worm.pos.y - 100);
 }
 
 void orangeDraw() {
-  if (orange == null) {
-    // orange is dead
-    if (orangeLastDestroyedTime < 0) {
-      // Timer hasn't started yet — start it now
-      orangeLastDestroyedTime = millis();
-    }
-    // Check if enough time has passed to respawn
-    if (millis() - orangeLastDestroyedTime > orangeRespawnTime) {
-      orange = new Orange(width / 4, worm.pos.y - 100);
-      orangeLastDestroyedTime = -1; // Reset timer
-    }
-  } else {
-    // orange is alive
-    orange.follow(worm);
-    orange.update();
-    orange.display();
+  // checks if orange array exists
+  if (orange != null) {
+    for (Orange currentOrange : orange){
+      // Orange is alive
+      if (currentOrange.hitPoints > 0){  
+        currentOrange.follow(worm);
+        currentOrange.update();
+        currentOrange.display();
+      } else {
+        // Orange is dead
+        if (orangeLastDestroyedTime < 0) {
+          // Timer hasn't started yet — start it now
+          orangeLastDestroyedTime = millis();
+        }
+        // Check if enough time has passed to respawn
+        if (millis() - orangeLastDestroyedTime > orangeRespawnTime) {
+          currentOrange.x = currentOrange.initX;
+          currentOrange.y = currentOrange.initY;
+          currentOrange.hitPoints = 1;
+          orangeLastDestroyedTime = -1; // Reset timer
+        }
+      }
+    } 
   }
 }
 
 // orange class
-class Orange {
-  float x, y;               // Position
+class Orange extends Enemy {
+  float x, y, initX, initY;               // Position
   float w = 40, h = 40;     // Size
   float speed = 12;
   float ySpeed = 0;
@@ -54,8 +65,7 @@ class Orange {
   float visionRange = 300;
 
   Orange(float x, float y) {
-    this.x = x;
-    this.y = y;
+    super(x, y, 1, orangeType, orangeFrames);
 
     // Load the image
     frames = new PImage[1];

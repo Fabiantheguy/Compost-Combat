@@ -16,24 +16,29 @@ void appleSetup() {
 }
 
 void appleDraw() {
-  if (apple == null) {
-    // Apple is dead
-    if (lastDestroyedTime < 0) {
-      // Timer hasn't started yet — start it now
-      lastDestroyedTime = millis();
-    }
-    // Check if enough time has passed to respawn
-    if (millis() - lastDestroyedTime > respawnTime) {
-      //apple = new Apple(width / 4, worm.pos.y - 100);
-      lastDestroyedTime = -1; // Reset timer
-    }
-  } else {
-    // Apple is alive
-    for(Apple apple : apple){  
-      apple.patrol();
-      apple.update();
-      apple.display();
-    }
+  // checks if apple array exists
+  if (apple != null) {
+    for (Apple currentApple : apple){
+      // Apple is alive
+      if (currentApple.hitPoints > 0){  
+        currentApple.patrol();
+        currentApple.update();
+        currentApple.display();
+      } else {
+        // Apple is dead
+        if (lastDestroyedTime < 0) {
+          // Timer hasn't started yet — start it now
+          lastDestroyedTime = millis();
+        }
+        // Check if enough time has passed to respawn
+        if (millis() - lastDestroyedTime > respawnTime) {
+          currentApple.x = currentApple.initX;
+          currentApple.y = currentApple.initY;
+          currentApple.hitPoints = 1;
+          lastDestroyedTime = -1; // Reset timer
+        }
+      }
+    } 
   }
 }
 
@@ -53,7 +58,7 @@ class Apple extends Enemy {
   Platform platform;
   
   Apple(float x, float y, Platform platform) {
-    super(x, y, appleType, appleFrames);
+    super(x, y, 1, appleType, appleFrames);
     this.platform = platform;
     this.leftEdge = platform.x;
     this.rightEdge = platform.x + platform.w;
