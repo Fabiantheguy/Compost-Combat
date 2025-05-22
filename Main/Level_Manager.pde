@@ -61,11 +61,11 @@ void menuDraw() {
     break;
   case "game":
     if (worm.pos.y>height + 100){screen="death";}
-    settingsButton();
+    settings.settingsButton();
     break;
   case "death":
     endScreen(); //Dead screen
-    settingsButton();
+    settings.settingsButton();
     break;
   case "settings":
     //IMPORTING SETTINGS TAB
@@ -140,7 +140,7 @@ void startScreen() {
  -------------------------------------------------*/
 void saveScreen() {
   fill(black);
-  settingsWindow();
+  settings.settingsWindow();
 
   textSize(72);
 
@@ -185,8 +185,8 @@ void saveScreen() {
   }
 
   // X Button and return
-  exitButton();
-  if (onX() && mousePressed) {
+  settings.exitButton();
+  if (settings.onX() && mousePressed) {
     screen = "start";
     activeSlot = -1;
     typingName = false;
@@ -222,8 +222,8 @@ void credits () {
   fill (white);
   textSize(72);
   text("CREDITS:\n\n Thank You for Playing!", width/3, height/10);
-  exitButton();
-  if (onX() && mousePressed) {
+  settings.exitButton();
+  if (settings.onX() && mousePressed) {
     screen = "start";
   }
 }

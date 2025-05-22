@@ -1,4 +1,4 @@
-import java.awt.Rectangle;
+
 Platform platform;
 
 abstract class Entity {

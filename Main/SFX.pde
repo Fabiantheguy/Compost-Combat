@@ -14,23 +14,24 @@ boolean backgroundMusicStarted;
 // hurt = new SoundFile(this, "data/HurtFruit.mp3");
 
 void soundSetup() {
-    level1Music = new SoundFile(this, "data/Lvl_1_Compost_Combat.mp3");
-    titleScreenMusic = new SoundFile(this, "data/TitleMusic.mp3");
+  level1Music = new SoundFile(this, "data/Lvl_1_Compost_Combat.mp3");
+  titleScreenMusic = new SoundFile(this, "data/TitleMusic.mp3");
 
-  if(screen != "start") {
+  if (screen != "start") {
     level1Music.stop();
   }
 }
 
 void wormJump() {
-  jump = new SoundFile(this, "data/JumpSound.mp3");  
+  jump = new SoundFile(this, "data/JumpSound.mp3");
   if (keyPressed) {
     if (key == 'w' || key == 'W') {
       jump.play();
     }
+  }
 }
 
 /* void fruitHurt(){
-  
-}
-*/
+ 
+ }
+ */
