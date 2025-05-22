@@ -7,6 +7,7 @@ SoundFile hurt;
 SoundFile jump;
 SoundFile titleScreenMusic;
 SoundFile level1Music;
+SoundFile gameOver;
 boolean backgroundMusicStarted;
 // bullet = new SoundFile(this, "data/BulletSound.mp3");
 // button = new SoundFile(this, "data/ButtonButton.mp3");
@@ -24,10 +25,18 @@ void soundSetup() {
 
 void wormJump() {
   jump = new SoundFile(this, "data/JumpSound.mp3");
-  if (keyPressed) {
+  if (keyPressed == true) {
     if (key == 'w' || key == 'W') {
       jump.play();
     }
+  }
+}
+
+void Death(){
+  gameOver = new SoundFile(this, "data/GameOver.wav");
+  
+/*  if ( ){
+    gameOver.play();
   }
 }
 
