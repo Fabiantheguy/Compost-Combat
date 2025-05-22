@@ -1,4 +1,4 @@
-// Nathan Ellis 4/10/2025
+// Nathan Ellis 4/10/2025 //<>// //<>// //<>// //<>// //<>//
 // THE PLAN IS SIMPLE:
 // Finite State Machine with all player states
 // Input to switch states
@@ -10,7 +10,7 @@ int invincibleStartTime = 0;
 int invincibleDuration = 1000; // milliseconds of invincibility
 ArrayList<Item> items = new ArrayList<Item>();
 
-Play worm = new Play(1000, 610, 5); // spawn location
+Play worm = new Play(1000, 600, 5); // spawn location
 
 // === Global key states ===
 boolean leftHeld = false;
@@ -42,41 +42,50 @@ void playerSetup() {
   player = new Player(width/15, height - 150);
   grass = new Ground(-1000, 625, 10000, 150);
   tree = new Tree [2];
-  tree[0] = new Tree(width, -1880, 200, 5000);
+  for (int i = 0; i < tree.length; i ++) {
+    tree[i] = new Tree(width, -1880, 200, 5000);
+  }
   // gonna figure out initial camera position stuff later -nate
+
   camPos = new PVector(0, 0);
   camTarget = new PVector(0, 0);
+ 
   // camPos = new PVector(width - 1200, -740);
   // camTarget = new PVector(width - 1200, -740);
   allGrounds.add(grass);
+  if (!Level2){
   items.add(new Item(width - 750, 65, ItemType.HEALTH));
   items.add(new Item(700, 600, ItemType.FIRERATE));
-
+  }
+  if (Level2){
+     items.add(new Item(width - 750, 65, ItemType.HEALTH));
+    items.add(new Item(700, 600, ItemType.FIRERATE));
+  }
   //}
 }
 // Handle key press events to control the player movement
 void movementKeyPressed() {
   // If 'A' or 'a' is pressed, move the player left
   if (key == 'a' || key == 'A') {
-    if(!leftHeld) worm.dirtyMomentum = true; // when held bool changes, dirty flag turns on
+    if (!leftHeld) worm.dirtyMomentum = true; // when held bool changes, dirty flag turns on
     player.left = true;
     leftHeld = true;
     facingRight = false;
   }
   // If 'D' or 'd' is pressed, move the player right
   if (key == 'd' || key == 'D') {
-    if(!rightHeld) worm.dirtyMomentum = true; // when held bool changes, dirty flag turns on
+    if (!rightHeld) worm.dirtyMomentum = true; // when held bool changes, dirty flag turns on
     player.right = true;
     rightHeld = true;
     facingRight = true;
   }
   if (key == 's' || key == 'S') {
-    if(!downHeld) worm.dirtyMomentum = true; // when held bool changes, dirty flag turns on
+    if (!downHeld) worm.dirtyMomentum = true; // when held bool changes, dirty flag turns on
     downHeld = true;
   }
   // If w is pressed and the player is on the platform, make the player jump
   if (key == 'w' || key == 'W') {
-    if(!upPressed) worm.dirtyMomentum = true; // when held bool changes, dirty flag turns on
+    if (!upPressed) worm.dirtyMomentum = true; // when held bool changes, dirty flag turns on
     player.jump();
     upPressed = true;
   }
@@ -85,15 +94,15 @@ void movementKeyPressed() {
   }
   /*
   if (!Level2) {
-    for (int i = 0; i < v.length; i++) {
-      if (key == 'w' && v[i].isOnVine) {
-        player.climb();
-        println("demon");
-      }
-    }
-  }
-  */
-  
+   for (int i = 0; i < v.length; i++) {
+   if (key == 'w' && v[i].isOnVine) {
+   player.climb();
+   println("demon");
+   }
+   }
+   }
+   */
+
   // temp cheat code to upgrade dash (1 key)
   if (keyCode == 49) {
     if (worm.upgrades.get("dash") < 2) {
@@ -148,9 +157,9 @@ void movementKeyReleased() {
   if (keyCode == 32) {
     spacePressed = false;
   }
-  
+
   // activates dirty flag if any movement key is pressed
-  for(int val : movKeyCodes){
+  for (int val : movKeyCodes) {
     if (keyCode == val) {
       worm.dirtyMomentum = true;
       break;
@@ -160,12 +169,12 @@ void movementKeyReleased() {
 
 void cameraDraw() {
   // When player is near left or right edge camera stays in center of frame
-  if (worm.pos.x <= 50.0) {
-    camTarget.set(50, worm.pos.y - height/2 - 400);
+  if (worm.pos.x <= -600.0) {
+    camTarget.set(-600, worm.pos.y - height/2 - 400);
   } else if (worm.pos.x >= 3000) {
     camTarget.set(3000 - 1050, worm.pos.y - height/2 - 400);
   } else {
-    camTarget.set(worm.pos.x - width/2, worm.pos.y - height/2 - 400);
+    camTarget.set(worm.pos.x - width/2, worm.pos.y - height/2 );
   }
 
   // Smooth interpolation toward the target camera position
@@ -207,30 +216,30 @@ class Player {
     y += ySpeed;
 
 
-      //for (Platform p : platforms) {
-      //  {
-      //    float playerBottom = y + h;
-      //    float playerTop = y;
-      //    float platformTop = p.y;
-      //    float platformBottom = p.y + p.h;
-  
-      //    // LANDING ON PLATFORM
-      //    if (ySpeed > 0 && playerBottom - ySpeed + 40 <= platformTop && playerBottom >= platformTop) {
-      //      // Player must be falling (ySpeed > 0)
-      //      // and must have already crossed above platform top
-      //      y = platformTop - h;
-      //      ySpeed = 0;
-      //      onSurface = true;
-      //    }
-      //    // HITTING FROM BELOW
-      //    else if (ySpeed < 0 && playerTop <= platformBottom && playerTop - ySpeed >= platformBottom) {
-      //      // Player must be moving upward (ySpeed < 0)
-      //      // and must have crossed below platform bottom
-      //      y = platformBottom;
-      //      ySpeed = 1; // small push downward
-      //    }
-      //  }
-      //}
+    //for (Platform p : platforms) {
+    //  {
+    //    float playerBottom = y + h;
+    //    float playerTop = y;
+    //    float platformTop = p.y;
+    //    float platformBottom = p.y + p.h;
+
+    //    // LANDING ON PLATFORM
+    //    if (ySpeed > 0 && playerBottom - ySpeed + 40 <= platformTop && playerBottom >= platformTop) {
+    //      // Player must be falling (ySpeed > 0)
+    //      // and must have already crossed above platform top
+    //      y = platformTop - h;
+    //      ySpeed = 0;
+    //      onSurface = true;
+    //    }
+    //    // HITTING FROM BELOW
+    //    else if (ySpeed < 0 && playerTop <= platformBottom && playerTop - ySpeed >= platformBottom) {
+    //      // Player must be moving upward (ySpeed < 0)
+    //      // and must have crossed below platform bottom
+    //      y = platformBottom;
+    //      ySpeed = 1; // small push downward
+    //    }
+    //  }
+    //}
 
 
     // GROUND COLLISION
@@ -324,18 +333,17 @@ void playerDraw() {
 
   //isColliding = false;  // Reset collision status each frame
 
-  
+
   // Handle health and invincibility (if applicable)
-  if (apple != null){
+  if (apple != null) {
     for (Apple currentApple : apple) {
       // Handle collision with apple
       if (!invincible && worm.getBounds().intersects(currentApple.getBounds()) && currentApple.hitPoints > 0) {
         worm.takeDmg(1);
-        
       }
     }
   }
-    
+
   if (orange != null) {
     // Handle collision with orange
     for (Orange currentOrange : orange) {
@@ -345,12 +353,11 @@ void playerDraw() {
       }
     }
   }
- 
+
   if (bananabullet != null) {
     // Handle collision with apple
     if (!invincible && worm.getBounds().intersects(bananabullet.getBounds())) {
       worm.takeDmg(2);
-      
     }
   }
 
@@ -397,18 +404,18 @@ class Play {
     momentumX = 0;
     momentumY = 0;
 
-    // Create a HashMap to store different movement states 
-    stateMap = new HashMap<String, PlayerState>(); //<>//
+    // Create a HashMap to store different movement states
+    stateMap = new HashMap<String, PlayerState>();
     // Instantiate and store various player states
     // These states must be defined elsewhere as classes implementing PlayerState
     stateMap.put("walk", new WalkState());
     stateMap.put("jump", new JumpState());
     stateMap.put("duck", new DuckState());
-    stateMap.put("climb", new ClimbState()); 
-    stateMap.put("dash", new DashState()); //<>//
+    stateMap.put("climb", new ClimbState());
+    stateMap.put("dash", new DashState());
     stateMap.put("ready", new ReadyState());
     stateMap.put("fire", new FiringState());
-          
+
     // Set the initial state.
     currentState = stateMap.get("walk");
 
@@ -481,23 +488,23 @@ class Play {
     //rect(this.pos.x, this.pos.y, this.size.x, this.size.y);
 
     // movement update
-    if (this.movCurrent == "walk") { //<>//
-      stateMap.get("walk").update(this); //<>//
-      stateMap.get("walk").display(this); //<>//
+    if (this.movCurrent == "walk") {
+      stateMap.get("walk").update(this);
+      stateMap.get("walk").display(this);
     } else if (this.movCurrent == "jump") {
       stateMap.get("jump").update(this);
       stateMap.get("jump").display(this);
     } else if (this.movCurrent == "duck") {
       stateMap.get("duck").update(this);
       stateMap.get("duck").display(this);
-    } else if (this.movCurrent == "dash")  {
+    } else if (this.movCurrent == "dash") {
       stateMap.get("dash").update(this);
       stateMap.get("dash").display(this);
     } else if (this.movCurrent == "climb") {
       stateMap.get("climb").update(this);
       stateMap.get("climb").display(this);
     }
-    
+
     rectMode(CORNER);
   }
   void takeDmg(int l) {
@@ -505,7 +512,7 @@ class Play {
     // die if health is 0, start invincibility timer otherwise
     if (currentHealth <= 0) {
       //enter death screen
-      level1Music.stop(); 
+      level1Music.stop();
       endScreen();
       // player death code
       playerDeath();
@@ -514,18 +521,18 @@ class Play {
       invincibleStartTime = millis();
     }
   }
-  
+
   // checking for vine to climb
-  void checkClimb(){
+  void checkClimb() {
     boolean touchingVine = false;
-    for(int i=0; i<currentVines.size(); i++){
+    for (int i=0; i<currentVines.size(); i++) {
       currentVine = currentVines.get(i); // uses currentVine in the player's variable section
-      if (currentVine.isOnVine(this)){
+      if (currentVine.isOnVine(this)) {
         touchingVine = true;
         break;
       }
     }
-    if (upPressed && touchingVine){
+    if (upPressed && touchingVine) {
       movCurrent = "climb";
     }
   }
@@ -542,7 +549,7 @@ class Play {
         (int)g.area.y
         );
       if (playerRect.intersects(groundRect)) {
-        if (pos.y > g.pos.y - (size.y/2)){
+        if (pos.y > g.pos.y - (size.y/2)) {
           pos.y = g.pos.y - (size.y/2);
         }
         return true;
@@ -551,7 +558,7 @@ class Play {
     // check if player collides with all platforms
     for (Platform pl : currentPlats) {
       if (pl.isColliding(this)) {
-        if (pos.y > pl.y - (size.y/2)){
+        if (pos.y > pl.y - (size.y/2)) {
           pos.y = pl.y - (size.y/2);
         }
         return true;
@@ -571,10 +578,10 @@ class Play {
       currentState = stateMap.get(newKey);
     }
   }
-  
+
   // momentum check function
-  void checkMomentum(float mX, float mY){
-    if(dirtyMomentum){
+  void checkMomentum(float mX, float mY) {
+    if (dirtyMomentum) {
       momentumX = mX;
       momentumY = mY;
       dirtyMomentum = false;

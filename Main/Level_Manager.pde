@@ -481,13 +481,14 @@ class Lvl2 {
   Lvl2 () {
     //CHANGE THE PLATFORM & VINE LOCATION VALUES TO  MATCH YOUR LEVEL DESIGN
 
-    platforms = new Platform [6]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
-    platforms[0] = new Platform(-200, 160, 550, 20);
-    platforms[1] = new Platform(200, -500, 600, 20);
-    platforms[2] = new Platform(950, -500, 500, 20);
-    platforms[3] = new Platform(950, -1000, 500, 20);
-    platforms[4] = new Platform(1000, -1550, 500, 20);
-    platforms[5] = new Platform(400, -1750, 500, 20);
+    platforms = new Platform [7]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
+    platforms[0] = new Platform(-800, -200, 550, 20);
+    platforms[1] = new Platform(-200, 160, 550, 20);
+    platforms[2] = new Platform(200, -500, 600, 20);
+    platforms[3] = new Platform(950, -500, 500, 20);
+    platforms[4] = new Platform(950, -1000, 500, 20);
+    platforms[5] = new Platform(1000, -1550, 500, 20);
+    platforms[6] = new Platform(400, -1750, 500, 20);
 
 
 
@@ -509,7 +510,7 @@ class Lvl2 {
       currentPlats.add(platforms[i]);
     }
     
-    worm.pos= new PVector(100,100); // start worm pos at now pos 
+    worm.pos= new PVector(-550,-250); // start worm pos at new pos 
   }
   void run() {
 
