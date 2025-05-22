@@ -345,11 +345,14 @@ void playerDraw() {
     }
   }
  
-  if (bananabullet != null) {
-    // Handle collision with apple
-    if (!invincible && worm.getBounds().intersects(bananabullet.getBounds())) {
-      worm.takeDmg(2);
-      
+  if (banana != null) {
+    // iterate over banana array
+    for (Banana currentBanana : banana) {
+      // Handle collision with banana's bullet
+      if (!invincible && worm.getBounds().intersects(currentBanana.bullet.getBounds()) && currentBanana.bullet.active) {
+        // maybe add a reload function to the banana? idk
+        worm.takeDmg(2);
+      }
     }
   }
 
