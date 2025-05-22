@@ -8,7 +8,7 @@
  MAP
  */
 // SETTING lEVEL;
-boolean playerWins = false;
+boolean playerWins;
 boolean Level1, Level2, Level3;
 boolean cameFromGameScr = false;
 boolean showLoading = false;
@@ -60,7 +60,9 @@ void menuDraw() {
     startScreen();
     break;
   case "game":
-    if (worm.pos.y>height + 100){screen="death";}
+    if (worm.pos.y>height + 100) {
+      screen="death";
+    }
     settings.settingsButton();
     break;
   case "death":
@@ -285,8 +287,8 @@ void initLevelNodes() {
   LevelNode child1 = new LevelNode(width / 2 - 300, 500, "Unlocked");
   LevelNode child2 = new LevelNode(width / 2 + 300, 500, "Locked");
   LevelNode child3 = new LevelNode(width / 2 - 400, 700, "Locked");
-  //If you want to change what level is displayed, change the Level state located in the quotation marks from "Locked" To "Unlocked". 
-  //Then when the game is ran, pick the level you want and it should display all the elements shown in that level based on dedicated level class setup. 
+  //If you want to change what level is displayed, change the Level state located in the quotation marks from "Locked" To "Unlocked".
+  //Then when the game is ran, pick the level you want and it should display all the elements shown in that level based on dedicated level class setup.
   root.addChild(child1);
   child1.addChild(child2);
   child2.addChild(child3);
@@ -302,7 +304,7 @@ void loadingScreen() {
   fill(255);
   textSize(72);
   text("Loading...\nPlease Wait", width / 2.5, height / 2 - 100);
-  
+
   // Draws a loading Progress bar
   float barWidth = 600;
   float barHeight = 40;
@@ -323,24 +325,24 @@ void loadingScreen() {
   // Once the progress bar is filled, It will load the desired unlocked level that was chosen
   if (progress >= 1.0)
 
-  if (millis() - loadingStartTime > 2000) {
-    screen = "game";
-    if (showLoading) {
-      titleScreenMusic.stop();
-      level1Music.loop(); 
+    if (millis() - loadingStartTime > 2000) {
+      screen = "game";
+      if (showLoading) {
+        titleScreenMusic.stop();
+        level1Music.loop();
+      }
+      showLoading = false;
+
+      // Set level flags
+      Level1 = Level2 = Level3 = false;
+      if (levelToLoad.equals("Level1")) Level1 = true;
+      else if (levelToLoad.equals("Level2")) Level2 = true;
+      else if (levelToLoad.equals("Level3")) Level3 = true;
+
+      lvlSetup();
+      screen = "game";
+      showLoading = false;
     }
-    showLoading = false;
-
-    // Set level flags
-    Level1 = Level2 = Level3 = false;
-    if (levelToLoad.equals("Level1")) Level1 = true;
-    else if (levelToLoad.equals("Level2")) Level2 = true;
-    else if (levelToLoad.equals("Level3")) Level3 = true;
-
-    lvlSetup();
-    screen = "game";
-    showLoading = false;
-  }
 }
 
 /*_____________________________________________
@@ -363,11 +365,31 @@ void lvlChanger() {
     Level2=false;
     Level3 = false;
     lvl1.run();
+    if ( worm.pos.y< - 1300 && worm.pos.x < width - 700) { //position for end of level 
+      playerWins = true;// Set player wins to true if player reaches end of lvl
+    }
+    for (int i = 1; i < nodes.size(); i++) {
+      if (playerWins) {
+        screen= "map"; // go to map screen
+        i++; // sets level to complete 
+        playerWins =false;
+      }
+    }
   }
   if (Level2) {
     Level1 = false;
     Level3 = false;
     lvl2.run();
+     if ( worm.pos.y< - 1800) { //position for end of level 
+      playerWins = true;// Set player wins to true if player reaches end of lvl
+    }
+    for (int i = 1; i < nodes.size(); i++) {
+      if (playerWins) {
+        screen= "map"; // go to map screen
+        i++; // sets level to complete 
+        playerWins =false;
+      }
+    }
   }
   if (Level3) {
     Level1 = false;
@@ -375,25 +397,24 @@ void lvlChanger() {
     lvl3.run();
   }
   if (playerWins) {
-  // Marks current level as Completed if the player completed it
-  for (int i = 1; i < nodes.size(); i++) {
-    if ((Level1 && i == 1) || (Level2 && i == 2) || (Level3 && i == 3)) {
-      nodes.get(i).state = "Completed";
-      nodes.get(i).targetColor = nodes.get(i).getColorForState("Completed");
+    // Marks current level as Completed if the player completed it
+    for (int i = 1; i < nodes.size(); i++) {
+      if ((Level1 && i == 1) || (Level2 && i == 2) || (Level3 && i == 3)) {
+        nodes.get(i).state = "Completed";
+        nodes.get(i).targetColor = nodes.get(i).getColorForState("Completed");
 
-      if (i + 1 < nodes.size()) {
-        nodes.get(i + 1).state = "Unlocked";
-        nodes.get(i + 1).targetColor = nodes.get(i + 1).getColorForState("Unlocked");
+        if (i + 1 < nodes.size()) {
+          nodes.get(i + 1).state = "Unlocked";
+          nodes.get(i + 1).targetColor = nodes.get(i + 1).getColorForState("Unlocked");
+        }
+        break;
       }
-      break;
     }
+
+    Level1 = Level2 = Level3 = false;
+    playerWins = true;
+    screen = "map";
   }
-
-  Level1 = Level2 = Level3 = false;
-  playerWins = true;
-  screen = "map";
-}
-
 }
 
 /*_____________________________________________
@@ -416,38 +437,37 @@ class Lvl1 {
     platforms[2] = new Platform(width + 200, -650, 1000, 20);
     platforms[3] = new Platform(width + 200, -1350, 950, 20);
     platforms[4] = new Platform(width - 1000, -1300, 1000, 20);
-    
+
     /*
     PImage[] appleFrames = new PImage[]{
-    loadImage("apple/Red.png"),
-    loadImage("apple/Blue.png"),
-    loadImage("apple/Orange.png"),
-    loadImage("apple/Teal.png")
-    };
-    PImage[] bananaFrames = new PImage[]{
-      loadImage("Banana.png"),
-      loadImage("apple/Red.png"),
-    };
-    */
-    EnemyFactory factory = new EnemyFactory(); 
-    
+     loadImage("apple/Red.png"),
+     loadImage("apple/Blue.png"),
+     loadImage("apple/Orange.png"),
+     loadImage("apple/Teal.png")
+     };
+     PImage[] bananaFrames = new PImage[]{
+     loadImage("Banana.png"),
+     loadImage("apple/Red.png"),
+     };
+     */
+    EnemyFactory factory = new EnemyFactory();
+
     currentVines.clear(); // clear current vines to prepare to add this level's set
     // add each vine in this level's array to the current vines list
-    for(int i=0; i<v.length; i++){
+    for (int i=0; i<v.length; i++) {
       currentVines.add(v[i]);
     }
-    
+
     currentPlats.clear(); // clear current platforms to prepare to add this level's set
     // add each platform in this level's array to the current platforms list
-    for(int i=0; i<platforms.length; i++){
+    for (int i=0; i<platforms.length; i++) {
       currentPlats.add(platforms[i]);
     }
 
     apple = new Apple [3];
     apple[0] = new Apple(width - 800, 80, platforms[0]);
-    apple[1] = new Apple(width - 1200, -740,platforms[1]);
+    apple[1] = new Apple(width - 1200, -740, platforms[1]);
     apple[2] = new Apple(width + 200, -1390, platforms[3]);
-    
   }
 
   void run() {
@@ -498,19 +518,35 @@ class Lvl2 {
     v[2] = new Vine(1300, -1550, 75, 400);
     v[3] = new Vine(900, -1750, 75, 200);
 
-      currentVines.clear(); // clear current vines to prepare to add this level's set
+    currentVines.clear(); // clear current vines to prepare to add this level's set
     // add each vine in this level's array to the current vines list
-    for(int i=0; i<v.length; i++){
+    for (int i=0; i<v.length; i++) {
       currentVines.add(v[i]);
     }
-     
+
     currentPlats.clear(); // clear current platforms to prepare to add this level's set
     // add each platform in this level's array to the current platforms list
-    for(int i=0; i<platforms.length; i++){
+    for (int i=0; i<platforms.length; i++) {
       currentPlats.add(platforms[i]);
     }
-    
-    worm.pos= new PVector(-550,-250); // start worm pos at new pos 
+
+    // Adding in Enemies
+    apple = new Apple [3];
+    apple[0] = new Apple(-800, -200, platforms[0]);
+    apple[1] = new Apple(200, -220, platforms[1]);
+    apple[2] = new Apple(400, -220, platforms[2]);
+
+    orange = new Orange [2];
+    orange [0] = new Orange (950, -520);
+    orange [1] = new Orange (950, -1020);
+
+    //banana = new Banana [3];
+    //banana[0] = new Banana(-800, -200, bananaType, bananaFrames);
+    //banana[1] = new Banana(200, -220);
+    //banana[2] = new Banana(400, -220);
+
+
+    worm.pos= new PVector(-550, -250); // start worm pos at new pos
   }
   void run() {
 
@@ -519,10 +555,10 @@ class Lvl2 {
   }
 
   void display() {
-    
+
     fill (#503B07); //brown
-     tree[0] = new Tree (-400, -500, 200, 5000);//tree bark
-     tree[1] = new Tree (-200 + (900), -1880, 200, 5000); // tree bark
+    tree[0] = new Tree (-400, -500, 200, 5000);//tree bark
+    tree[1] = new Tree (-200 + (900), -1880, 200, 5000); // tree bark
 
 
     for (int i = 0; i < v.length; i++) {
@@ -532,7 +568,7 @@ class Lvl2 {
       platforms[i].display();
     }
   }
-  
+
   void update() {
     for (int i = 0; i < v.length; i++) {
       v[i].update();
@@ -567,16 +603,16 @@ class Lvl3 {
     v[1] = new Vine(1600, -50, 75, 150);   // From plat 1 to plat 2
     v[2] = new Vine(1750, -200, 75, 150);  // From plat 2 to plat 3
     v[3] = new Vine(2150, -500, 75, 200);  // Final ascent
-    
+
     currentVines.clear(); // clear current vines to prepare to add this level's set
     // add each vine in this level's array to the current vines list
-    for(int i=0; i<v.length; i++){
+    for (int i=0; i<v.length; i++) {
       currentVines.add(v[i]);
     }
-    
+
     currentPlats.clear(); // clear current platforms to prepare to add this level's set
     // add each platform in this level's array to the current platforms list
-    for(int i=0; i<platforms.length; i++){
+    for (int i=0; i<platforms.length; i++) {
       currentPlats.add(platforms[i]);
     }
 
