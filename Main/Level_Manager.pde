@@ -365,36 +365,39 @@ void lvlChanger() {
     Level2=false;
     Level3 = false;
     lvl1.run();
-    if ( worm.pos.y< - 1300 && worm.pos.x < width - 700) { //position for end of level 
+    if ( worm.pos.y< - 1300 && worm.pos.x < width - 600) { //position for end of level
       playerWins = true;// Set player wins to true if player reaches end of lvl
     }
     for (int i = 1; i < nodes.size(); i++) {
       if (playerWins) {
-        screen= "map"; // go to map screen
-        i++; // sets level to complete 
-        playerWins =false;
-      }
+        i+=1; // sets level to complete
+      } else playerWins =false;
     }
   }
   if (Level2) {
+    playerWins =false;
     Level1 = false;
     Level3 = false;
     lvl2.run();
-     if ( worm.pos.y< - 1800) { //position for end of level 
+    if ( worm.pos.y< - 1800 && worm.pos.x < 750) { //position for end of level
       playerWins = true;// Set player wins to true if player reaches end of lvl
     }
     for (int i = 1; i < nodes.size(); i++) {
       if (playerWins) {
-        screen= "map"; // go to map screen
-        i++; // sets level to complete 
-        playerWins =false;
-      }
+        i+=1; // sets level to complete
+      } else playerWins =false;
     }
   }
   if (Level3) {
+    playerWins =false;
     Level1 = false;
     Level2=false;
     lvl3.run();
+    for (int i = 1; i < nodes.size(); i++) {
+      if (playerWins) {
+        i+=1; // sets level to complete
+      } else playerWins =false;
+    }
   }
   if (playerWins) {
     // Marks current level as Completed if the player completed it
@@ -467,8 +470,9 @@ class Lvl1 {
     apple = new Apple [3];
     apple[0] = new Apple(width - 800, 80, platforms[0]);
     apple[1] = new Apple(width - 1200, -740, platforms[1]);
-    apple[2] = new Apple(width + 200, -1390, platforms[3]);
+    apple[2] = new Apple(width + 200, -1390, platforms[3]); 
   }
+
 
   void run() {
     display();
@@ -502,10 +506,10 @@ class Lvl2 {
     //CHANGE THE PLATFORM & VINE LOCATION VALUES TO  MATCH YOUR LEVEL DESIGN
 
     platforms = new Platform [7]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
-    platforms[0] = new Platform(-800, -200, 550, 20);
-    platforms[1] = new Platform(-200, 160, 550, 20);
+    platforms[0] = new Platform(-800, -200, 500, 20);
+    platforms[1] = new Platform(-250, 160, 500, 20);
     platforms[2] = new Platform(200, -500, 600, 20);
-    platforms[3] = new Platform(950, -500, 500, 20);
+    platforms[3] = new Platform(850, -500, 500, 20);
     platforms[4] = new Platform(950, -1000, 500, 20);
     platforms[5] = new Platform(1000, -1550, 500, 20);
     platforms[6] = new Platform(400, -1750, 500, 20);
@@ -547,6 +551,7 @@ class Lvl2 {
 
 
     worm.pos= new PVector(-550, -250); // start worm pos at new pos
+    currentHealth= 5; // player health reset 
   }
   void run() {
 
@@ -571,11 +576,23 @@ class Lvl2 {
 
   void update() {
     for (int i = 0; i < v.length; i++) {
+      if (player.left) {
+        v[i].x -= (tree[0].treeShift);
+      }
+      if (player.right) {
+        v[i].x += (tree[0].treeShift);
+      }
       v[i].update();
     }
 
 
     for (int i = 0; i <platforms.length; i++) {
+      if (player.left) {
+        platforms[i].x -= (tree[0].treeShift);
+      }
+      if (player.right) {
+        platforms[i].x += (tree[0].treeShift);
+      }
       platforms[i].update();
     }
   }
@@ -618,6 +635,7 @@ class Lvl3 {
 
     // Respawn worm near Level 2's exit
     worm.pos = new PVector(1350, 150);
+    currentHealth= 5; // player health reset
   }
 
   void run() {
