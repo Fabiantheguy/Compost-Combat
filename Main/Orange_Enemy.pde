@@ -12,7 +12,7 @@ void orangeSetup() {
   orangeFrames = new PImage[1];
   orangeFrames[0] = loadImage("orange/O1.png");
   orange = new Orange[1];
-  orange[0] = new Orange(width / 4, worm.pos.y - 100);
+  orange[0] = new Orange(width / 4, worm.pos.y - 700);
 }
 
 void orangeDraw() {

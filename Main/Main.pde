@@ -1,7 +1,7 @@
 import processing.sound.*;
 import java.awt.Rectangle;
 Ground grass;
-Tree tree;
+Tree[] tree;
 Vine[] v;
 Platform[] platforms; //adding platform class
 float masterVol = 1.0; // master volume for the game - stored as a float between 0.0 and 1.0

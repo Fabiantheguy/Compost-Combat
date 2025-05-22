@@ -9,7 +9,7 @@
  */
 // SETTING lEVEL;
 boolean playerWins = false;
-boolean Level1, Level2, Level3; //Start game on LVL 1
+boolean Level1, Level2, Level3;
 boolean cameFromGameScr = false;
 boolean showLoading = false;
 int loadingStartTime = 0;
@@ -481,31 +481,35 @@ class Lvl2 {
   Lvl2 () {
     //CHANGE THE PLATFORM & VINE LOCATION VALUES TO  MATCH YOUR LEVEL DESIGN
 
-    platforms = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
-    platforms[0] = new Platform(0, 160, 440, 20);
-    platforms[1] = new Platform(500, 220, 200, 20);
-    platforms[2] = new Platform(750, 350, 200, 20);
-    platforms[3] = new Platform(1000, 300, 100, 20);
-    platforms[4] = new Platform(1200, 250, 100, 20);
+    platforms = new Platform [6]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
+    platforms[0] = new Platform(-200, 160, 550, 20);
+    platforms[1] = new Platform(200, -500, 600, 20);
+    platforms[2] = new Platform(950, -500, 500, 20);
+    platforms[3] = new Platform(950, -1000, 500, 20);
+    platforms[4] = new Platform(1000, -1550, 500, 20);
+    platforms[5] = new Platform(400, -1750, 500, 20);
 
 
 
-    //IN PROGRESS
+    v = new Vine [4]; // the amount of vines we need in the scene (# CAN BE ALTERED)
+    v[0] = new Vine(200, -500, 75, 525);
+    v[1] = new Vine(1200, -1000, 75, 450);
+    v[2] = new Vine(1300, -1550, 75, 400);
+    v[3] = new Vine(900, -1750, 75, 200);
 
-    vines = new swingingVines [3]; // the amount of vines we need in the scene (# CAN BE ALTERED)
-    vines[0] = new swingingVines (650, 0, 650, vlength);
-    vines[1] = new swingingVines (2300, -400, 2300, vlength);
-    vines[2] =new swingingVines (2700, -400, 2700, vlength);
-    
-    // add current swinging vines to a global list (WIP)
-    
+      currentVines.clear(); // clear current vines to prepare to add this level's set
+    // add each vine in this level's array to the current vines list
+    for(int i=0; i<v.length; i++){
+      currentVines.add(v[i]);
+    }
+     
     currentPlats.clear(); // clear current platforms to prepare to add this level's set
     // add each platform in this level's array to the current platforms list
     for(int i=0; i<platforms.length; i++){
       currentPlats.add(platforms[i]);
     }
     
-    worm.pos= new PVector(100,100);
+    worm.pos= new PVector(100,100); // start worm pos at now pos 
   }
   void run() {
 
@@ -514,17 +518,23 @@ class Lvl2 {
   }
 
   void display() {
+    
+    fill (#503B07); //brown
+     tree[0] = new Tree (-400, -500, 200, 5000);//tree bark
+     tree[1] = new Tree (-200 + (900), -1880, 200, 5000); // tree bark
 
-    for (int i = 0; i < vines.length; i++) {
-      vines[i].display();
+
+    for (int i = 0; i < v.length; i++) {
+      v[i].display();
     }
     for (int i = 0; i <platforms.length; i++) {
       platforms[i].display();
     }
   }
+  
   void update() {
-    for (int i = 0; i < vines.length; i++) {
-      vines[i].update();
+    for (int i = 0; i < v.length; i++) {
+      v[i].update();
     }
 
 

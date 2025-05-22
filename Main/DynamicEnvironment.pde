@@ -81,8 +81,10 @@ class Vine {
 
 
 void treeDraw() {
-  tree.update();
-  tree.display();
+  for (int i =0; i < tree.length; i++){
+    tree[i].update();
+    tree[i].display();
+  }
 }
 
 // Ground Class
