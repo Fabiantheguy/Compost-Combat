@@ -173,8 +173,10 @@ void cameraDraw() {
     camTarget.set(-600, worm.pos.y - height/2 - 400);
   } else if (worm.pos.x >= 3000) {
     camTarget.set(3000 - 1050, worm.pos.y - height/2 - 400);
-  } else {
-    camTarget.set(worm.pos.x - width/2, worm.pos.y - height/2 );
+  } else if (Level2) {
+    camTarget.set(worm.pos.x - width/2, worm.pos.y - height/2);
+  }else {
+    camTarget.set(worm.pos.x - width/2, worm.pos.y - height/2 - 400 );
   }
 
   // Smooth interpolation toward the target camera position

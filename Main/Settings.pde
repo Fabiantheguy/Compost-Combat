@@ -97,9 +97,9 @@ class Settings {
         stroke(gray);
         strokeCap(ROUND);
         strokeWeight(10);
-        rect(width/2, height/3, 400, 100);
+        rect(width/3, height/3, 400, 100);
         fill (white);
-        text("exiting ...", width/2, height/2.5);
+        text("exiting ...", width/3, height/2.5);
         noStroke();
         exit();
       }
