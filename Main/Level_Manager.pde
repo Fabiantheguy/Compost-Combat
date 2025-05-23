@@ -52,6 +52,7 @@ void startScreenSetup() {
   // Load images
   compostTitle = loadImage("Compost.png");
   combatTitle = loadImage("Combat.png");
+  background = loadImage("Background.png");
 
 
   //import Settings Variables
@@ -113,8 +114,9 @@ void menuDraw() {
 
  
 void startScreen() {
-    background = loadImage("Background.png");
+  if(settings.graphicsSetting == "High"){  
     image(background, 0, 0, width, height);
+  }
   if (screen=="start") {
     boolean startClicked = (mouseX > 400 && mouseX < 1300 &&
       mouseY > 300 && mouseY < 400 && mousePressed);

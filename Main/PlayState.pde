@@ -48,7 +48,17 @@ class WalkState implements PlayerState {
   public void display(Play player) {
     // Draw the player normally:
      if (!invincible || (millis() / 100) % 2 == 0) {
-      rect(player.pos.x, player.pos.y, player.size.x, player.size.y);
+      // rect(player.pos.x, player.pos.y, player.size.x, player.size.y);
+      if(player.facingRight){
+        image(wormWalk[player.currentFrame % wormWalk.length], 
+              player.pos.x - 20, player.pos.y - 18, 80, 80);
+      } else {
+        pushMatrix();
+        scale(-1, 1);
+        image(wormWalk[player.currentFrame % wormWalk.length], 
+              -60 - player.pos.x, player.pos.y - 18, 80, 80);
+        popMatrix();
+      }
     }
     // println("display walk state");
   } 
@@ -98,7 +108,17 @@ class JumpState implements PlayerState {
   // Handles player display while jumping 
   public void display(Play player) {
     if (!invincible || (millis() / 100) % 2 == 0) {
-      rect(player.pos.x, player.pos.y, player.size.x * 0.875, player.size.y * 1.125);
+      // rect(player.pos.x, player.pos.y, player.size.x * 0.875, player.size.y * 1.125);
+      if(player.facingRight){
+        image(wormJump[player.currentFrame % wormJump.length], 
+              player.pos.x - 20, player.pos.y - 18, 80, 80);
+      } else {
+        pushMatrix();
+        scale(-1, 1);
+        image(wormJump[player.currentFrame % wormJump.length], 
+              -60 - player.pos.x, player.pos.y - 18, 80, 80);
+        popMatrix();
+      }
     }
     // println("display jump state");
   }
@@ -139,7 +159,17 @@ class DuckState implements PlayerState {
    // Handles player display while ducking
    public void display(Play player) {
      if (!invincible || (millis() / 100) % 2 == 0) {
-      rect(player.pos.x, player.pos.y, player.size.x * 1.125, player.size.y * 0.875);
+      // rect(player.pos.x, player.pos.y, player.size.x * 1.125, player.size.y * 0.875);
+      if(player.facingRight){
+        image(wormDuck[player.currentFrame % wormDuck.length], 
+              player.pos.x - 20, player.pos.y - 18, 80, 80);
+      } else {
+        pushMatrix();
+        scale(-1, 1);
+        image(wormDuck[player.currentFrame % wormDuck.length], 
+              -60 - player.pos.x, player.pos.y - 18, 80, 80);
+        popMatrix();
+      }
     }
   }
 }
@@ -184,7 +214,17 @@ class ClimbState implements PlayerState {
   // Handles player display while climbing
    public void display(Play player) {
      if (!invincible || (millis() / 100) % 2 == 0) {
-      rect(player.pos.x, player.pos.y, player.size.x, player.size.y);
+      // rect(player.pos.x, player.pos.y, player.size.x, player.size.y);
+      if(player.facingRight){
+        image(wormClimb[player.currentFrame % wormClimb.length], 
+              player.pos.x - 15, player.pos.y - 15, 80, 80);
+      } else {
+        pushMatrix();
+        scale(-1, 1);
+        image(wormClimb[player.currentFrame % wormClimb.length], 
+              -55 - player.pos.x, player.pos.y - 15, 80, 80);
+        popMatrix();
+      }
     }
   }
 }
@@ -198,7 +238,7 @@ class DashState implements PlayerState {
   }
   
   public void update(Play player) {
-     if (facingRight){
+     if (player.facingRight){
       player.pos.x += (player.speed*2.5);
       player.checkMomentum((player.speed*2.5), 0);
     } else {
@@ -216,7 +256,17 @@ class DashState implements PlayerState {
   // Handles player display while dashing
    public void display(Play player) {
      if (!invincible || (millis() / 100) % 2 == 0) {
-      rect(player.pos.x, player.pos.y, player.size.x * 1.2, player.size.y * 0.8);
+      // rect(player.pos.x, player.pos.y, player.size.x * 1.2, player.size.y * 0.8);
+      if(player.facingRight){
+        image(wormDash[player.currentFrame % wormDash.length], 
+              player.pos.x - 20, player.pos.y - 18, 80, 80);
+      } else {
+        pushMatrix();
+        scale(-1, 1);
+        image(wormDash[player.currentFrame % wormDash.length], 
+              -60 - player.pos.x, player.pos.y - 18, 80, 80);
+        popMatrix();
+      }
     }
   }
 }
