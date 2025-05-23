@@ -136,7 +136,14 @@ class Apple extends Enemy {
   }
 
   void display() {
-    image(frames[currentFrame], x - 20, y - 30, 80, 80);
+    if(movingRight){
+      image(frames[currentFrame], x - 20, y - 30, 80, 80);
+    } else {
+      pushMatrix();
+      scale(-1, 1);
+      image(frames[currentFrame], -60 - x, y - 30, 80, 80);
+      popMatrix();
+    }
   }
 
   boolean onAnyGround() {

@@ -4,6 +4,9 @@ class Settings {
     rectX, rectY, rectX2, rectY2;
   PVector rectangle= new PVector (500, 300);
   boolean changingVol = false; // flag for if the player is currently changing the volume
+  color[] upgradeColors; // colors of each of the upgrade buttons
+  String upgradeSelected, graphicsSetting; // selected upgrade for the upgrade menu
+  boolean upgradeChosen = false, graphicsChosen = false; // toggle so player can only choose 1 update per level
 
   Settings (float x, float y, float s) {
     pos= new PVector (x, y);
@@ -12,6 +15,15 @@ class Settings {
     rectX2 = 50;
     rectY = y;
     rectY2 = 50;
+    
+    // upgrade color array
+    upgradeColors = new color[6];
+    upgradeColors[0] = color(255, 140, 0);
+    upgradeColors[1] = color(255, 178, 85);
+    upgradeColors[2] = color(35, 177, 0);
+    upgradeColors[3] = color(78, 217, 44);
+    upgradeColors[4] = color(243, 41, 223);
+    upgradeColors[5] = color(255, 113, 241);
   }
 
   void openTab() {
@@ -32,12 +44,16 @@ class Settings {
       for (int i=0; i<4; i++) {
         rect(400, 300+(i*200), width/2, 100);
       }
+      arc(1580, 850, 320, 160, PI*0.5, PI*1.5); // graphics toggle
       noStroke();
       fill(bgColor);
       text("Return to Title Screen", rectangle.x, 370);
       text("Map", rectangle.x, 570);
       text("Volume", rectangle.x, 770);
       text("Exit Game", rectangle.x, 970);
+      textSize(36);
+      text(graphicsSetting, 1445, 840);
+      text("Graphics", 1445, 880);
 
       //Volume Bar
       fill(white, 90);
@@ -79,6 +95,8 @@ class Settings {
         mouseY>900 && mouseY < 1000;
       boolean mapClicked= mouseX> rectStart && mouseX<rectEnd &&
         mouseY>500 && mouseY < 600 && screen =="settings";
+      boolean graphicsClicked = mouseX > 1420 && mouseX < 1580 &&
+        mouseY > 770 && mouseY < 930 && screen == "settings";
 
       if (startClicked && mousePressed) {
         screen = "start";
@@ -111,6 +129,28 @@ class Settings {
         screen = "settings";
         cameFromGameScr = false;
         mousePressed = false;
+      }
+      // graphics toggle update
+      if (graphicsClicked && mousePressed && !graphicsChosen) {
+        if (graphicsSetting == "Low"){
+          // load the high resolution images
+          platformz = loadImage("Platform.png");
+          vinez = loadImage("Vines.png");
+          ground = loadImage("Ground.png");
+          graphicsSetting = "High";
+        } else {
+          // load the low resolution images
+          platformz = loadImage("PlatformLQ.png");
+          vinez = loadImage("VinesLQ.png");
+          ground = loadImage("GroundLQ.jpg");
+          graphicsSetting = "Low";
+        }
+        graphicsChosen = true; // to make sure it only toggles once per click
+        saveToFile();
+      }
+      // reset graphics click toggle
+      if (graphicsChosen && !mousePressed){
+        graphicsChosen = false;
       }
     }
   }
@@ -223,6 +263,118 @@ class Settings {
     //exit button
     fill(red);
     circle(1530, 150, radius);
+  }
+  
+  // UI module for clearing a level
+  void lvlClear() {
+    // basic UI setup and text
+    noStroke();
+    fill(black);
+    settingsWindow();
+    fill(white);
+    textSize(150);
+    textAlign(CENTER);
+    text("LEVEL CLEAR!", width/2, 220);
+    textSize(64);
+    text("Choose your Upgrade:", width/2, 350);
+    text("Dash", width/4, 450);
+    text("Range", width/2, 450);
+    text("Agility", width*0.75, 450);
+    
+    // dash upgrade button -- selection check
+    if(mouseY > 450 && mouseY < 700 && abs(mouseX-480) <= 150){
+      fill(50);
+      circle(480, 575, 225);
+      fill(upgradeColors[1]);
+      upgradeSelected = "dash";
+    } else {
+      fill(upgradeColors[0]);
+    }
+    // dash upgrade button -- drawing
+    triangle(385, 500, 385, 650, 535, 575);
+    triangle(460, 500, 460, 650, 610, 575);
+    
+    // range upgrade button -- selection check
+    if(mouseY > 450 && mouseY < 700 && abs(mouseX-960) <= 150){
+      fill(50);
+      circle(960, 575, 225);
+      fill(upgradeColors[3]);
+      upgradeSelected = "range";
+    } else {
+      fill(upgradeColors[2]);
+    }
+    // range upgrade button -- drawing
+    quad(825, 550, 1100, 550, 1100, 600, 825, 600);
+    quad(1090, 570, 1090, 580, 1140, 580, 1140, 570);
+    quad(850, 675, 825, 650, 950, 550, 975, 575);
+    
+    // range upgrade button -- selection check
+    if(mouseY > 450 && mouseY < 700 && abs(mouseX-1440) <= 150){
+      fill(50);
+      circle(1440, 575, 225);
+      fill(upgradeColors[5]);
+      upgradeSelected = "range";
+    } else {
+      fill(upgradeColors[4]);
+    }
+    // range upgrade button -- drawing
+    quad(1360, 530, 1490, 530, 1490, 570, 1360, 570);
+    quad(1380, 590, 1510, 590, 1510, 630, 1380, 630);
+    triangle(1310, 550, 1360, 600, 1360, 500);
+    triangle(1560, 610, 1510, 560, 1510, 660);
+    
+    // check for map button
+    boolean mapClicked= mouseX> 480 && mouseX<1440 &&
+        mouseY>750 && mouseY < 850 && screen =="clear";
+        
+    // draw map button
+    stroke(gray);
+    strokeWeight(4);
+    fill(darkGray);
+    rect(480, 750, 960, 100);
+    noStroke();
+    fill(white);
+    text("Return to Map", 960, 826);
+    textAlign(LEFT);
+    
+    // interactions
+    if(mousePressed){
+      // map button code
+      if(mapClicked){
+        upgradeChosen = false;
+        cameFromGameScr = false;
+        screen = "map";
+      } else if(!upgradeChosen) {
+        // upgrade code
+        switch(upgradeSelected){
+          case "dash":
+            // dash upgrade
+            if (worm.upgrades.get("dash") < 2) {
+              worm.upgrades.add("dash", 1);
+              worm.dashCd -= 400; // level 1 dash has a 0.8 second cooldown, level 2 dash has a 0.4 second cooldown
+            }
+            break;
+          case "range":
+            // range upgrade
+            if (worm.upgrades.get("range") < 2) {
+              worm.upgrades.add("range", 1);
+              worm.bulletLife += 350;
+            }
+            break;
+          case "agility":
+            // agility upgrade
+            if (worm.upgrades.get("agility") < 2) {
+              worm.upgrades.add("agility", 1);
+              worm.speed += 1;
+            }
+            break;
+        }
+        upgradeChosen = true;
+        // print(worm.upgrades);
+      }
+    }
+    
+    settingsButton();
   }
   
   boolean onX () {
