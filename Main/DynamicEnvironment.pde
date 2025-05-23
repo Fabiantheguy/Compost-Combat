@@ -221,17 +221,20 @@ class Platform {
 
   void display () {
     // Draw the platform image at this platform's position
-    if(flipped){
-      pushMatrix();
-      scale(-1, 1);
-      image(platformz, -100 - w - x, y - 100, w + 250, h + 250);
-      popMatrix();
+    if(settings.graphicsSetting == "High"){
+      if(flipped){
+        pushMatrix();
+        scale(-1, 1);
+        image(platformz, -100 - w - x, y - 100, w + 250, h + 250);
+        popMatrix();
+      } else {
+        image(platformz, x - 100, y - 100, w + 250, h + 250);
+      }
     } else {
-      image(platformz, x - 100, y - 100, w + 250, h + 250);
+      fill (135, 61, 0);
+      rect(x, y, w, h);
     }
     
-    //fill (#D2DE3C);
-    //rect(x, y, w, h);
   }
 
   void update () {
