@@ -224,7 +224,7 @@ class Platform {
 
   void display () {
     // Draw the platform image at this platform's position
-    image(platformz, x - 100, y - 100, w + 100, h + 100);
+    image(platformz, x - 100, y - 100, w + 250, h + 250);
     
     //fill (#D2DE3C);
     //rect(x, y, w, h);
