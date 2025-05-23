@@ -550,7 +550,7 @@ class Play {
     
     // increment animation
     frameInc++;
-    if (frameInc >= 10){
+    if (frameInc >= 15){
       currentFrame++;
       frameInc = 0;
     }
