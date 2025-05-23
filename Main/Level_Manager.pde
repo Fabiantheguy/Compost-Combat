@@ -28,6 +28,7 @@ float amp = map(mouseY, 0, height, 0.0, 1.0); // amplitude of the volume slider
 String screen = "start";
 int radius = 30;
 float x=800;
+PImage background;
 PImage cog;
 String[] saveSlotNames = {"Empty Slot", "Empty Slot", "Empty Slot", "Empty Slot"};
 boolean[] slotNamed = {false, false, false, false};
@@ -99,6 +100,8 @@ void menuDraw() {
  START SCREEN
  -------------------------------------------------*/
 void startScreen() {
+    background = loadImage("Background.PNG");
+    image(background, 0, 0, width, height);
   if (screen=="start") {
     boolean startClicked = (mouseX > 400 && mouseX < 1300 &&
       mouseY > 300 && mouseY < 400 && mousePressed);
@@ -106,8 +109,8 @@ void startScreen() {
       mouseY > 500 && mouseY < 600 && mousePressed && screen =="start");
     boolean creditsClicked = (mouseX > 400 && mouseX < 1300 &&
       mouseY > 700 && mouseY < 800 && mousePressed);
-    fill(black);
-    rect(0, 0, width, height);
+    //fill(black);
+    //rect(0, 0, width, height);
     fill (white);
     textSize(125);
     text("COMPOST COMBAT", width/5, height/8);
