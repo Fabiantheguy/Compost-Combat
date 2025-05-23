@@ -50,7 +50,7 @@ class Vine {
     c = #00ff00;
     
     // loads image per vines
-    vinez = loadImage("Vines.png");
+    vinez = loadImage("Vines.PNG");
   }
 
   // draws the vine
