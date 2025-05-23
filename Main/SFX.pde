@@ -33,6 +33,7 @@ void soundSetup() {
 }
 
 void Death(){
+  
   gameOver = new SoundFile(this, "data/GameOver.wav");
   if(gameOver.isPlaying() == false) {
   gameOver.play();
