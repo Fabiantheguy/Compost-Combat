@@ -31,6 +31,10 @@ class Tree {
 }
 
 // Class for Vine for player to climb up and down tree
+ArrayList<Vine> allVines = new ArrayList<Vine>();
+
+PImage vinez;
+
 class Vine {
   float x, y, w, h;
   boolean isOnVine; // detect if player is on Vine
@@ -44,12 +48,19 @@ class Vine {
     this.h = h;
     vineShift = 1.25;
     c = #00ff00;
+    
+    // loads image per vines
+    vinez = loadImage("Vines.png");
   }
 
   // draws the vine
   void display() {
-    fill(c);
-    rect(x, y, w, h);
+    // Draw the vine image at this vine's position and size
+    image(vinez, x, y, w, h);
+
+    // Optionally draw the green rectangle behind or under the image
+    //fill(c);
+    //rect(x, y, w, h);
   }
 
   void update() {
