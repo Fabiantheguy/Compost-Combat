@@ -111,7 +111,7 @@ class Ground {
 
     // Only load image once globally, not per ground instance
     if (ground == null) {
-      ground = loadImage("Ground.jpg");
+      ground = loadImage("Ground.png");
     }
   }
 
@@ -267,13 +267,13 @@ class Platform {
 void environmentSetup(){
   if (settings.graphicsSetting == "High"){
     // load the high resolution images
-    platformz = loadImage("PlatformHQ.png");
-    vinez = loadImage("VinesHQ.png");
-    ground = loadImage("GroundHQ.png");
-  } else {
-    // load the low resolution images
     platformz = loadImage("Platform.png");
     vinez = loadImage("Vines.png");
-    ground = loadImage("Ground.jpg");
+    ground = loadImage("Ground.png");
+  } else {
+    // load the low resolution images
+    platformz = loadImage("PlatformLQ.png");
+    vinez = loadImage("VinesLQ.png");
+    ground = loadImage("GroundLQ.jpg");
   }
 }

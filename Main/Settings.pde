@@ -134,15 +134,15 @@ class Settings {
       if (graphicsClicked && mousePressed && !graphicsChosen) {
         if (graphicsSetting == "Low"){
           // load the high resolution images
-          platformz = loadImage("PlatformHQ.png");
-          vinez = loadImage("VinesHQ.png");
-          ground = loadImage("GroundHQ.png");
+          platformz = loadImage("Platform.png");
+          vinez = loadImage("Vines.png");
+          ground = loadImage("Ground.png");
           graphicsSetting = "High";
         } else {
           // load the low resolution images
-          platformz = loadImage("Platform.png");
-          vinez = loadImage("Vines.png");
-          ground = loadImage("Ground.jpg");
+          platformz = loadImage("PlatformLQ.png");
+          vinez = loadImage("VinesLQ.png");
+          ground = loadImage("GroundLQ.jpg");
           graphicsSetting = "Low";
         }
         graphicsChosen = true; // to make sure it only toggles once per click
