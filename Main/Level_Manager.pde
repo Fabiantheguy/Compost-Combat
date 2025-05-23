@@ -253,6 +253,7 @@ void saveToFile() {
     json.setString("slot" + i, saveSlotNames[i]);
   }
   json.setFloat("volume", masterVol);
+  json.setString("graphics", settings.graphicsSetting);
   saveJSONObject(json, sketchPath("gameData.json")); // Use full path
 }
 
@@ -283,6 +284,7 @@ void loadSaveData() {
   }
   Sound.volume(json.getFloat("volume"));
   masterVol = json.getFloat("volume");
+  settings.graphicsSetting = json.getString("graphics");
 }
 void initLevelNodes() {
   nodes = new ArrayList<LevelNode>();

@@ -5,8 +5,8 @@ class Settings {
   PVector rectangle= new PVector (500, 300);
   boolean changingVol = false; // flag for if the player is currently changing the volume
   color[] upgradeColors; // colors of each of the upgrade buttons
-  String upgradeSelected; // selected upgrade for the upgrade menu
-  boolean upgradeChosen = false; // toggle so player can only choose 1 update per level
+  String upgradeSelected, graphicsSetting; // selected upgrade for the upgrade menu
+  boolean upgradeChosen = false, graphicsChosen = false; // toggle so player can only choose 1 update per level
 
   Settings (float x, float y, float s) {
     pos= new PVector (x, y);
@@ -44,12 +44,16 @@ class Settings {
       for (int i=0; i<4; i++) {
         rect(400, 300+(i*200), width/2, 100);
       }
+      arc(1580, 850, 320, 160, PI*0.5, PI*1.5); // graphics toggle
       noStroke();
       fill(bgColor);
       text("Return to Title Screen", rectangle.x, 370);
       text("Map", rectangle.x, 570);
       text("Volume", rectangle.x, 770);
       text("Exit Game", rectangle.x, 970);
+      textSize(36);
+      text(graphicsSetting, 1445, 840);
+      text("Graphics", 1445, 880);
 
       //Volume Bar
       fill(white, 90);
@@ -91,6 +95,8 @@ class Settings {
         mouseY>900 && mouseY < 1000;
       boolean mapClicked= mouseX> rectStart && mouseX<rectEnd &&
         mouseY>500 && mouseY < 600 && screen =="settings";
+      boolean graphicsClicked = mouseX > 1420 && mouseX < 1580 &&
+        mouseY > 770 && mouseY < 930 && screen == "settings";
 
       if (startClicked && mousePressed) {
         screen = "start";
@@ -123,6 +129,28 @@ class Settings {
         screen = "settings";
         cameFromGameScr = false;
         mousePressed = false;
+      }
+      // graphics toggle update
+      if (graphicsClicked && mousePressed && !graphicsChosen) {
+        if (graphicsSetting == "Low"){
+          // load the high resolution images
+          platformz = loadImage("PlatformHQ.png");
+          vinez = loadImage("VinesHQ.png");
+          ground = loadImage("GroundHQ.png");
+          graphicsSetting = "High";
+        } else {
+          // load the low resolution images
+          platformz = loadImage("Platform.png");
+          vinez = loadImage("Vines.png");
+          ground = loadImage("Ground.jpg");
+          graphicsSetting = "Low";
+        }
+        graphicsChosen = true; // to make sure it only toggles once per click
+        saveToFile();
+      }
+      // reset graphics click toggle
+      if (graphicsChosen && !mousePressed){
+        graphicsChosen = false;
       }
     }
   }

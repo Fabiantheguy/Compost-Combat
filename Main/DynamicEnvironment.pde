@@ -265,8 +265,15 @@ class Platform {
 
 // environment setup function
 void environmentSetup(){
-  // loads image per platform branches
-  platformz = loadImage("Platform.png");
-  // loads image per vines
-  vinez = loadImage("Vines.png");
+  if (settings.graphicsSetting == "High"){
+    // load the high resolution images
+    platformz = loadImage("PlatformHQ.png");
+    vinez = loadImage("VinesHQ.png");
+    ground = loadImage("GroundHQ.png");
+  } else {
+    // load the low resolution images
+    platformz = loadImage("Platform.png");
+    vinez = loadImage("Vines.png");
+    ground = loadImage("Ground.jpg");
+  }
 }
