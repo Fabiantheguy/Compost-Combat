@@ -109,7 +109,7 @@ void menuDraw() {
 
  
 void startScreen() {
-    background = loadImage("Background.PNG");
+    background = loadImage("Background.png");
     image(background, 0, 0, width, height);
   if (screen=="start") {
     boolean startClicked = (mouseX > 400 && mouseX < 1300 &&
@@ -455,11 +455,11 @@ class Lvl1 {
 
 
     platforms = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
-    platforms[0] = new Platform(width - 800, 80, 800, 20);
-    platforms[1] = new Platform(width - 1100, -700, 1200, 20);
-    platforms[2] = new Platform(width + 100, -650, 1000, 20);
-    platforms[3] = new Platform(width + 200, -1350, 950, 20);
-    platforms[4] = new Platform(width - 1000, -1300, 1000, 20);
+    platforms[0] = new Platform(width - 800, 80, 800, 20, false);
+    platforms[1] = new Platform(width - 1100, -700, 1200, 20, false);
+    platforms[2] = new Platform(width + 100, -650, 1000, 20, true);
+    platforms[3] = new Platform(width + 200, -1350, 950, 20, true);
+    platforms[4] = new Platform(width - 1000, -1300, 1000, 20, false);
 
     /*
     PImage[] appleFrames = new PImage[]{
@@ -526,13 +526,13 @@ class Lvl2 {
     //CHANGE THE PLATFORM & VINE LOCATION VALUES TO  MATCH YOUR LEVEL DESIGN
 
     platforms = new Platform [7]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
-    platforms[0] = new Platform(-800, -200, 500, 20);
-    platforms[1] = new Platform(-250, 160, 500, 20);
-    platforms[2] = new Platform(200, -500, 600, 20);
-    platforms[3] = new Platform(850, -500, 500, 20);
-    platforms[4] = new Platform(950, -1000, 500, 20);
-    platforms[5] = new Platform(1000, -1550, 500, 20);
-    platforms[6] = new Platform(400, -1750, 500, 20);
+    platforms[0] = new Platform(-800, -200, 500, 20, false);
+    platforms[1] = new Platform(-250, 160, 500, 20, true);
+    platforms[2] = new Platform(200, -500, 600, 20, false);
+    platforms[3] = new Platform(850, -500, 500, 20, true);
+    platforms[4] = new Platform(950, -1000, 500, 20, true);
+    platforms[5] = new Platform(1000, -1550, 500, 20, true);
+    platforms[6] = new Platform(400, -1750, 500, 20, false);
 
 
 
@@ -627,12 +627,12 @@ class Lvl3 {
     //CHANGE THE PLATFORM & VINE LOCATION VALUES TO  MATCH YOUR LEVEL DESIGN
 
     platforms = new Platform[6];
-    platforms[0] = new Platform(1300, 200, 250, 20);  // Starts directly after The end of level 2
-    platforms[1] = new Platform(1500, 100, 200, 20);  // Climb up
-    platforms[2] = new Platform(1650, -50, 250, 20);  // Mid-level challenge
-    platforms[3] = new Platform(1800, -200, 180, 20); // Narrower
-    platforms[4] = new Platform(2000, -350, 300, 20); // More open space
-    platforms[5] = new Platform(2200, -500, 250, 20); // Final platform
+    platforms[0] = new Platform(1300, 200, 250, 20, false);  // Starts directly after The end of level 2
+    platforms[1] = new Platform(1500, 100, 200, 20, false);  // Climb up
+    platforms[2] = new Platform(1650, -50, 250, 20, false);  // Mid-level challenge
+    platforms[3] = new Platform(1800, -200, 180, 20, false); // Narrower
+    platforms[4] = new Platform(2000, -350, 300, 20, false); // More open space
+    platforms[5] = new Platform(2200, -500, 250, 20, false); // Final platform
 
     // Vines to bridge larger vertical gaps
     v = new Vine[4];

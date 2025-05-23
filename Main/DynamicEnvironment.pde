@@ -50,7 +50,7 @@ class Vine {
     c = #00ff00;
     
     // loads image per vines
-    vinez = loadImage("Vines.PNG");
+    vinez = loadImage("Vines.png");
   }
 
   // draws the vine
@@ -211,11 +211,14 @@ PImage platformz;
 class Platform {
   float x, y, w, h;
   float cameraMovement;
-  Platform (float x, float y, float w, float h) {
+  boolean flipped; // if the image needs to be flipped
+  
+  Platform (float x, float y, float w, float h, boolean f) {
     this.x = x;
     this.y = y;
     this.w = w;
     this.h = h;
+    flipped = f;
     cameraMovement= 1.25;
     
     // loads image per platform branches
@@ -224,7 +227,14 @@ class Platform {
 
   void display () {
     // Draw the platform image at this platform's position
-    image(platformz, x - 100, y - 100, w + 250, h + 250);
+    if(flipped){
+      pushMatrix();
+      scale(-1, 1);
+      image(platformz, -100 - w - x, y - 100, w + 250, h + 250);
+      popMatrix();
+    } else {
+      image(platformz, x - 100, y - 100, w + 250, h + 250);
+    }
     
     //fill (#D2DE3C);
     //rect(x, y, w, h);
