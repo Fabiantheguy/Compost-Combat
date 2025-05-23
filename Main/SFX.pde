@@ -30,19 +30,11 @@ void soundSetup() {
       jump.play();
     }
   }
-// <<<<<<< HEAD
-  
-// =======
 }
 
-// <<<<<<< HEAD
-// =======
 void Death(){
   gameOver = new SoundFile(this, "data/GameOver.wav");
-}
-// >>>>>>> 8e65f8bfcb3c92e389c612a0da386db5f780d425
-/*  if ( ){
-    gameOver.play();
+  if(gameOver.isPlaying() == false) {
+  gameOver.play();
   }
->>>>>>> 8e65f8bfcb3c92e389c612a0da386db5f780d425
 }
