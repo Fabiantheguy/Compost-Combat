@@ -27,6 +27,10 @@ class Settings {
   }
 
   void openTab() {
+    // add background behind UI module
+    if(settings.graphicsSetting == "High"){  
+      image(background, 0, 0, width, height);
+    }
     float rectStart = 400, rectEnd = 1370;
     //Settings Screen
     if (screen=="settings") {
@@ -156,6 +160,10 @@ class Settings {
   }
 
   void mapScreen() {
+    // add background behind UI module
+    if(settings.graphicsSetting == "High"){  
+      image(background, 0, 0, width, height);
+    }
     if (screen=="map") {
       //Background Rect
       fill(gray);
@@ -267,6 +275,10 @@ class Settings {
   
   // UI module for clearing a level
   void lvlClear() {
+    // add background behind UI module
+    if(settings.graphicsSetting == "High"){  
+      image(background, 0, 0, width, height);
+    }
     // basic UI setup and text
     noStroke();
     fill(black);

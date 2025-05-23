@@ -21,7 +21,6 @@ boolean upAimed = false;
 boolean downAimed = false;
 boolean leftAimed = false;
 boolean rightAimed = false;
-boolean facingRight = true; // for dash
 boolean spacePressed = false;
 boolean movPressed = false; // for dirty flag
 String[] lastAim = new String[4];
@@ -37,6 +36,13 @@ Player player;
 // Camera Variables
 PVector camPos;
 PVector camTarget;
+
+// sprite arrays for the worm's animation cycles
+PImage[] wormWalk;
+PImage[] wormJump;
+PImage[] wormDuck;
+PImage[] wormClimb;
+PImage[] wormDash;
 
 void playerSetup() {
   player = new Player(width/15, height - 150);
@@ -70,14 +76,14 @@ void movementKeyPressed() {
     if (!leftHeld) worm.dirtyMomentum = true; // when held bool changes, dirty flag turns on
     player.left = true;
     leftHeld = true;
-    facingRight = false;
+    worm.facingRight = false;
   }
   // If 'D' or 'd' is pressed, move the player right
   if (key == 'd' || key == 'D') {
     if (!rightHeld) worm.dirtyMomentum = true; // when held bool changes, dirty flag turns on
     player.right = true;
     rightHeld = true;
-    facingRight = true;
+    worm.facingRight = true;
   }
   if (key == 's' || key == 'S') {
     if (!downHeld) worm.dirtyMomentum = true; // when held bool changes, dirty flag turns on
@@ -297,10 +303,27 @@ class Player {
 }
 
 void playSetup() {
+  // clear last aim array
   lastAim[0] = "none";
   lastAim[1] = "none";
   lastAim[2] = "none";
   lastAim[3] = "none";
+  
+  // set up worm image arrays
+  wormWalk = new PImage[2];
+  wormJump = new PImage[1];
+  wormDuck = new PImage[1];
+  wormClimb = new PImage[2];
+  wormDash = new PImage[1];
+  
+  // add images to arrays
+  wormWalk[0] = loadImage("worm/W1.png");
+  wormWalk[1] = loadImage("worm/W2.png");
+  wormJump[0] = loadImage("worm/W6.png");
+  wormDuck[0] = loadImage("worm/W5.png");
+  wormClimb[0] = loadImage("worm/W1.png");
+  wormClimb[1] = loadImage("worm/W6.png");
+  wormDash[0] = loadImage("worm/W3.png");
 }
 
 
@@ -392,7 +415,8 @@ class Play {
   int bulletCd, fireRate, bulletLife;
   int baseFireRate = 150;
   int boostEndTime = 0;
-  boolean boosted = false, dirtyMomentum = true, dashActive = false;
+  boolean boosted = false, dirtyMomentum = true, dashActive = false, facingRight = true;
+  int currentFrame = 0, frameInc = 0; // for animation
   int dashStart = 0;
   int dashTime = 200; // milliseconds
   int dashCd = 1200; // milliseconds
@@ -523,6 +547,13 @@ class Play {
     }
 
     rectMode(CORNER);
+    
+    // increment animation
+    frameInc++;
+    if (frameInc >= 10){
+      currentFrame++;
+      frameInc = 0;
+    }
   }
   void takeDmg(int l) {
     currentHealth -= l;
