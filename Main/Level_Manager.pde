@@ -436,8 +436,8 @@ class Lvl1 {
 
     platforms = new Platform [5]; // the amount of platforms we need in the scene (# CAN BE ALTERED)
     platforms[0] = new Platform(width - 800, 80, 800, 20);
-    platforms[1] = new Platform(width - 1200, -700, 1200, 20);
-    platforms[2] = new Platform(width + 200, -650, 1000, 20);
+    platforms[1] = new Platform(width - 1100, -700, 1200, 20);
+    platforms[2] = new Platform(width + 100, -650, 1000, 20);
     platforms[3] = new Platform(width + 200, -1350, 950, 20);
     platforms[4] = new Platform(width - 1000, -1300, 1000, 20);
 
