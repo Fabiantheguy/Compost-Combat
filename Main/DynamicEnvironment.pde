@@ -114,7 +114,7 @@ class Ground {
 
     // Only load image once globally, not per ground instance
     if (ground == null) {
-      ground = loadImage("Ground.png");
+      ground = loadImage("Ground.jpg");
     }
   }
 
@@ -219,7 +219,7 @@ class Platform {
     cameraMovement= 1.25;
     
     // loads image per platform branches
-    platformz = loadImage("Platform.PNG");
+    platformz = loadImage("Platform.png");
   }
 
   void display () {
