@@ -30,12 +30,8 @@ void soundSetup() {
       jump.play();
     }
   }
-}
-
-void Death(){
   
-  gameOver = new SoundFile(this, "data/GameOver.wav");
-  if(gameOver.isPlaying() == false) {
+  if(currentHealth <= 1) {
   gameOver.play();
   }
 }
