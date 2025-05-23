@@ -1,6 +1,8 @@
 // Secluded variables for the enemy (), and platform
 Banana[] banana; // banana bullets are now stored in their parent banana class
 
+PImage[] bananaFrames;
+
 void BananaDraw() {
   // checks if banana array exists
   if (banana != null) {
