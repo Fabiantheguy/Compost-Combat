@@ -12,7 +12,7 @@ swingingVines[] vines;
 PVector vinesPOS = new PVector (1900, -400);//CHANGE THESE VARIABLES TO KEEP COLLISIONS 
 float vlength = 150; 
 
-// for testing purposes, delete later
+// for testing purposes, delete later 
 int[] konacode = {38, 38, 40, 40, 37, 39, 37, 39, 66, 65};
 int konaCurrent = 0;
 
