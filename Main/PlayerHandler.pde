@@ -10,7 +10,7 @@ int invincibleStartTime = 0;
 int invincibleDuration = 1000; // milliseconds of invincibility
 ArrayList<Item> items = new ArrayList<Item>();
 
-Play worm = new Play(1000, 600, 5); // spawn location
+Play worm = new Play(1000, 580, 5); // spawn location
 
 // === Global key states ===
 boolean leftHeld = false;

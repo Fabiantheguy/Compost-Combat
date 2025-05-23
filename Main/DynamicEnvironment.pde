@@ -48,9 +48,6 @@ class Vine {
     this.h = h;
     vineShift = 1.25;
     c = #00ff00;
-    
-    // loads image per vines
-    vinez = loadImage("Vines.png");
   }
 
   // draws the vine
@@ -217,9 +214,6 @@ class Platform {
     this.w = w;
     this.h = h;
     cameraMovement= 1.25;
-    
-    // loads image per platform branches
-    platformz = loadImage("Platform.png");
   }
 
   void display () {
@@ -267,4 +261,12 @@ class Platform {
   boolean isColliding(Play worm) {
     return getBounds().intersects(worm.getBounds());
   }
+}
+
+// environment setup function
+void environmentSetup(){
+  // loads image per platform branches
+  platformz = loadImage("Platform.png");
+  // loads image per vines
+  vinez = loadImage("Vines.png");
 }

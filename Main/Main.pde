@@ -28,6 +28,7 @@ playerSetup();
 playSetup();
 loadSaveData();
 lvlSetup();
+environmentSetup();
 titleScreenMusic.loop();
 }
 
@@ -81,7 +82,7 @@ void keyPressed() {
   saveKeyPressed();
   
   // cheat code to unlock all levels for testing purposes, delete later
-  if(keyCode == konacode[konaCurrent]){
+  if(keyCode == konacode[konaCurrent] && screen == "map"){
     if(konaCurrent < konacode.length - 1){
       konaCurrent++;
     } else {
