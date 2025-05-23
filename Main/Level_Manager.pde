@@ -109,7 +109,7 @@ void menuDraw() {
 
  
 void startScreen() {
-    background = loadImage("Background.png");
+    background = loadImage("Background.PNG");
     image(background, 0, 0, width, height);
   if (screen=="start") {
     boolean startClicked = (mouseX > 400 && mouseX < 1300 &&
