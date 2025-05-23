@@ -66,7 +66,8 @@ class Settings {
         text(int(amp) + "%", constrain(x, 759, 1251) - 50, 720);
         if (mousePressed) {
           changingVol = true;
-          x=constrain(mouseX, 759, 1251);;
+          x=constrain(mouseX, 759, 1251);
+          ;
           amp = map(mouseX, 759, 1251, 0, 101);
           masterVol = constrain(amp/100, 0.0, 1.0);
           Sound.volume(masterVol); // sets the overall volume of the game
@@ -75,13 +76,14 @@ class Settings {
           }
         }
       }
+      
       // putting this outside the onVolumeBar check allows the volume to be easily set to exactly 0% or 100%
-      if(changingVol && !mousePressed) {
+      if (changingVol && !mousePressed) {
         saveToFile();
         changingVol = false; // writes volume data to JSON only when mouse is released
         println("Volume data saved!");
       }
-      
+
       //SWITCHING SCREENS BASED ON MOUSE CLICKS
       boolean startClicked = mouseX> rectStart && mouseX<rectEnd &&
         mouseY>300 && mouseY < 400;
@@ -92,6 +94,8 @@ class Settings {
 
       if (startClicked && mousePressed) {
         screen = "start";
+        titleScreenMusic.loop();
+        level1Music.stop();
         cameFromGameScr = false;
         mousePressed = false;
       }
@@ -105,9 +109,9 @@ class Settings {
         stroke(gray);
         strokeCap(ROUND);
         strokeWeight(10);
-        rect(width/2, height/3, 400, 100);
+        rect(width/3, height/3, 400, 100);
         fill (white);
-        text("exiting ...", width/2, height/2.5);
+        text("exiting ...", width/3, height/2.5);
         noStroke();
         exit();
       }
@@ -135,7 +139,7 @@ class Settings {
       text("Level #1", width / 2 - 362.5, 550);
       text("Level #2", width / 2 + 237.5, 550);
       text("Level #3", width / 2 - 462.5, 750);
-        //Draw all Node connections, that are behind nodes
+      //Draw all Node connections, that are behind nodes
       for (LevelNode node : nodes) {
         node.drawConnections();
       }
@@ -143,7 +147,7 @@ class Settings {
       for (LevelNode node : nodes) {
         node.display();
       }
-      
+
       drawLegend();
 
       exitButton();

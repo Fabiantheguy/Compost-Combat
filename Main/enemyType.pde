@@ -13,3 +13,4 @@ class EnemyType {
 //add new type of enemy here
 EnemyType appleType = new EnemyType("Apple", 3.0); 
 EnemyType bananaType = new EnemyType("Banana", 8.0);
+EnemyType orangeType = new EnemyType("Orange", 10.0);

@@ -12,7 +12,7 @@ swingingVines[] vines;
 PVector vinesPOS = new PVector (1900, -400);//CHANGE THESE VARIABLES TO KEEP COLLISIONS 
 float vlength = 150; 
 
-// for testing purposes, delete later
+// for testing purposes, delete later 
 int[] konacode = {38, 38, 40, 40, 37, 39, 37, 39, 66, 65};
 int konaCurrent = 0;
 
@@ -21,12 +21,14 @@ void settings() {
 }
 
 void setup() {
+soundSetup();
 startScreenSetup();  
 orangeSetup();
 playerSetup();
 playSetup();
 loadSaveData();
 lvlSetup();
+titleScreenMusic.loop();
 }
 
 
@@ -41,7 +43,6 @@ void draw() {
   
   if (screen == "game") {
   pushMatrix();
-  soundSetup();
   cameraDraw();
   grassDraw();
   lvlChanger();//CHANGES THE LEVELS THROUGHOUT GAMEPLAY
@@ -49,7 +50,7 @@ void draw() {
   playerDraw();
   appleDraw();
   BananaDraw();
-  // orangeDraw();
+  orangeDraw();
   popMatrix();
   
   

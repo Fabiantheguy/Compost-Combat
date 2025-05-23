@@ -1,30 +1,36 @@
 // Secluded variables for the enemy (), and platform
-Banana banana;
-bananaBullet bananabullet;
+Banana[] banana; // banana bullets are now stored in their parent banana class
+
+PImage[] bananaFrames;
 
 void BananaDraw() {
-  if (banana == null) {
-    // Banana is dead
-    if (lastDestroyedTime < 0) {
-      // Timer hasn't started yet — start it now
-      lastDestroyedTime = millis();
-    }
-    // Check if enough time has passed to respawn
-    if (millis() - lastDestroyedTime > respawnTime) {
-      // banana = new Banana(width / 4, worm.pos.y - 90);
-      lastDestroyedTime = -1; // Reset timer
-    }
-  } else {
-    //Banana is alive
-    //banana.follow(worm);
-    banana.update();
-    banana.display();
+  // checks if banana array exists
+  if (banana != null) {
+    for (Banana currentBanana : banana){
+      // Banana is alive
+      if (currentBanana.hitPoints > 0){ 
+        currentBanana.update();
+        currentBanana.display();
+      } else {
+        // Banana is dead
+        if (lastDestroyedTime < 0) {
+          // Timer hasn't started yet — start it now
+          lastDestroyedTime = millis();
+        }
+        // Check if enough time has passed to respawn
+        if (millis() - lastDestroyedTime > respawnTime) {
+          currentBanana.x = currentBanana.initX;
+          currentBanana.y = currentBanana.initY;
+          currentBanana.hitPoints = 1;
+          lastDestroyedTime = -1; // Reset timer
+        }
+      }
+      // runs banana bullet update
+      if (currentBanana.bullet.active){
+        currentBanana.bullet.update();
+      }
+    } 
   }
-  
-  if (bananabullet != null ) {
-    bananabullet.update();
-    bananabullet.display();
-}
 
 
 }
@@ -40,11 +46,13 @@ class Banana extends Enemy {
   int frameTimer = 0;       // Used to time switching frames
   int frameInterval = 10;   // Change frame every 10 draw() calls
   
+  bananaBullet bullet;
   boolean bananaShot = false;  //checking to see if the bullet is active
 
   Banana(float x, float y, EnemyType type, PImage[] availableImages) {
-    super(x, y, 3, type, availableImages); // Initialize Enemy superclass
+    super(x, y, 1, type, availableImages); // Initialize Enemy superclass
     frames = availableImages; 
+    bullet = new bananaBullet(x, y);
   }
 
   void follow(Play player) {
@@ -60,9 +68,10 @@ class Banana extends Enemy {
     Rectangle bananaRect = getBounds();
 
     //uses the float from the banana bullet inside of the bullet class.
-    if ( !bananaShot ) {
-      bananabullet = new bananaBullet(width / 4, worm.pos.y - 100); 
-      
+    if (!bananaShot && hitPoints > 0) { // can't shoot if you're dead
+      bullet.x = this.x;
+      bullet.y = this.y;
+      bullet.active = true;
       bananaShot = true;
     }
 
@@ -117,7 +126,7 @@ class bananaBullet {
   float x, y;
   //float w = 10, h = 10;
   float speed = 18;
-  //boolean active = false;
+  boolean active = false;
   
   bananaBullet(float X, float Y) { //Holds the bullet
     

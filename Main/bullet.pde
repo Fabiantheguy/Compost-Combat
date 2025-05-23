@@ -58,12 +58,17 @@ class Bullet {
           currentApple.hitPoints--;  // Damage the apple
         }
       // Optionally, handle bullet deletion after collision if needed
+      }
     }
     
-    if (orange != null && getBounds().intersects(orange.getBounds())) {
-      orange = null;  // Destroy the orange
+    // Safeguard: Ensure orange exists before checking collision
+    if (orange != null) {
+      for (Orange currentOrange : orange){
+        if (getBounds().intersects(currentOrange.getBounds())){
+          currentOrange.hitPoints--;  // Damage the orange
+        }
       // Optionally, handle bullet deletion after collision if needed
-    }
+      }
     }
   }
   
