@@ -49,6 +49,11 @@ ArrayList<LevelNode> nodes;
 void startScreenSetup() {
   background (bgColor);
 
+  // Load images
+  compostTitle = loadImage("Compost.png");
+  combatTitle = loadImage("Combat.png");
+
+
   //import Settings Variables
   cog = loadImage("cog.png");
   s = new Sound (this);
@@ -99,8 +104,12 @@ void menuDraw() {
 /*------------------------------------------------
  START SCREEN
  -------------------------------------------------*/
+ PImage compostTitle;
+ PImage combatTitle;
+
+ 
 void startScreen() {
-    background = loadImage("Background.PNG");
+    background = loadImage("Background.png");
     image(background, 0, 0, width, height);
   if (screen=="start") {
     boolean startClicked = (mouseX > 400 && mouseX < 1300 &&
@@ -109,12 +118,20 @@ void startScreen() {
       mouseY > 500 && mouseY < 600 && mousePressed && screen =="start");
     boolean creditsClicked = (mouseX > 400 && mouseX < 1300 &&
       mouseY > 700 && mouseY < 800 && mousePressed);
+      
+
     //fill(black);
     //rect(0, 0, width, height);
-    fill (white);
-    textSize(125);
-    text("COMPOST COMBAT", width/5, height/8);
-    textSize(72);
+    //fill (white);
+    //textSize(125);
+    //text("COMPOST COMBAT", width/5, height/8);
+    //textSize(72);
+    
+    // Draw compost and combat title images
+image(compostTitle, width/5, height/20, compostTitle.width * 0.5, compostTitle.height * 0.5);
+image(combatTitle, width/2, height/20, combatTitle.width * 0.5, combatTitle.height * 0.5);
+
+    
     //Settings Buttons
     stroke(gray);
     strokeWeight(4);
