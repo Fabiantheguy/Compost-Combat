@@ -91,6 +91,10 @@ void menuDraw() {
   case "credits":
     credits();
     break;
+  case "clear":
+    // level clear function
+    settings.lvlClear();
+    break;
   }
   //DEBUG MOUSE COORDS
   //mouse detection
@@ -269,6 +273,7 @@ void saveToFile() {
     json.setString("slot" + i, saveSlotNames[i]);
   }
   json.setFloat("volume", masterVol);
+  json.setString("graphics", settings.graphicsSetting);
   saveJSONObject(json, sketchPath("gameData.json")); // Use full path
 }
 
@@ -299,6 +304,7 @@ void loadSaveData() {
   }
   Sound.volume(json.getFloat("volume"));
   masterVol = json.getFloat("volume");
+  settings.graphicsSetting = json.getString("graphics");
 }
 void initLevelNodes() {
   nodes = new ArrayList<LevelNode>();
@@ -436,7 +442,7 @@ void lvlChanger() {
 
     Level1 = Level2 = Level3 = false;
     playerWins = true;
-    screen = "map";
+    screen = "clear";
   }
 }
 

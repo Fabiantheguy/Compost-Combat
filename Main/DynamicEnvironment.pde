@@ -48,9 +48,6 @@ class Vine {
     this.h = h;
     vineShift = 1.25;
     c = #00ff00;
-    
-    // loads image per vines
-    vinez = loadImage("Vines.png");
   }
 
   // draws the vine
@@ -220,9 +217,6 @@ class Platform {
     this.h = h;
     flipped = f;
     cameraMovement= 1.25;
-    
-    // loads image per platform branches
-    platformz = loadImage("Platform.PNG");
   }
 
   void display () {
@@ -276,5 +270,20 @@ class Platform {
   // Check if player is on platform
   boolean isColliding(Play worm) {
     return getBounds().intersects(worm.getBounds());
+  }
+}
+
+// environment setup function
+void environmentSetup(){
+  if (settings.graphicsSetting == "High"){
+    // load the high resolution images
+    platformz = loadImage("Platform.png");
+    vinez = loadImage("Vines.png");
+    ground = loadImage("Ground.png");
+  } else {
+    // load the low resolution images
+    platformz = loadImage("PlatformLQ.png");
+    vinez = loadImage("VinesLQ.png");
+    ground = loadImage("GroundLQ.jpg");
   }
 }

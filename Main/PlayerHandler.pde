@@ -10,7 +10,7 @@ int invincibleStartTime = 0;
 int invincibleDuration = 1000; // milliseconds of invincibility
 ArrayList<Item> items = new ArrayList<Item>();
 
-Play worm = new Play(1000, 600, 5); // spawn location
+Play worm = new Play(1000, 580, 5); // spawn location
 
 // === Global key states ===
 boolean leftHeld = false;
@@ -107,8 +107,10 @@ void movementKeyPressed() {
   if (keyCode == 49) {
     if (worm.upgrades.get("dash") < 2) {
       worm.upgrades.add("dash", 1);
+      worm.dashCd -= 400; // level 1 dash has a 0.8 second cooldown, level 2 dash has a 0.4 second cooldown
     } else {
       worm.upgrades.set("dash", 0);
+      worm.dashCd = 1200;
     }
   }
   // temp cheat code to upgrade range (2 key)
@@ -390,9 +392,10 @@ class Play {
   int bulletCd, fireRate, bulletLife;
   int baseFireRate = 150;
   int boostEndTime = 0;
-  boolean boosted = false, dirtyMomentum = true;
+  boolean boosted = false, dirtyMomentum = true, dashActive = false;
   int dashStart = 0;
   int dashTime = 200; // milliseconds
+  int dashCd = 1200; // milliseconds
   // int test = 0; // temporary while i test dirty flag -nate
 
   // instantiate complex data
@@ -487,6 +490,13 @@ class Play {
         } else {
           bullet.update();
         }
+      }
+    }
+    
+    // dash cooldown check - nested if statements are to make sure it doesn't check the complicated stuff if the simple stuff isn't true
+    if(upgrades.get("dash") > 0 && !dashActive){
+      if(millis() - dashStart >= dashCd){
+        dashActive = true;
       }
     }
 
