@@ -402,10 +402,6 @@ void lvlChanger() {
         i+=1; // sets level to complete
       } else playerWins =false;
     }
-
-    Level1 = Level2 = Level3 = false;
-    playerWins = true;
-    screen = "clear";
   }
   if (playerWins) {
     // Marks current level as Completed if the player completed it
@@ -424,7 +420,7 @@ void lvlChanger() {
 
     Level1 = Level2 = Level3 = false;
     playerWins = true;
-    screen = "map";
+    screen = "clear";
   }
 }
 
