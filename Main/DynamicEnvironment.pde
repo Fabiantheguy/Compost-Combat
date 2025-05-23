@@ -203,6 +203,10 @@ class swingingVines {
 }
 
 
+// Platform Class
+ArrayList<Platform> allPlatforms = new ArrayList<Platform>();
+
+PImage platformz;
 
 class Platform {
   float x, y, w, h;
@@ -213,11 +217,17 @@ class Platform {
     this.w = w;
     this.h = h;
     cameraMovement= 1.25;
+    
+    // loads image per platform branches
+    platformz = loadImage("Platform.PNG");
   }
 
   void display () {
-    fill (#D2DE3C);
-    rect(x, y, w, h);
+    // Draw the platform image at this platform's position
+    image(platformz, x - 100, y - 100, w + 100, h + 100);
+    
+    //fill (#D2DE3C);
+    //rect(x, y, w, h);
   }
 
   void update () {
