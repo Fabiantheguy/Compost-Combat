@@ -31,6 +31,10 @@ class Tree {
 }
 
 // Class for Vine for player to climb up and down tree
+ArrayList<Vine> allVines = new ArrayList<Vine>();
+
+PImage vinez;
+
 class Vine {
   float x, y, w, h;
   boolean isOnVine; // detect if player is on Vine
@@ -44,12 +48,19 @@ class Vine {
     this.h = h;
     vineShift = 1.25;
     c = #00ff00;
+    
+    // loads image per vines
+    vinez = loadImage("Vines.png");
   }
 
   // draws the vine
   void display() {
-    fill(c);
-    rect(x, y, w, h);
+    // Draw the vine image at this vine's position and size
+    image(vinez, x, y, w, h);
+
+    // Optionally draw the green rectangle behind or under the image
+    //fill(c);
+    //rect(x, y, w, h);
   }
 
   void update() {
@@ -81,8 +92,10 @@ class Vine {
 
 
 void treeDraw() {
-  tree.update();
-  tree.display();
+  for (int i =0; i < tree.length; i++){
+    tree[i].update();
+    tree[i].display();
+  }
 }
 
 // Ground Class
@@ -190,6 +203,10 @@ class swingingVines {
 }
 
 
+// Platform Class
+ArrayList<Platform> allPlatforms = new ArrayList<Platform>();
+
+PImage platformz;
 
 class Platform {
   float x, y, w, h;
@@ -200,11 +217,17 @@ class Platform {
     this.w = w;
     this.h = h;
     cameraMovement= 1.25;
+    
+    // loads image per platform branches
+    platformz = loadImage("Platform.PNG");
   }
 
   void display () {
-    fill (#D2DE3C);
-    rect(x, y, w, h);
+    // Draw the platform image at this platform's position
+    image(platformz, x - 100, y - 100, w + 250, h + 250);
+    
+    //fill (#D2DE3C);
+    //rect(x, y, w, h);
   }
 
   void update () {

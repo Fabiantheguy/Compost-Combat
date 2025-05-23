@@ -41,7 +41,10 @@ PVector camTarget;
 void playerSetup() {
   player = new Player(width/15, height - 150);
   grass = new Ground(-1000, 625, 10000, 150);
-  tree = new Tree(width, -1880, 200, 5000);
+  tree = new Tree [2];
+  for (int i = 0; i < tree.length; i ++) {
+    tree[i] = new Tree(width, -1880, 200, 5000);
+  }
   // gonna figure out initial camera position stuff later -nate
   camPos = new PVector(0, 0);
   camTarget = new PVector(0, 0);

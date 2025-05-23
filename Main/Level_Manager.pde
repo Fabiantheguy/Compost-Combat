@@ -61,11 +61,11 @@ void menuDraw() {
     break;
   case "game":
     if (worm.pos.y>height + 100){screen="death";}
-    settingsButton();
+    settings.settingsButton();
     break;
   case "death":
     endScreen(); //Dead screen
-    settingsButton();
+    settings.settingsButton();
     break;
   case "settings":
     //IMPORTING SETTINGS TAB
@@ -82,6 +82,10 @@ void menuDraw() {
     break;
   case "credits":
     credits();
+    break;
+  case "clear":
+    // level clear function
+    settings.lvlClear();
     break;
   }
   //DEBUG MOUSE COORDS
@@ -140,7 +144,7 @@ void startScreen() {
  -------------------------------------------------*/
 void saveScreen() {
   fill(black);
-  settingsWindow();
+  settings.settingsWindow();
 
   textSize(72);
 
@@ -185,8 +189,8 @@ void saveScreen() {
   }
 
   // X Button and return
-  exitButton();
-  if (onX() && mousePressed) {
+  settings.exitButton();
+  if (settings.onX() && mousePressed) {
     screen = "start";
     activeSlot = -1;
     typingName = false;
@@ -222,8 +226,8 @@ void credits () {
   fill (white);
   textSize(72);
   text("CREDITS:\n\n Thank You for Playing!", width/3, height/10);
-  exitButton();
-  if (onX() && mousePressed) {
+  settings.exitButton();
+  if (settings.onX() && mousePressed) {
     screen = "start";
   }
 }
@@ -383,6 +387,10 @@ void lvlChanger() {
       }
       break;
     }
+
+    Level1 = Level2 = Level3 = false;
+    playerWins = true;
+    screen = "clear";
   }
 
   Level1 = Level2 = Level3 = false;
