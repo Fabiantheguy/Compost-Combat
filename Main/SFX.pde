@@ -34,7 +34,7 @@ void wormJump() {
 
 void Death(){
   gameOver = new SoundFile(this, "data/GameOver.wav");
-  
+}
 /*  if ( ){
     gameOver.play();
   }
