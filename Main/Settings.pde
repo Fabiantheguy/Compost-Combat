@@ -323,7 +323,7 @@ class Settings {
             // dash upgrade
             if (worm.upgrades.get("dash") < 2) {
               worm.upgrades.add("dash", 1);
-              // reduce dash cooldown WIP
+              worm.dashCd -= 400; // level 1 dash has a 0.8 second cooldown, level 2 dash has a 0.4 second cooldown
             }
             break;
           case "range":

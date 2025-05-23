@@ -17,7 +17,7 @@ class WalkState implements PlayerState {
 
   // Handles movement logic in the walking state 
   public void update(Play player) {
-    if (spacePressed && player.upgrades.get("dash") > 0){ // check for dash upgrade
+    if (spacePressed && player.dashActive){ // check for dash upgrade
       player.dashStart = millis();
       player.movCurrent = "dash";
     } else if (player.onAnyGround()) {
@@ -88,7 +88,7 @@ class JumpState implements PlayerState {
     
     
     // dash
-    if (spacePressed && player.upgrades.get("dash") > 0){
+    if (spacePressed && player.dashActive){
       player.dashStart = millis();
       player.movCurrent = "dash";
     }
@@ -114,7 +114,7 @@ class DuckState implements PlayerState {
   
   // Handles movement logic in the ducking state
   public void update(Play player) {
-   if (spacePressed && player.upgrades.get("dash") > 0){
+   if (spacePressed && player.dashActive){
       player.dashStart = millis();
       player.movCurrent = "dash";
     } else if (player.onAnyGround()) {
@@ -206,6 +206,7 @@ class DashState implements PlayerState {
       player.checkMomentum((player.speed*-2.5), 0);
     }
     if (millis() - player.dashStart >= player.dashTime){
+      player.dashActive = false;
       player.movCurrent = "walk";
     }
     
