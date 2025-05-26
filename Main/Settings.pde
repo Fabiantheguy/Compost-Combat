@@ -138,7 +138,7 @@ class Settings {
       if (graphicsClicked && mousePressed && !graphicsChosen) {
         if (graphicsSetting == "Low"){
           // load the high resolution images
-          platformz = loadImage("Platform.png");
+          platformz = loadImage("Platform.PNG");
           vinez = loadImage("Vines.png");
           ground = loadImage("Ground.png");
           graphicsSetting = "High";

@@ -60,6 +60,7 @@ void draw() {
     
   }
   menuDraw();
+  playSFX();
 }
 
 void keyPressed() {

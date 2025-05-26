@@ -40,7 +40,7 @@ void BananaDraw() {
 }
 
 // Banana class
-class Banana {
+class Banana extends Enemy {
  
   float x, y;               // Position
   float w = 40, h = 40;     // Size

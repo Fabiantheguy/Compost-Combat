@@ -653,7 +653,7 @@ void aimKeyPressed() {
     lastAim[3] = lastAim[1];
     // add newest key code at index 1 (designated left/right index)
     lastAim[1] = str(keyCode);
-  
+  }
   // print("(" + lastAim[0] + ", " + lastAim[2] + ")");
 }
 
