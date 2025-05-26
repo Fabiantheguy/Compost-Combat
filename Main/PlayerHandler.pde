@@ -1,4 +1,4 @@
-// Nathan Ellis 4/10/2025
+// Nathan Ellis 4/10/2025 //<>// //<>// //<>// //<>// //<>//
 // THE PLAN IS SIMPLE:
 // Finite State Machine with all player states
 // Input to switch states
@@ -10,7 +10,8 @@ int invincibleStartTime = 0;
 int invincibleDuration = 1000; // milliseconds of invincibility
 ArrayList<Item> items = new ArrayList<Item>();
 
-Play worm = new Play(1000, 610, 5); // spawn location
+Play worm = new Play(1000, 580, 5); // spawn location
+
 // === Global key states ===
 boolean leftHeld = false;
 boolean rightHeld = false;
@@ -20,10 +21,11 @@ boolean upAimed = false;
 boolean downAimed = false;
 boolean leftAimed = false;
 boolean rightAimed = false;
-boolean facingRight = true; // for dash
 boolean spacePressed = false;
+boolean movPressed = false; // for dirty flag
 String[] lastAim = new String[4];
 boolean onSurface = false;  // Whether standing on platform or ground
+int[] movKeyCodes = {87, 65, 83, 68, 32}; // all key codes used in movement
 
 /*
  This tab features a simple player that is to be used for testing enemies.
@@ -35,58 +37,86 @@ Player player;
 PVector camPos;
 PVector camTarget;
 
+// sprite arrays for the worm's animation cycles
+PImage[] wormWalk;
+PImage[] wormJump;
+PImage[] wormDuck;
+PImage[] wormClimb;
+PImage[] wormDash;
+
 void playerSetup() {
   player = new Player(width/15, height - 150);
   grass = new Ground(-1000, 625, 10000, 150);
-  sun = new Sun(width - 255, -250);
-  tree = new Tree(width, -1880, 200, 5000);
+  tree = new Tree [2];
+  for (int i = 0; i < tree.length; i ++) {
+    tree[i] = new Tree(width, -1880, 200, 5000);
+  }
+  // gonna figure out initial camera position stuff later -nate
+
   camPos = new PVector(0, 0);
   camTarget = new PVector(0, 0);
+ 
+  // camPos = new PVector(width - 1200, -740);
+  // camTarget = new PVector(width - 1200, -740);
   allGrounds.add(grass);
-  items.add(new Item(width - 850, 65, ItemType.HEALTH));
+  if (!Level2){
+  items.add(new Item(width - 750, 65, ItemType.HEALTH));
   items.add(new Item(700, 600, ItemType.FIRERATE));
-
+  }
+  if (Level2){
+     items.add(new Item(width - 750, 65, ItemType.HEALTH));
+    items.add(new Item(700, 600, ItemType.FIRERATE));
+  }
   //}
 }
 // Handle key press events to control the player movement
 void movementKeyPressed() {
   // If 'A' or 'a' is pressed, move the player left
   if (key == 'a' || key == 'A') {
+    if (!leftHeld) worm.dirtyMomentum = true; // when held bool changes, dirty flag turns on
     player.left = true;
     leftHeld = true;
-    facingRight = false;
+    worm.facingRight = false;
   }
   // If 'D' or 'd' is pressed, move the player right
   if (key == 'd' || key == 'D') {
+    if (!rightHeld) worm.dirtyMomentum = true; // when held bool changes, dirty flag turns on
     player.right = true;
     rightHeld = true;
-    facingRight = true;
+    worm.facingRight = true;
   }
   if (key == 's' || key == 'S') {
+    if (!downHeld) worm.dirtyMomentum = true; // when held bool changes, dirty flag turns on
     downHeld = true;
   }
   // If w is pressed and the player is on the platform, make the player jump
   if (key == 'w' || key == 'W') {
+    if (!upPressed) worm.dirtyMomentum = true; // when held bool changes, dirty flag turns on
     player.jump();
     upPressed = true;
   }
   if (keyCode == 32) {
     spacePressed = true;
   }
+  /*
   if (!Level2) {
-    for (int i = 0; i < v.length; i++) {
-      if (key == 'w' && v[i].isOnVine) {
-        player.climb();
-        println("demon");
-      }
-    }
-  }
+   for (int i = 0; i < v.length; i++) {
+   if (key == 'w' && v[i].isOnVine) {
+   player.climb();
+   println("demon");
+   }
+   }
+   }
+   */
+
   // temp cheat code to upgrade dash (1 key)
   if (keyCode == 49) {
     if (worm.upgrades.get("dash") < 2) {
       worm.upgrades.add("dash", 1);
+      worm.dashCd -= 400; // level 1 dash has a 0.8 second cooldown, level 2 dash has a 0.4 second cooldown
     } else {
       worm.upgrades.set("dash", 0);
+      worm.dashCd = 1200;
     }
   }
   // temp cheat code to upgrade range (2 key)
@@ -135,21 +165,26 @@ void movementKeyReleased() {
   if (keyCode == 32) {
     spacePressed = false;
   }
+
+  // activates dirty flag if any movement key is pressed
+  for (int val : movKeyCodes) {
+    if (keyCode == val) {
+      worm.dirtyMomentum = true;
+      break;
+    }
+  }
 }
 
 void cameraDraw() {
-  // When player is near left edge camera stays into center of frame
-  if (player.x <= 50.0) {
-    camTarget.set(grass.pos.x, player.y - height/2 + player.h/2 - 400);
-  } else {
-    camTarget.set(player.x - width/2 + player.w/2, player.y - height/2 + player.h/2 - 400);
-  }
-
-  // When player is near right edge camera stays into center of frame
-  if (player.x >= 3000) {
-    camTarget.set(grass.area.y - 1050, worm.pos.y - height/2 - 400);
-  } else {
-    camTarget.set(worm.pos.x - width/2, worm.pos.y - height/2 - 400);
+  // When player is near left or right edge camera stays in center of frame
+  if (worm.pos.x <= -600.0) {
+    camTarget.set(-600, worm.pos.y - height/2 - 400);
+  } else if (worm.pos.x >= 3000) {
+    camTarget.set(3000 - 1050, worm.pos.y - height/2 - 400);
+  } else if (Level2) {
+    camTarget.set(worm.pos.x - width/2, worm.pos.y - height/2);
+  }else {
+    camTarget.set(worm.pos.x - width/2, worm.pos.y - height/2 - 400 );
   }
 
   // Smooth interpolation toward the target camera position
@@ -191,30 +226,30 @@ class Player {
     y += ySpeed;
 
 
-      //for (Platform p : platforms) {
-      //  {
-      //    float playerBottom = y + h;
-      //    float playerTop = y;
-      //    float platformTop = p.y;
-      //    float platformBottom = p.y + p.h;
-  
-      //    // LANDING ON PLATFORM
-      //    if (ySpeed > 0 && playerBottom - ySpeed + 40 <= platformTop && playerBottom >= platformTop) {
-      //      // Player must be falling (ySpeed > 0)
-      //      // and must have already crossed above platform top
-      //      y = platformTop - h;
-      //      ySpeed = 0;
-      //      onSurface = true;
-      //    }
-      //    // HITTING FROM BELOW
-      //    else if (ySpeed < 0 && playerTop <= platformBottom && playerTop - ySpeed >= platformBottom) {
-      //      // Player must be moving upward (ySpeed < 0)
-      //      // and must have crossed below platform bottom
-      //      y = platformBottom;
-      //      ySpeed = 1; // small push downward
-      //    }
-      //  }
-      //}
+    //for (Platform p : platforms) {
+    //  {
+    //    float playerBottom = y + h;
+    //    float playerTop = y;
+    //    float platformTop = p.y;
+    //    float platformBottom = p.y + p.h;
+
+    //    // LANDING ON PLATFORM
+    //    if (ySpeed > 0 && playerBottom - ySpeed + 40 <= platformTop && playerBottom >= platformTop) {
+    //      // Player must be falling (ySpeed > 0)
+    //      // and must have already crossed above platform top
+    //      y = platformTop - h;
+    //      ySpeed = 0;
+    //      onSurface = true;
+    //    }
+    //    // HITTING FROM BELOW
+    //    else if (ySpeed < 0 && playerTop <= platformBottom && playerTop - ySpeed >= platformBottom) {
+    //      // Player must be moving upward (ySpeed < 0)
+    //      // and must have crossed below platform bottom
+    //      y = platformBottom;
+    //      ySpeed = 1; // small push downward
+    //    }
+    //  }
+    //}
 
 
     // GROUND COLLISION
@@ -266,11 +301,29 @@ class Player {
     ySpeed = 0;
   }
 }
+
 void playSetup() {
+  // clear last aim array
   lastAim[0] = "none";
   lastAim[1] = "none";
   lastAim[2] = "none";
   lastAim[3] = "none";
+  
+  // set up worm image arrays
+  wormWalk = new PImage[2];
+  wormJump = new PImage[1];
+  wormDuck = new PImage[1];
+  wormClimb = new PImage[2];
+  wormDash = new PImage[1];
+  
+  // add images to arrays
+  wormWalk[0] = loadImage("worm/W1.png");
+  wormWalk[1] = loadImage("worm/W2.png");
+  wormJump[0] = loadImage("worm/W6.png");
+  wormDuck[0] = loadImage("worm/W5.png");
+  wormClimb[0] = loadImage("worm/W1.png");
+  wormClimb[1] = loadImage("worm/W6.png");
+  wormDash[0] = loadImage("worm/W3.png");
 }
 
 
@@ -307,11 +360,36 @@ void playerDraw() {
 
   //isColliding = false;  // Reset collision status each frame
 
+
   // Handle health and invincibility (if applicable)
   if (apple != null) {
-    // Handle collision with apple
-    if (!invincible && worm.getBounds().intersects(apple.getBounds())) {
-      worm.takeDmg(1);
+    for (Apple currentApple : apple) {
+      // Handle collision with apple
+      if (!invincible && worm.getBounds().intersects(currentApple.getBounds()) && currentApple.hitPoints > 0) {
+        worm.takeDmg(1);
+      }
+    }
+  }
+
+  if (orange != null) {
+    // Handle collision with orange
+    for (Orange currentOrange : orange) {
+      if (!invincible && worm.getBounds().intersects(currentOrange.getBounds())) {
+        currentOrange.orangeStun();
+        worm.takeDmg(3);
+      }
+    }
+  }
+ 
+  if (banana != null) {
+    // iterate over banana array
+    for (Banana currentBanana : banana) {
+      // Handle collision with banana's bullet
+      if (!invincible && worm.getBounds().intersects(currentBanana.bullet.getBounds()) && currentBanana.bullet.active) {
+        // maybe add a reload function to the banana? idk
+        worm.takeDmg(2);
+        currentBanana.bullet.active = false;
+      }
     }
   }
 
@@ -322,7 +400,6 @@ void playerDraw() {
       invincible = false;
     }
   }
-  //}
 }
 
 
@@ -331,42 +408,48 @@ void playerDraw() {
 // === Player class containing the FSMs ===
 class Play {
   // instantiate variables
-  StringList movStates = new StringList();
   String movCurrent = "walk";
-  StringList gunStates  = new StringList();
   String gunCurrent = "ready";
-  PVector pos, size;
-  float speed, jumpVel, initJump, aimRad, bulletSpeed;
-  ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+  PVector pos, size, center;
+  float speed, jumpVel, initJump, aimRad, bulletSpeed, momentumX, momentumY;
   int bulletCd, fireRate, bulletLife;
   int baseFireRate = 150;
   int boostEndTime = 0;
-  boolean boosted = false;
+  boolean boosted = false, dirtyMomentum = true, dashActive = false, facingRight = true;
+  int currentFrame = 0, frameInc = 0; // for animation
   int dashStart = 0;
   int dashTime = 200; // milliseconds
+  int dashCd = 1200; // milliseconds
+  // int test = 0; // temporary while i test dirty flag -nate
 
-  // instantiate upgrade dictionary
-  IntDict upgrades;
-
-  // A HashMap to hold all the possible states.
-  HashMap<String, PlayerState> stateMap;
+  // instantiate complex data
+  IntDict upgrades; // instantiate upgrade dictionary
+  HashMap<String, PlayerState> stateMap; // A HashMap to hold all the possible states.
+  PlayerState currentState; // player's current state
+  Vine currentVine; // current vine that the entire play class can access, trust me i need this -nate
+  BulletPool bPool = new BulletPool(); // object pool for the player's bullets
 
   // constructor
   Play(float x, float y, float s) {
     // position
     pos = new PVector(x, y);
     size = new PVector(40, 40);
+    center = new PVector(pos.x + (size.x/2), pos.y + (size.y/2));
+    momentumX = 0;
+    momentumY = 0;
 
-  // Create a HashMap to store different movement states 
-    stateMap = new HashMap<String, PlayerState>(); //<>//
+    // Create a HashMap to store different movement states
+    stateMap = new HashMap<String, PlayerState>();
     // Instantiate and store various player states
     // These states must be defined elsewhere as classes implementing PlayerState
     stateMap.put("walk", new WalkState());
     stateMap.put("jump", new JumpState());
     stateMap.put("duck", new DuckState());
-    stateMap.put("climb", new ClimbState()); 
-    stateMap.put("dash", new DashState()); //<>//
-          
+    stateMap.put("climb", new ClimbState());
+    stateMap.put("dash", new DashState());
+    stateMap.put("ready", new ReadyState());
+    stateMap.put("fire", new FiringState());
+
     // Set the initial state.
     currentState = stateMap.get("walk");
 
@@ -384,14 +467,6 @@ class Play {
     bulletCd = 0;
     fireRate = baseFireRate;
 
-    // append states to lists
-    movStates.append("walk");
-    movStates.append("jump");
-    movStates.append("dash");
-
-    gunStates.append("aim");
-    gunStates.append("fire");
-
     // set upgrade levels
     upgrades = new IntDict();
     upgrades.set("dash", 0); // this will eventually pull int values from save data
@@ -401,15 +476,18 @@ class Play {
 
   // state hub
   void update() {
-    //rectMode(CENTER);
+    center.x = pos.x + (size.x/2);
+    center.y = pos.y + (size.y/2); // to replace rectMode(CENTER);
     noFill();
     stroke(150, 40, 0);
-    strokeWeight(10);
+    strokeWeight(6);
     // firing update
     if (this.gunCurrent == "ready") {
-      this.updateReady();
+      stateMap.get("ready").update(this);
+      stateMap.get("ready").display(this);
     } else if (this.gunCurrent == "fire") {
-      this.updateFire();
+      stateMap.get("fire").update(this);
+      stateMap.get("fire").display(this);
     }
     if (boosted && millis() > boostEndTime) {
       fireRate = baseFireRate;
@@ -428,14 +506,21 @@ class Play {
     }
 
     // bullet update
-    for (int i=0; i<bullets.size(); i++) {
+    for (Bullet bullet : bPool.allBullets) {
       // check if the bullet needs to be updated or deleted
-      Bullet bullet = bullets.get(i);
-      if (millis() - bullet.startTime >= bullet.lifetime) {
-        bullets.remove(i);
-      } else {
-
-        bullet.update();
+      if (bullet.active) {
+        if (millis() - bullet.startTime >= bullet.lifetime) {
+          bullet.destroy();
+        } else {
+          bullet.update();
+        }
+      }
+    }
+    
+    // dash cooldown check - nested if statements are to make sure it doesn't check the complicated stuff if the simple stuff isn't true
+    if(upgrades.get("dash") > 0 && !dashActive){
+      if(millis() - dashStart >= dashCd){
+        dashActive = true;
       }
     }
 
@@ -444,30 +529,38 @@ class Play {
     //rect(this.pos.x, this.pos.y, this.size.x, this.size.y);
 
     // movement update
-    if (this.movCurrent == "walk") { //<>//
-      stateMap.get("walk").update(this); //<>//
-      stateMap.get("walk").display(this); //<>//
+    if (this.movCurrent == "walk") {
+      stateMap.get("walk").update(this);
+      stateMap.get("walk").display(this);
     } else if (this.movCurrent == "jump") {
       stateMap.get("jump").update(this);
       stateMap.get("jump").display(this);
     } else if (this.movCurrent == "duck") {
       stateMap.get("duck").update(this);
       stateMap.get("duck").display(this);
-    } else if (this.movCurrent == "dash")  {
+    } else if (this.movCurrent == "dash") {
       stateMap.get("dash").update(this);
       stateMap.get("dash").display(this);
     } else if (this.movCurrent == "climb") {
       stateMap.get("climb").update(this);
       stateMap.get("climb").display(this);
     }
-    
+
     rectMode(CORNER);
+    
+    // increment animation
+    frameInc++;
+    if (frameInc >= 15){
+      currentFrame++;
+      frameInc = 0;
+    }
   }
   void takeDmg(int l) {
     currentHealth -= l;
     // die if health is 0, start invincibility timer otherwise
     if (currentHealth <= 0) {
       //enter death screen
+      level1Music.stop();
       endScreen();
       // player death code
       playerDeath();
@@ -476,71 +569,26 @@ class Play {
       invincibleStartTime = millis();
     }
   }
-  // walk update code
-  void updateWalk() {
-    if (spacePressed && this.upgrades.get("dash") > 0) { // check for dash upgrade
-      this.dashStart = millis();
-      this.movCurrent = "dash";
-    } 
-    else if (onAnyGround())
-    {
-      rect(this.pos.x, this.pos.y, this.size.x, this.size.y);
-      if (leftHeld)
-      {
-        this.pos.x -= this.speed;
+
+  // checking for vine to climb
+  void checkClimb() {
+    boolean touchingVine = false;
+    for (int i=0; i<currentVines.size(); i++) {
+      currentVine = currentVines.get(i); // uses currentVine in the player's variable section
+      if (currentVine.isOnVine(this)) {
+        touchingVine = true;
+        break;
       }
-      if (rightHeld) {
-        this.pos.x += this.speed;
-      }
-      if (upPressed) {
-        this.jumpVel = this.initJump;
-        this.movCurrent = "jump";
-      } else if (downHeld) {
-        this.movCurrent = "duck";
-      }
-    } else {
-      this.jumpVel = 0;
-      this.movCurrent = "jump"; // causes player to fall if they walk off a platform edge
     }
-    println(onAnyGround());
-
-     if (!invincible || (millis() / 100) % 2 == 0) {
-      rect(this.pos.x, this.pos.y, this.size.x, this.size.y);
-    }
-  }
-
-  // jump update code
-  void updateJump() {
-    this.pos.y -= this.jumpVel;
-    this.jumpVel -= 0.5;
-
-    if (leftHeld) {
-      this.pos.x -= (this.speed * 0.6);
-    }
-    if (rightHeld) {
-      this.pos.x += (this.speed * 0.6);
-    }
-
-    // Use collision detection instead of hardcoded Y
-    if (onAnyGround()) {
-      this.jumpVel = 0;
-      this.movCurrent = "walk";
-    }
-
-    // dash
-    if (spacePressed && this.upgrades.get("dash") > 0) {
-      this.dashStart = millis();
-      this.movCurrent = "dash";
-    }
-    //println(movCurrent);
-     if (!invincible || (millis() / 100) % 2 == 0) {
-      rect(this.pos.x, this.pos.y, this.size.x * 0.875, this.size.y * 0.875);
+    if (upPressed && touchingVine) {
+      movCurrent = "climb";
     }
   }
 
   // checks if the player is colliding with any ground
   boolean onAnyGround() {
     Rectangle playerRect = this.getBounds();
+    // check if player collides with all grounds
     for (Ground g : allGrounds) {
       Rectangle groundRect = new Rectangle(
         (int)g.pos.x,
@@ -548,133 +596,23 @@ class Play {
         (int)g.area.x,
         (int)g.area.y
         );
-        for(int i = 0; i < platforms.length; i++)
-      if (playerRect.intersects(groundRect) || platforms[i].onPlat) return true;
+      if (playerRect.intersects(groundRect)) {
+        if (pos.y > g.pos.y - (size.y/2)) {
+          pos.y = g.pos.y - (size.y/2);
+        }
+        return true;
+      }
+    }
+    // check if player collides with all platforms
+    for (Platform pl : currentPlats) {
+      if (pl.isColliding(this)) {
+        if (pos.y > pl.y - (size.y/2)) {
+          pos.y = pl.y - (size.y/2);
+        }
+        return true;
+      }
     }
     return false;
-  }
-
-  // duck update code
-  void updateDuck() {
-    if (spacePressed && this.upgrades.get("dash") > 0) {
-      this.dashStart = millis();
-      this.movCurrent = "dash";
-    } else if (onAnyGround()) {
-      if (leftHeld) {
-        this.pos.x -= (this.speed*0.5);
-      }
-      if (rightHeld) {
-        this.pos.x += (this.speed*0.5);
-      }
-      if (downHeld == false) {
-        this.movCurrent = "walk";
-      }
-    } else {
-      this.jumpVel = 0;
-      this.movCurrent = "jump"; // causes player to fall if they walk off a platform edge
-    }
-
-    if (!invincible || (millis() / 100) % 2 == 0) {
-      rect(this.pos.x, this.pos.y, this.size.x * 1.125, this.size.y * 0.875);
-    }
-  }
-
-  // climbing update code
-  void updateClimb() {
-    if (leftHeld || rightHeld) {
-      if (upPressed) {
-        this.jumpVel = this.initJump;
-      }
-      this.movCurrent = "jump";
-    } else {
-      if (upPressed) {
-        this.pos.y -= (this.speed * 0.6);
-      }
-      if (downHeld) {
-        this.pos.y += (this.speed * 0.6);
-      }
-    }
-
-    if (!invincible || (millis() / 100) % 2 == 0) {
-      rect(this.pos.x, this.pos.y, this.size.x, this.size.y);
-    }
-  }
-
-  // dash update code
-  void updateDash() {
-    if (facingRight) {
-      this.pos.x += (this.speed*2.5);
-    } else {
-      this.pos.x -= (this.speed*2.5);
-    }
-    if (millis() - this.dashStart >= this.dashTime) {
-      this.movCurrent = "walk";
-    }
-
-    if (!invincible || (millis() / 100) % 2 == 0) {
-      rect(this.pos.x, this.pos.y, this.size.x * 1.2, this.size.y * 0.8);
-    }
-  }
-
-  // non-firing update code
-  void updateReady() {
-    // if aiming matrix is activated, enter firing state
-    if (lastAim[0] != "none" || lastAim[1] != "none") {
-      this.gunCurrent = "fire";
-    }
-  }
-
-  // firing update code
-  void updateFire() {
-    // original mouse aiming code, in case the rest of the team sees the light
-    // line(this.pos.x, this.pos.y, mouseX, mouseY);
-
-    // new 8-directional aiming code
-    // had to change this to use key codes
-    // 37-40 are in ascending order: left, up, right, down
-    pushMatrix();
-    translate(this.pos.x+20, this.pos.y+10);
-    if (int(lastAim[0]) == 38) {
-      if (int(lastAim[1]) == 37) {
-        rotate(PI/-4); // rotate matrix (for aiming visuals)
-        this.aimRad = PI*1.75; // set value of aim direction (for bullets)
-      } else if (int(lastAim[1]) == 39) {
-        rotate(PI/4);
-        this.aimRad = PI/4;
-      } else {
-        this.aimRad = 0;
-      }
-    } else if (int(lastAim[1]) == 37) {
-      rotate(PI/-2);
-      this.aimRad = PI*1.5;
-      if (int(lastAim[0]) == 40) {
-        rotate(PI/-4);
-        this.aimRad = PI*1.25;
-      }
-    } else if (int(lastAim[1]) == 39) {
-      rotate(PI/2);
-      this.aimRad = PI/2;
-      if (int(lastAim[0]) == 40) {
-        rotate(PI/4);
-        this.aimRad = PI*0.75;
-      }
-    } else if (int(lastAim[0]) == 40) {
-      rotate(PI);
-      this.aimRad = PI;
-    }
-    line(0, 0, 0, -70); // visual aiming line - this is the only reason i push matrix
-    popMatrix();
-
-    // check if bullet cooldown has elapsed
-    if (millis() - this.bulletCd >= this.fireRate) {
-      bullets.add(new Bullet(this.aimRad, this.bulletSpeed, this.pos, this.bulletLife));
-      this.bulletCd = millis();
-    }
-
-    // if no keys are pressed, exit this state
-    if (lastAim[0] == "none" && lastAim[1] == "none") {
-      this.gunCurrent = "ready";
-    }
   }
 
   // Return the bounding box of the player (used for collision detection)
@@ -686,6 +624,17 @@ class Play {
   void changeState(String newKey) {
     if (stateMap.containsKey(newKey)) {
       currentState = stateMap.get(newKey);
+    }
+  }
+
+  // momentum check function
+  void checkMomentum(float mX, float mY) {
+    if (dirtyMomentum) {
+      momentumX = mX;
+      momentumY = mY;
+      dirtyMomentum = false;
+      // test++;
+      // println(test + " dirty flags triggered");
     }
   }
 }
@@ -704,7 +653,7 @@ void aimKeyPressed() {
     lastAim[3] = lastAim[1];
     // add newest key code at index 1 (designated left/right index)
     lastAim[1] = str(keyCode);
-  }
+  
   // print("(" + lastAim[0] + ", " + lastAim[2] + ")");
 }
 

@@ -1,3 +1,4 @@
+/*
 //Shows level progression in the background 
 class Sun {
   PVector pos;
@@ -33,3 +34,4 @@ void sunDraw() {
   sun.update();
   sun.display();
 }
+*/

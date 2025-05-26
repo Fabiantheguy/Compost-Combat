@@ -1,3 +1,4 @@
+/*
 // Main place where gameplay will happen
 class Tree {
   float x, y, w, h, treeShift; // postiton and area of tree
@@ -87,3 +88,4 @@ void treeDraw() {
   tree.update();
   tree.display();
 }
+*/

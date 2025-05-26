@@ -1,4 +1,5 @@
-import java.awt.Rectangle;
+
+Platform platform;
 
 abstract class Entity {
   float x, y, w, h; 
@@ -26,11 +27,16 @@ class Enemy extends Entity {
   int currentFrame = 0;
   int frameTimer = 0;
   int frameInterval = 10;
+  int hitPoints; // the HP of the enemy (most have 1)
+  float initX, initY;
 
-  Enemy(float x, float y, EnemyType type, PImage[] availableImages) {
+  Enemy(float x, float y, int hp, EnemyType type, PImage[] availableImages) {
     super(x, y, 40, 40); // Now width & height are passed
+    initX = x;
+    initY = y; // enemies need to remember their starting position to respawn
     this.type = type;
     this.frames = availableImages; 
+    hitPoints = hp;
   }
     
 
@@ -66,7 +72,7 @@ class EnemyFactory {
   }
  
   
- Enemy createEnemy(String type, float x, float y, PImage[] frames) {
+ Enemy createEnemy(String type, float x, float y, PImage[] frames, Platform platform) {
     EnemyType enemyType;
 
     switch (type) {
@@ -83,11 +89,11 @@ class EnemyFactory {
     // Create the enemy like apple or banana
     println("new enemy"); 
      if (type.equals("Apple")) {
-        return new Apple(x, y, enemyType,frames);        
+        return new Apple(x, y, platform);        
      } else if (type.equals("Banana")) {
         return new Banana(x, y, enemyType, frames);
     } else {
-        return new Enemy(x, y, enemyType, frames);
+        return new Enemy(x, y, 1, enemyType, frames);
     }
   }
 }
